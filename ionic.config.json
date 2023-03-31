@@ -1,0 +1,7 @@
+{
+  "name": "GuitarBox",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
