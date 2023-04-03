@@ -1,0 +1,39 @@
+<ion-menu contentId="main-content">
+  <ion-header>
+  </ion-header>
+  <ion-content>
+    <ion-list lines="full">
+      <ion-item lines="none">
+        <img class="avatar" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="User profile picture">
+        <ion-button slot="end" class="ion-align-self-start" shape="round" fill="clear">
+          <mat-icon slot="icon-only" aria-hidden="false" aria-label="Settings icon" fontSet="material-symbols-rounded">settings</mat-icon>
+        </ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-label>@luciano</ion-label>
+      </ion-item>
+      <ion-item button detail="false" class="medium-weight">
+        <ion-label>Help</ion-label>
+        <mat-icon slot="end" aria-hidden="false" aria-label="Help icon" fontSet="material-symbols-rounded">help</mat-icon>
+      </ion-item>
+      <ion-item button detail="false" class="medium-weight">
+        <ion-label>Logout</ion-label>
+        <mat-icon slot="end" aria-hidden="false" aria-label="Logout icon" fontSet="material-symbols-rounded">logout</mat-icon>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>GuitarBox</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-router-outlet></ion-router-outlet>
+  </ion-content>
+</div>
+

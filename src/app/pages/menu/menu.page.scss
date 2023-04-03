@@ -1,0 +1,23 @@
+ion-title {
+  --color: var(--bole);
+}
+
+ion-menu-button {
+  --color: var(--atomic-tangerine);
+}
+
+ion-item, ion-button {
+  --color: var(--bole);
+  --background-focused: var(--bole);
+  --background-hover: var(--bole);
+}
+
+.avatar {
+  height: 80px;
+  width: 80px;
+  border-radius: 100%;
+}
+
+.medium-weight {
+  font-weight: 500;
+}
