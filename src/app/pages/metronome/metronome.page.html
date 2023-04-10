@@ -1,13 +1,104 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>metronome</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">metronome</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="main-container full-height">
+    <ion-grid>
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="ion-no-padding" size="auto">
+          <ion-button id="open-picker" class="bpm-btn ion-no-margin" shape="round" fill="clear">
+            <ion-icon slot="icon-only" name="heart"></ion-icon>
+            <ion-text>{{bpm}}</ion-text>
+          </ion-button>
+          <ion-picker
+            trigger="open-picker"
+            [columns]="pickerColumns"
+            [buttons]="pickerButtons"
+          ></ion-picker>
+        </ion-col>
+        <ion-col class="ion-no-padding" size="12">
+          <ion-row class="ion-justify-content-center ion-align-items-center">
+            <ion-col size="auto">
+              <ion-grid [@arrayFade]="bars.length" class="bars-wrapper">
+                <div id="{{bar.id}}" *ngFor="let bar of bars; index as i;" class="bar">
+                  <div *ngIf="bar.accent; then accentBar else defaultBar"></div>
+                  <ng-template #accentBar>
+                    <ion-fab-button @fade (click)="enableDisableAccent($event)" class="accent">
+                      <ion-icon @fade *ngIf="bar.current" class="current-bar" name="ellipse-outline"></ion-icon>
+                    </ion-fab-button>
+                  </ng-template>
+                  <ng-template #defaultBar>
+                    <ion-fab-button @fade (click)="enableDisableAccent($event)">
+                      <ion-icon @fade *ngIf="bar.current" class="current-bar" name="ellipse-outline"></ion-icon>
+                    </ion-fab-button>
+                  </ng-template>
+                </div>
+              </ion-grid>
+            </ion-col>
+            <ion-col size="auto">
+              <div class="icon-btn-wrapper">
+                <div *ngIf="bars.length < 12; then addBtnEnabled else addBtnDisabled"></div>
+                <ng-template #addBtnEnabled>
+                  <ion-button (click)="addBar()" class="icon-btn" size="small" shape="round">
+                    <mat-icon slot="icon-only" aria-hidden="false" aria-label="Add icon"
+                              fontSet="material-symbols-rounded">add
+                    </mat-icon>
+                  </ion-button>
+                </ng-template>
+                <ng-template #addBtnDisabled>
+                  <ion-button class="icon-btn" size="small" shape="round" disabled="true">
+                    <mat-icon slot="icon-only" aria-hidden="false" aria-label="Add icon"
+                              fontSet="material-symbols-rounded">add
+                    </mat-icon>
+                  </ion-button>
+                </ng-template>
+                <div *ngIf="bars.length > 1; then removeBtnEnabled else removeBtnDisabled"></div>
+                <ng-template #removeBtnEnabled>
+                  <ion-button (click)="removeBar()" class="icon-btn" size="small" shape="round">
+                    <mat-icon slot="icon-only" aria-hidden="false" aria-label="Add icon"
+                              fontSet="material-symbols-rounded">remove
+                    </mat-icon>
+                  </ion-button>
+                </ng-template>
+                <ng-template #removeBtnDisabled>
+                  <ion-button class="icon-btn" size="small" shape="round" disabled="true">
+                    <mat-icon slot="icon-only" aria-hidden="false" aria-label="Remove icon"
+                              fontSet="material-symbols-rounded">remove
+                    </mat-icon>
+                  </ion-button>
+                </ng-template>
+                <div *ngIf="changesBeenMade; then resetBtnEnabled else resetBtnDisabled"></div>
+                <ng-template #resetBtnEnabled>
+                  <ion-button (click)="resetBars()" class="icon-btn" size="small" shape="round">
+                    <mat-icon slot="icon-only" aria-hidden="false" aria-label="Refresh icon"
+                              fontSet="material-symbols-rounded">refresh
+                    </mat-icon>
+                  </ion-button>
+                </ng-template>
+                <ng-template #resetBtnDisabled>
+                  <ion-button class="icon-btn" size="small" shape="round" disabled="true">
+                    <mat-icon slot="icon-only" aria-hidden="false" aria-label="Refresh icon"
+                              fontSet="material-symbols-rounded">refresh
+                    </mat-icon>
+                  </ion-button>
+                </ng-template>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col size="auto">
+          <ion-button (click)="startStop()" class="icon-btn" shape="round">
+            <div *ngIf="isRunning; then stopBtn else startBtn"></div>
+            <ng-template #stopBtn>
+              <mat-icon slot="icon-only" aria-hidden="false" aria-label="Stop icon"
+                        fontSet="material-symbols-rounded">stop
+              </mat-icon>
+            </ng-template>
+            <ng-template #startBtn>
+              <mat-icon slot="icon-only" aria-hidden="false" aria-label="Play icon"
+                        fontSet="material-symbols-rounded">play_arrow
+              </mat-icon>
+            </ng-template>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 </ion-content>
