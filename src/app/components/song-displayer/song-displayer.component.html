@@ -1,0 +1,23 @@
+<div class="main-container">
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="title-song ion-padding-bottom">{{song.title}}</ion-card-title>
+      <ion-row class="ion-justify-content-between">
+        <ion-card-subtitle class="artist-song">{{song.artist}}</ion-card-subtitle>
+        <ion-card-subtitle class="artist-song">BPM: {{song.bpm}}</ion-card-subtitle>
+      </ion-row>
+    </ion-card-header>
+  </ion-card>
+  <ion-card>
+    <div class="ion-padding">
+      <span class="lyrics-font" [innerHTML]="song.lyrics"></span>
+    </div>
+  </ion-card>
+
+
+</div>
+
+<!-- <link rel="stylesheet" href="song-displayer \css\html-chords.css" /> -->
+<!-- <script type="text/javascript" src="src\app\components\song-displayer\js\jquery.js"></script>
+<script type="text/javascript" src="src\app\components\song-displayer\js\html-chords.js"></script> -->

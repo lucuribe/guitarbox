@@ -41,7 +41,10 @@
               "src/theme/variables.scss",
               "src/global.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/html-chords.js",
+              "src/assets/jquery.js"
+            ]
           },
           "configurations": {
             "production": {

@@ -1,0 +1,30 @@
+
+:host{
+  background-color: var(--pale-dogwood);
+  position: fixed;
+    top:0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100  
+}
+
+.title-song{
+  --color: var(--bole);
+  
+}
+
+.artist-song{
+  --color: var(--atomic-tangerine);
+}
+
+
+span{
+  color: var(--bole);
+}
+
+div.song > p {line-height:2.5;margin:15px 0px 15px 0px;}
+span.chord {position:absolute;line-height:0;font-weight:bold;}
+span.chord-inline {font-weight:bold;}
+div.transposition a.transposition {margin:5px;}
+div.song div.transposition {margin-bottom:20px;}
