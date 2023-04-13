@@ -13,6 +13,6 @@ declare function notas1(): void;
 })
 export class AppComponent {
   constructor() {
-    notas1();
+    // notas1();
   }
 }
