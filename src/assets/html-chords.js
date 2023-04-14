@@ -92,5 +92,3 @@ $(document).ready(function() {
 			gcwriter.init("Key change", "up a halftone", "down a halftone");
 	}
 });
-
-alert("Pop up");

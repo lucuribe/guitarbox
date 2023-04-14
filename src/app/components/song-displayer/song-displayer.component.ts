@@ -1,28 +1,72 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+
+
 
 @Component({
   selector: 'app-song-displayer',
   templateUrl: './song-displayer.component.html',
   styleUrls: ['./song-displayer.component.scss'],
+
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 
 })
 export class SongDisplayerComponent  implements OnInit {
 
-  constructor() { }
+
+  ngOnInit() {
+     this.loadScript('assets/jquery.js');
+     this.loadScript('assets/html-chords.js');
+     this.loadCSS('assets/html-chords.css');
+  }
+
+  constructor() { 
+  }
+
+  public loadScript(url: string) {
+    const body = <HTMLDivElement> document.body;
+    const script = document.createElement('script');
+    script.innerHTML = '';
+    script.src = url;
+    script.async = false;
+    script.defer = true;
+    body.appendChild(script);
+  }
+
+  loadCSS(url: string) {
+    // Create link
+    let link = document.createElement('link');
+    link.href = url;
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    
+    let head = document.getElementsByTagName('head')[0];
+    let links = head.getElementsByTagName('link');
+    let style = head.getElementsByTagName('style')[0];
+    
+    // Check if the same style sheet has been loaded already.
+    let isLoaded = false;  
+    for (var i = 0; i < links.length; i++) {
+      var node = links[i];
+      if (node.href.indexOf(link.href) > -1) {
+        isLoaded = true;
+      }
+    }
+    if (isLoaded) return;
+    head.insertBefore(link, style);
+  }
 
 
 
   song= {
     title: "Space Oddity",
     artist: "David Bowie",
-    lyrics: "Intro: {_C} 	{_Em}<br/> {C/}Ground control to Major{Em} Tom<br/> Ground control to Major{Em} Tom<br/> {Am}Take your{Am7} protein pills and {D7} put your helmet on<br><br/>{C}Ground control to Major{Em} Tom<br/>{C}Commencing countdown, engines{Em} on<br>{Am}Check{Am7} ignition and may{D7} Gods love be with you<br/><br/> hola",
+    lyrics: "<p>Intro: {   }{_C} 	{_Em}<p/><p>{C}Ground control to Major{Em} Tom<br/> Ground control to Major{_Em} Tom<br/> {Am}Take your{Am7} protein pills and {D7} put your helmet on<br>{C}Ground control to Major{Em} Tom<p/><p>Ejemplo 2{A}  {D}</p>",
     bpm: 115
   }
   
-  ngOnInit() {}
+
 }
