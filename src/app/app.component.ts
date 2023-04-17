@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { SongDisplayerComponent } from './components/song-displayer/song-displayer.component';
+import { CommonModule } from '@angular/common';
 
 
 declare function notas1(): void;
@@ -9,7 +10,7 @@ declare function notas1(): void;
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   standalone: true,
-  imports: [IonicModule,],
+  imports: [IonicModule,CommonModule],
 })
 export class AppComponent {
   constructor() {

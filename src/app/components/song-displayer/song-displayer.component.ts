@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { Song } from 'src/app/interfaces/song';
+import { SongListComponent } from '../song-list/song-list.component';
 
 
 
@@ -11,7 +13,7 @@ import { IonicModule } from '@ionic/angular';
   styleUrls: ['./song-displayer.component.scss'],
 
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, SongListComponent]
 
 })
 export class SongDisplayerComponent  implements OnInit {
@@ -61,11 +63,14 @@ export class SongDisplayerComponent  implements OnInit {
 
 
 
-  song= {
+  song: Song = {
+    id: 1,
     title: "Space Oddity",
     artist: "David Bowie",
-    lyrics: "<p>Intro: {   }{_C} 	{_Em}<p/><p>{C}Ground control to Major{Em} Tom<br/> Ground control to Major{_Em} Tom<br/> {Am}Take your{Am7} protein pills and {D7} put your helmet on<br>{C}Ground control to Major{Em} Tom<p/><p>Ejemplo 2{A}  {D}</p>",
-    bpm: 115
+    lyrics: "<p>Intro: {   }{_C} 	{_Em}<p/><p>{C}Ground control to Major{Em} Tom<br/> Ground control to Major{_Em} Tom<br/> {Am}Take your{Am7} protein pills and {D7} put your helmet on<br>{C}Ground control to Major{Em} Tom<p/><p>Ejemplo 2{A}{    }{D}</p>",
+    bpm: 115,
+    id_album: 1,
+    duration: 315
   }
   
 

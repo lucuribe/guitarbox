@@ -1,0 +1,20 @@
+<p>
+  song-list works!
+  borrar esto dsps</p>
+  <h2>My Songs</h2>
+<ul class="songs">
+  <li *ngFor="let song of songs">
+    <button [class.selected]="song === selectedSong" type="button" (click)="onSelect(song)">
+      <span class="badge">Id: {{song.id}}, </span>
+      <span class="name">Title: {{song.title}}</span>
+    </button>
+  </li>
+</ul>
+<div *ngIf="selectedSong">
+  <h2>{{selectedSong.title | uppercase}} Details</h2>
+  <div>id: {{selectedSong.id}}</div>
+  <div>
+    <label for="song-name">Song name: </label>
+    <input id="song-name" [(ngModel)]="selectedSong.title" placeholder="name">
+  </div>
+</div>
