@@ -1,7 +1,7 @@
 import { Song } from "./interfaces/song";
 
 export const SONGS: Song[] = [
-    {id:1, title: 'Starman',artist:'David Bowie',id_album: 1,lyrics:'lyrics 1',bpm:120, duration:180},
+    {id:1, title: 'Starman',artist:'David Bowie',id_album: 1,lyrics:"<p>Intro: {   }{_C} 	{_Em}<p/><p>{C}Ground control to Major{Em} Tom<br/> Ground control to Major{_Em} Tom<br/> {Am}Take your{Am7} protein pills and {D7} put your helmet on<br>{C}Ground control to Major{Em} Tom<p/><p>Ejemplo 2{A}{    }{D}</p>",bpm:120, duration:180},
     {id:2, title: 'The Man who Sold the World',artist:'David Bowie',id_album: 2,lyrics:'lyrics 2',bpm:120, duration:180},
     {id:3, title: 'Space Oddity',artist:'David Bowie',id_album: 3,lyrics:'lyrics 3',bpm:120, duration:180},
     {id:4, title: 'Let\'s Dance',artist:'David Bowie',id_album: 4,lyrics:'lyrics 4',bpm:120, duration:180},

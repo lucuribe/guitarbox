@@ -1,25 +1,25 @@
 <div class="main-container">
+    <ion-button (click)="resetSong()">Volver</ion-button>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title class="title-song ion-padding-bottom">{{song.title}}</ion-card-title>
+            <ion-row class="ion-justify-content-between">
+                <ion-card-subtitle class="artist-song">{{song.artist}}</ion-card-subtitle>
+                <ion-card-subtitle class="artist-song">BPM: {{song.bpm}}</ion-card-subtitle>
+            </ion-row>
+        </ion-card-header>
+    </ion-card>
+    <ion-card>
+        <div class="ion-padding">
+            <div class="song">
+                <div class="lyrics-font" [innerHTML]="song.lyrics"></div>
+            </div>
+        </div>
+    </ion-card>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title class="title-song ion-padding-bottom">{{song.title}}</ion-card-title>
-      <ion-row class="ion-justify-content-between">
-        <ion-card-subtitle class="artist-song">{{song.artist}}</ion-card-subtitle>
-        <ion-card-subtitle class="artist-song">BPM: {{song.bpm}}</ion-card-subtitle>
-      </ion-row>
-    </ion-card-header>
-  </ion-card>
-  <ion-card>
-    <div class="ion-padding">
-      <div class="song">
-      <div class="lyrics-font" [innerHTML]="song.lyrics"></div>
-    </div>
-    </div>
-  </ion-card>
-
-  <!-- <div class="song" [innerHTML]="song.lyrics"></div> -->
-  <!-- <app-song-list></app-song-list> -->
-  <!-- borra esto dsps -->
+    <!-- <div class="song" [innerHTML]="song.lyrics"></div> -->
+    <!-- <app-song-list></app-song-list> -->
+    <!-- borra esto dsps -->
 
 
 </div>

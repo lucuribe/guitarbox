@@ -4,12 +4,13 @@ import { Song } from 'src/app/interfaces/song';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
+import { SongDisplayerComponent } from '../song-displayer/song-displayer.component';
 @Component({
   selector: 'app-song-list',
   templateUrl: './song-list.component.html',
   styleUrls: ['./song-list.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule,],
+  imports: [IonicModule, CommonModule, FormsModule,SongDisplayerComponent],
 })
 export class SongListComponent  implements OnInit {
 

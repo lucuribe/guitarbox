@@ -1,29 +1,23 @@
-
-:host{
-  background-color: var(--pale-dogwood);
-  position: fixed;
-    top:0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 100  
+// :host{
+//   background-color: var(--pale-dogwood);
+//   position: fixed;
+//     top:0;
+//     left: 0;
+//     width: 100vw;
+//     height: 100vh;
+//     z-index: 100  
+// }
+.title-song {
+    --color: var(--bole);
 }
 
-.title-song{
-  --color: var(--bole);
-  
+.artist-song {
+    --color: var(--atomic-tangerine);
 }
 
-.artist-song{
-  --color: var(--atomic-tangerine);
+span {
+    color: var(--bole);
 }
-
-
-span{
-  color: var(--bole);
-}
-
-
 
 // div.song {
 // 	>p {
