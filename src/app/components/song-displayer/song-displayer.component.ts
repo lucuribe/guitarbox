@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Song } from 'src/app/interfaces/song';
 import { SongListComponent } from '../song-list/song-list.component';
-import { EMPTY } from 'rxjs';
+import { EMPTY, empty } from 'rxjs';
 import { SongsPage } from 'src/app/pages/songs/songs.page';
 
 
@@ -22,7 +22,7 @@ export class SongDisplayerComponent  implements OnInit {
 
   @Input()
   song!: Song;
-  router: any;
+  // router: any;
 
   ngOnInit() {
      this.loadScript('assets/jquery.js');
@@ -67,8 +67,9 @@ export class SongDisplayerComponent  implements OnInit {
   }
 
   resetSong(){
-    // window.location.reload();
-    this.router.navigate(['songs'])
+    // this.song = null!;
+    window.location.reload();
+    // this.router.navigate(['songs'])
   }
 
 }

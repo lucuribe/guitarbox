@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SONGS } from 'src/app/mock-songs';
 import { Song } from 'src/app/interfaces/song';
 import { CommonModule } from '@angular/common';
@@ -12,7 +12,7 @@ import { SongDisplayerComponent } from '../song-displayer/song-displayer.compone
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule,SongDisplayerComponent],
 })
-export class SongListComponent  implements OnInit {
+export class SongListComponent  implements OnInit, OnDestroy {
 
   songs = SONGS;
   selectedSong?: Song;
@@ -27,4 +27,7 @@ export class SongListComponent  implements OnInit {
 
   ngOnInit() {}
 
+  ngOnDestroy(): void {
+      console.log("hola");
+  }
 }
