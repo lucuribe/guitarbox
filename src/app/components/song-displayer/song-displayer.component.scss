@@ -1,12 +1,4 @@
-// :host{
-//   background-color: var(--pale-dogwood);
-//   position: fixed;
-//     top:0;
-//     left: 0;
-//     width: 100vw;
-//     height: 100vh;
-//     z-index: 100  
-// }
+
 .title-song {
     --color: var(--bole);
 }
@@ -18,27 +10,18 @@
 span {
     color: var(--bole);
 }
-
-// div.song {
-// 	>p {
-// 		line-height: 2.5;
-//     --color: var(--bole);
-// 		margin: 15px 0px 15px 0px;
-// 	}
-// 	div.transposition {
-// 		margin-bottom: 20px;
-// 	}
-// }
-// span.chord {
-// 	position: absolute;
-// 	line-height: 0;
-// 	font-weight: bold;
-// }
-// span.chord-inline {
-// 	font-weight: bold;
-// }
-// div.transposition {
-// 	a.transposition {
-// 		margin: 5px;
-// 	}
-// }
+.card-lyrics {
+    height: 380px;
+    overflow: hidden;
+    overflow-y: auto;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+//   ion-list {
+//     overflow: hidden;
+//     overflow-y: auto;
+//     ::-webkit-scrollbar {
+//       display: none;
+//     }
+//   }

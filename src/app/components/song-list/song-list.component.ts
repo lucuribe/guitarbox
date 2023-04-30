@@ -30,4 +30,10 @@ export class SongListComponent  implements OnInit, OnDestroy {
   ngOnDestroy(): void {
       console.log("hola");
   }
+
+  resetSong(){
+    this.selectedSong = null!;
+    // window.location.reload();
+    // this.router.navigate(['songs'])
+  }
 }
