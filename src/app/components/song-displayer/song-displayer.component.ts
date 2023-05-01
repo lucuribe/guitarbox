@@ -63,10 +63,10 @@ export class SongDisplayerComponent  implements OnInit {
     head.insertBefore(link, style);
   }
 
-  resetSong(){
-    // this.song = null!;
-    window.location.reload();
-    // this.router.navigate(['songs'])
-  }
+  // resetSong(){
+  //   // this.song = null!;
+  //   window.location.reload();
+  //   // this.router.navigate(['songs'])
+  // }
 
 }

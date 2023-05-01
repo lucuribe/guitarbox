@@ -36,3 +36,13 @@ ion-list {
 ion-searchbar{
   --border-radius:10px
 }
+
+ion-button{
+  --background:  var(--atomic-tangerine);
+}
+
+.back-button{
+  position: relative;
+  left: 7px;
+  top: 4px;
+}
