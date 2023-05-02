@@ -21,11 +21,10 @@ export class SongListComponent  implements OnInit, OnDestroy {
     this.selectedSong = song;
   }
 
-  
-
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   ngOnDestroy(): void {
       console.log("hola");
@@ -33,7 +32,5 @@ export class SongListComponent  implements OnInit, OnDestroy {
 
   resetSong(){
     this.selectedSong = null!;
-    // window.location.reload();
-    // this.router.navigate(['songs'])
   }
 }

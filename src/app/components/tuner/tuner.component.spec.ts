@@ -9,8 +9,8 @@ describe('TunerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TunerComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [  ],
+      imports: [IonicModule.forRoot(),TunerComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(TunerComponent);
