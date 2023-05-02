@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {AlertController, IonicModule} from '@ionic/angular';
-import { TunerComponent } from 'src/app/components/tuner/tuner.component';
+// import { TunerComponent } from 'src/app/components/tuner/tuner.component';
 import {MatIconModule} from "@angular/material/icon";
 
 declare const p5: any;
@@ -13,7 +13,7 @@ declare const ml5: any;
   templateUrl: './tuner.page.html',
   styleUrls: ['./tuner.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule,TunerComponent, MatIconModule]
+  imports: [IonicModule, CommonModule, FormsModule, MatIconModule]
 })
 export class TunerPage implements OnInit, AfterViewInit {
   // STATE
