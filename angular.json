@@ -43,7 +43,8 @@
             ],
             "scripts": [
               "src/assets/html-chords.js",
-              "src/assets/jquery.js"
+              "src/assets/jquery.js",
+              "src/assets/js/jquery-3.6.4.min.js"
             ]
           },
           "configurations": {

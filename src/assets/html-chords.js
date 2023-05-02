@@ -1,8 +1,8 @@
 /* HTML Chords (https://github.com/ostankin/html-chords) - 02.04.2016 */
 function guitar_chord_writer() {
 	this.notes =     ["C",  "C#", "Db", "D",  "D#", "Eb", "E",  "F",  "F#", "Gb", "G",  "G#", "Ab", "A",  "A#", "Hb", "H",  "Bb", "B"];
-	this.upnotes =   ["C#", "D",  "D",  "D#", "E",  "E",  "F",  "F#", "G",  "G",  "G#", "A",  "A",  "Hb", "H",  "H",  "C",  "H",  "H"];
-	this.downnotes = ["H",  "C",  "C",  "Db", "D",  "D",  "Eb", "E",  "F",  "F",  "Gb", "G",  "G",  "Ab", "A",  "A",  "Hb", "A",  "A"];
+	// this.upnotes =   ["C#", "D",  "D",  "D#", "E",  "E",  "F",  "F#", "G",  "G",  "G#", "A",  "A",  "Hb", "H",  "H",  "C",  "H",  "H"];
+	// this.downnotes = ["H",  "C",  "C",  "Db", "D",  "D",  "Eb", "E",  "F",  "F",  "Gb", "G",  "G",  "Ab", "A",  "A",  "Hb", "A",  "A"];
 	
 	this.transpositionHandler = function(oDiv, t_up) {
 		var oSong = oDiv.parent().parent("div.song");
@@ -67,11 +67,11 @@ function guitar_chord_writer() {
 			$(this).html(s);
 		});
 		
-		$("<span>" + transposition_text + ": </span>").appendTo($(song_selector + " div"));
-		$("<a>").attr("href","#").addClass(tclass).text(up).appendTo($(song_selector + " div"));
-		$("<a>").attr("href","#").addClass(tclass).text(down).appendTo($(song_selector + " div"));
-		$(song_selector + " div a." + tclass + ":contains(" + up + ")").click(function(){oThis.transpositionHandler($(this),true); return false;});
-		$(song_selector + " div a." + tclass + ":contains(" + down + ")").click(function(){oThis.transpositionHandler($(this),false); return false;});
+		// $("<span>" + transposition_text + ": </span>").appendTo($(song_selector + " div"));
+		// $("<a>").attr("href","#").addClass(tclass).text(up).appendTo($(song_selector + " div"));
+		// $("<a>").attr("href","#").addClass(tclass).text(down).appendTo($(song_selector + " div"));
+		// $(song_selector + " div a." + tclass + ":contains(" + up + ")").click(function(){oThis.transpositionHandler($(this),true); return false;});
+		// $(song_selector + " div a." + tclass + ":contains(" + down + ")").click(function(){oThis.transpositionHandler($(this),false); return false;});
 
 	
 		$(song_selector).each(function () {

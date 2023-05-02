@@ -1,5 +1,4 @@
 <div class="main-container">
-    <ion-button (click)="resetSong()">Volver</ion-button>
     <ion-card>
         <ion-card-header>
             <ion-card-title class="title-song ion-padding-bottom">{{song.title}}</ion-card-title>
@@ -9,17 +8,12 @@
             </ion-row>
         </ion-card-header>
     </ion-card>
-    <ion-card>
+    <ion-card class="card-lyrics">
         <div class="ion-padding">
             <div class="song">
+                <!-- TODO: arreglar estilo de letras y acordes -->
                 <div class="lyrics-font" [innerHTML]="song.lyrics"></div>
             </div>
         </div>
     </ion-card>
-
-    <!-- <div class="song" [innerHTML]="song.lyrics"></div> -->
-    <!-- <app-song-list></app-song-list> -->
-    <!-- borra esto dsps -->
-
-
 </div>

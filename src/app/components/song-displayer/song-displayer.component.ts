@@ -3,10 +3,6 @@ import { Component, Input, OnInit} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Song } from 'src/app/interfaces/song';
-import { SongListComponent } from '../song-list/song-list.component';
-import { EMPTY } from 'rxjs';
-import { SongsPage } from 'src/app/pages/songs/songs.page';
-
 
 
 @Component({
@@ -15,19 +11,16 @@ import { SongsPage } from 'src/app/pages/songs/songs.page';
   styleUrls: ['./song-displayer.component.scss'],
 
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, SongListComponent]
+  imports: [IonicModule, CommonModule, FormsModule]
 
 })
-export class SongDisplayerComponent  implements OnInit {
+export class SongDisplayerComponent  implements OnInit{
 
   @Input()
   song!: Song;
-  router: any;
 
   ngOnInit() {
-     this.loadScript('assets/jquery.js');
-     this.loadScript('assets/html-chords.js');
-     this.loadCSS('assets/html-chords.css');
+    this.loadScript('assets/html-chords.js');
   }
 
   constructor() { 
@@ -41,34 +34,29 @@ export class SongDisplayerComponent  implements OnInit {
     script.async = false;
     script.defer = true;
     body.appendChild(script);
+    console.log(script);
   }
 
-  loadCSS(url: string) {
-    // Create link
-    let link = document.createElement('link');
-    link.href = url;
-    link.rel = 'stylesheet';
-    link.type = 'text/css';
+  // loadCSS(url: string) {
+  //   // Create link
+  //   let link = document.createElement('link');
+  //   link.href = url;
+  //   link.rel = 'stylesheet';
+  //   link.type = 'text/css';
     
-    let head = document.getElementsByTagName('head')[0];
-    let links = head.getElementsByTagName('link');
-    let style = head.getElementsByTagName('style')[0];
+  //   let head = document.getElementsByTagName('head')[0];
+  //   let links = head.getElementsByTagName('link');
+  //   let style = head.getElementsByTagName('style')[0];
     
-    // Check if the same style sheet has been loaded already.
-    let isLoaded = false;  
-    for (var i = 0; i < links.length; i++) {
-      var node = links[i];
-      if (node.href.indexOf(link.href) > -1) {
-        isLoaded = true;
-      }
-    }
-    if (isLoaded) return;
-    head.insertBefore(link, style);
-  }
-
-  resetSong(){
-    // window.location.reload();
-    this.router.navigate(['songs'])
-  }
-
-}
+  //   // Check if the same style sheet has been loaded already.
+  //   let isLoaded = false;  
+  //   for (var i = 0; i < links.length; i++) {
+  //     var node = links[i];
+  //     if (node.href.indexOf(link.href) > -1) {
+  //       isLoaded = true;
+  //     }
+  //   }
+  //   if (isLoaded) return;
+  //   head.insertBefore(link, style);
+  // }
+ }
