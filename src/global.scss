@@ -24,3 +24,12 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+/* Custom CSS */
+button.alert-button.custom-alert-button {
+  color: var(--bole);
+}
+
+input.alert-input.custom-alert-input:focus {
+  border-bottom-color: var(--atomic-tangerine);
+}

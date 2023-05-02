@@ -1,7 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import {OnInit, AfterViewInit, Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, AlertController } from '@ionic/angular';
+
+declare const p5: any;
+declare const ml5: any;
 
 @Component({
   selector: 'app-tuner-component',
@@ -10,10 +13,10 @@ import { IonicModule } from '@ionic/angular';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class TunerComponent  implements OnInit {
+export class TunerComponent implements OnInit {
+  sketch: any;
+  constructor(private alertCtrl: AlertController) { }
 
-  constructor() { }
-
-  ngOnInit() {}
-
+  ngOnInit() {
+  }
 }

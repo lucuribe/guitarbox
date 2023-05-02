@@ -3,15 +3,10 @@
     <ion-grid>
       <ion-row class="ion-justify-content-center">
         <ion-col class="ion-no-padding" size="auto">
-          <ion-button id="open-picker" class="bpm-btn ion-no-margin" shape="round" fill="clear">
+          <ion-button #bpmPicker (click)="showBpmInput()" class="bpm-btn ion-no-margin" shape="round" fill="clear">
             <ion-icon slot="icon-only" name="heart"></ion-icon>
             <ion-text>{{bpm}}</ion-text>
           </ion-button>
-          <ion-picker
-            trigger="open-picker"
-            [columns]="pickerColumns"
-            [buttons]="pickerButtons"
-          ></ion-picker>
         </ion-col>
         <ion-col class="ion-no-padding" size="12">
           <ion-row class="ion-justify-content-center ion-align-items-center">

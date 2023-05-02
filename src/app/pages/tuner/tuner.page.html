@@ -1,1 +1,43 @@
-  <app-tuner-component></app-tuner-component>
+<!--app-tuner-component></app-tuner-component-->
+
+<ion-content [fullscreen]="true">
+  <div class="main-container full-height">
+    <div class="tuner-container stack">
+      <ion-text>{{ advice }}</ion-text>
+      <div class="circle-container">
+        <div class="indicator"></div>
+        <div class="circle">
+          <span>{{ note }}</span>
+        </div>
+      </div>
+      <ion-button (click)="startStop()" class="icon-btn" shape="round">
+        <div *ngIf="hasStarted; then stopBtn else startBtn"></div>
+        <ng-template #stopBtn>
+          <mat-icon slot="icon-only" aria-hidden="false" aria-label="Stop icon"
+                    fontSet="material-symbols-rounded">mic
+          </mat-icon>
+        </ng-template>
+        <ng-template #startBtn>
+          <mat-icon slot="icon-only" aria-hidden="false" aria-label="Play icon"
+                    fontSet="material-symbols-rounded">mic_off
+          </mat-icon>
+        </ng-template>
+      </ion-button>
+    </div>
+    <div class="stack full-height">
+      <ion-grid class="ion-no-padding full-height">
+        <ion-row class="ion-justify-content-evenly full-height">
+          <ion-col size="auto">
+            <div class="chord full-height"></div>
+          </ion-col>
+          <ion-col size="auto">
+            <div class="chord full-height"></div>
+          </ion-col>
+          <ion-col size="auto">
+            <div class="chord full-height"></div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
+</ion-content>

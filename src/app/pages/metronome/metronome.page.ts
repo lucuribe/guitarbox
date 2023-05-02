@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import {IonicModule} from '@ionic/angular';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {
+  AlertController,
+  GestureController,
+  GestureDetail,
+  IonicModule, ToastController
+} from '@ionic/angular';
 import {MatIconModule} from "@angular/material/icon";
 import {Bar} from "../../interfaces/bar";
 import {arrayFade, fade} from "../../animations";
@@ -14,27 +19,9 @@ import {arrayFade, fade} from "../../animations";
   imports: [IonicModule, CommonModule, FormsModule, MatIconModule],
   animations: [arrayFade, fade]
 })
-export class MetronomePage implements OnInit {
-  //@ViewChild("barsEl", { read: ElementRef }) barsEl!: ElementRef;
+export class MetronomePage implements OnInit, AfterViewInit {
+  @ViewChild("bpmPicker", {read: ElementRef}) bpmPicker!: ElementRef;
 
-  pickerOptions: {text: string, value: any}[] = [];
-  pickerColumns = [{
-    name: 'bpmPicker',
-    options: this.pickerOptions
-  }];
-  pickerButtons = [
-    {
-      text: 'Cancel',
-      role: 'cancel'
-    },
-    {
-      text: 'Confirm',
-      handler: (value: any) => {
-        this.bpm = value.bpmPicker.value;
-        this.changesBeenMade = true;
-      }
-    }
-  ];
   audioContext: any;
   intervalID: any;
   defaultBars: Bar[] = [
@@ -44,8 +31,9 @@ export class MetronomePage implements OnInit {
     {id: 3, accent: false, current: false}
   ];
   bars: Bar[] = JSON.parse(JSON.stringify(this.defaultBars));
-  defaultBpm = 120;
-  bpm = this.defaultBpm;
+  minBpm = 40;
+  maxBpm = 220;
+  bpm = 120;
   lookahead = 25; // How frequently to call scheduling function (in milliseconds)
   currentQuarterNote = 0;
   scheduleAheadTime = 0.1; // How far ahead to schedule audio (sec)
@@ -53,14 +41,91 @@ export class MetronomePage implements OnInit {
   isRunning = false;
   changesBeenMade = false;
 
-  constructor() {
-    //initialize bpm picker
-    for (let i = 60; i <= 180; i++) {
-      this.pickerOptions.push({text: i.toString(), value: i})
-    }
+  constructor(private gestureCtrl: GestureController, private alertCtrl: AlertController, private toastCtrl: ToastController) {
   }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit() {
+    const swipeBpmGesture = this.gestureCtrl.create({
+      el: this.bpmPicker.nativeElement,
+      gestureName: 'bpmPickerGesture',
+      direction: 'x',
+      onMove: (detail) => {
+        this.onBpmMove(detail);
+      }
+    }, true);
+
+    swipeBpmGesture.enable();
+  }
+
+  async showBpmInput() {
+    const alert = await this.alertCtrl.create({
+      header: "Enter BPM",
+      inputs: [
+        {
+          cssClass: "custom-alert-input",
+          type: 'number',
+          name: 'bpm',
+          placeholder: 'BPM',
+          min: this.minBpm,
+          max: this.maxBpm,
+          value: this.bpm
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          cssClass: 'custom-alert-button',
+          role: 'cancel',
+        },
+        {
+          text: 'OK',
+          cssClass: 'custom-alert-button',
+          handler: data => {
+            if (data.bpm && data.bpm >= this.minBpm && data.bpm <= this.maxBpm) {
+              this.bpm = data.bpm;
+              return true;
+            } else {
+              this.presentToast('bottom', 'BPM is out of range (' + this.minBpm + '-' + this.maxBpm + ')');
+              return false;
+            }
+          }
+        }
+      ],
+    });
+
+    await alert.present();
+  }
+
+  async presentToast(position: 'top' | 'middle' | 'bottom', message: string) {
+    const toast = await this.toastCtrl.create({
+      message: message,
+      duration: 1500,
+      position: position
+    });
+
+    await toast.present();
+  }
+
+  onBpmMove(detail: GestureDetail) {
+    const velocityX = detail.velocityX;
+    const deltaX = detail.deltaX
+
+    if (deltaX % 5 === 0) {
+      if (velocityX < 0) {
+        // swipe left
+        if (this.bpm < this.maxBpm) {
+          this.bpm++;
+        }
+      } else {
+        // swipe right
+        if (this.bpm > this.minBpm) {
+          this.bpm--;
+        }
+      }
+    }
   }
 
   addBar() {
@@ -82,7 +147,10 @@ export class MetronomePage implements OnInit {
   resetBars() {
     let barLength = this.bars.length;
     const defaultBarLength = this.defaultBars.length;
-    for (let i = 0; i < barLength; i++) {
+    if (barLength > defaultBarLength) {
+      this.bars.length = this.defaultBars.length;
+    }
+    for (let i = 0; i < defaultBarLength; i++) {
       let defaultBar = this.defaultBars[i];
       if (defaultBar) {
         if (JSON.stringify(this.bars[i]) !== JSON.stringify(defaultBar)) {
@@ -92,16 +160,9 @@ export class MetronomePage implements OnInit {
             this.bars[i].accent = defaultBar.accent;
           }
         }
-      } else {
-        this.bars.pop();
       }
     }
-    /*while (barLength > defaultBarLength) {
-      this.bars.pop();
-      barLength = this.bars.length;
-    }*/
     this.changesBeenMade = false;
-    this.bpm = 120;
   }
 
   enableDisableAccent($event: any) {
@@ -118,10 +179,6 @@ export class MetronomePage implements OnInit {
     if (!this.changesBeenMade) {
       this.changesBeenMade = true;
     }
-  }
-
-  hola() {
-    console.log("hola");
   }
 
   scheduleNote(time: number) {
@@ -152,7 +209,7 @@ export class MetronomePage implements OnInit {
 
   scheduler() {
     // while there are notes that will need to play before the next interval, schedule them and advance the pointer.
-    while (this.nextNoteTime < this.audioContext.currentTime + this.scheduleAheadTime ) {
+    while (this.nextNoteTime < this.audioContext.currentTime + this.scheduleAheadTime) {
       this.scheduleNote(this.nextNoteTime);
 
       // Advance current note and time by a quarter note (crotchet if you're posh)
@@ -188,12 +245,10 @@ export class MetronomePage implements OnInit {
     clearInterval(this.intervalID);
   }
 
-  startStop()
-  {
+  startStop() {
     if (this.isRunning) {
       this.stop();
-    }
-    else {
+    } else {
       this.start();
     }
   }
