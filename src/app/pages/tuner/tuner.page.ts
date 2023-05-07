@@ -2,7 +2,6 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {AlertController, IonicModule} from '@ionic/angular';
-// import { TunerComponent } from 'src/app/components/tuner/tuner.component';
 import {MatIconModule} from "@angular/material/icon";
 
 declare const p5: any;
@@ -18,8 +17,10 @@ declare const ml5: any;
 export class TunerPage implements OnInit, AfterViewInit {
   // STATE
   hasStarted = false;
-  hasEverStarted = false;
   pitchReachedDelay = false;
+  reached = false;
+  defaultRotation = 'rotate(0deg)';
+  rotation = this.defaultRotation;
 
   // DISPLAY
   note = '';
@@ -28,12 +29,10 @@ export class TunerPage implements OnInit, AfterViewInit {
 
   // STATS
   detuneDifference = 4;
-  tunedQueue = 0;
   elapsedTimeRightPitch: any;
 
   // P5
   p5: any;
-  pitch: any;
 
   // NOTES FREQUENCY
   guitarNotes = [
@@ -62,12 +61,16 @@ export class TunerPage implements OnInit, AfterViewInit {
   }
 
   startStop() {
-    this.hasStarted = !this.hasStarted;
-    if (!this.hasEverStarted) {
-      this.hasEverStarted = true;
-      new p5((tuner: any) => this.handleInput(tuner, this));
+    if (this.hasStarted) {
+      this.p5.remove();
+      this.hasStarted = false
+      this.advice = this.defaultAdvice;
+      this.reached = false;
+      this.rotation = this.defaultRotation;
+      this.note = '';
     } else {
-      this.handleInput(this.p5, this);
+      this.hasStarted = true;
+      new p5((tuner: any) => this.handleInput(tuner, this));
     }
   }
 
@@ -76,29 +79,31 @@ export class TunerPage implements OnInit, AfterViewInit {
       return;
     }
     const endTime = performance.now();
-    console.log('hi');
     if (Math.round((endTime - this.elapsedTimeRightPitch) / 1000) > 1 && !this.pitchReachedDelay) {
       this.pitchReachedDelay = true;
-      this.advice = 'OK!';
       //this.pitchReached.play();
       setTimeout(() => {
         this.pitchReachedDelay = false;
         this.elapsedTimeRightPitch = null;
-        this.advice = this.defaultAdvice;
       }, 1000);
     }
   }
 
   renderDisplay(tuner: any, toneDiff: number, noteDetected: any) {
+    this.reached = false;
     if (tuner.abs(toneDiff) < this.detuneDifference) {
+      this.rotation = 'rotate(90deg)';
       this.advice = 'Hold there';
+      this.reached = true;
       if (this.elapsedTimeRightPitch === null) {
         this.elapsedTimeRightPitch = performance.now();
       }
     } else if (toneDiff > this.detuneDifference) {
+      this.rotation = 'rotate(180deg)';
       this.advice = 'Tune down';
       this.elapsedTimeRightPitch = null;
     } else if (toneDiff < -this.detuneDifference ) {
+      this.rotation = 'rotate(0deg)';
       this.advice = 'Tune up';
       this.elapsedTimeRightPitch = null;
     }
@@ -117,6 +122,7 @@ export class TunerPage implements OnInit, AfterViewInit {
       const mic = new p5.AudioIn();
       let pitch: any;
       mic.start(loadModel);
+      tuner.noCanvas();
 
       function loadModel() {
         pitch = ml5.pitchDetection(modelUrl, audioContext, mic.stream, modelLoaded);

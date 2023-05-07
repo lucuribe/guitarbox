@@ -4,12 +4,24 @@
   <div class="main-container full-height">
     <div class="tuner-container stack">
       <ion-text>{{ advice }}</ion-text>
-      <div class="circle-container">
-        <div class="indicator"></div>
+      <div *ngIf="reached; else circleContainerEl" class="circle-container">
+        <div [ngStyle]="{'transform': rotation}" class="indicator">
+          <div class="dot reached"></div>
+        </div>
         <div class="circle">
-          <span>{{ note }}</span>
+          <span class="reached">{{ note }}</span>
         </div>
       </div>
+      <ng-template #circleContainerEl>
+        <div class="circle-container">
+          <div [ngStyle]="{'transform': rotation}" class="indicator">
+            <div class="dot"></div>
+          </div>
+          <div class="circle">
+            <span>{{ note }}</span>
+          </div>
+        </div>
+      </ng-template>
       <ion-button (click)="startStop()" class="icon-btn" shape="round">
         <div *ngIf="hasStarted; then stopBtn else startBtn"></div>
         <ng-template #stopBtn>

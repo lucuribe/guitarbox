@@ -16,24 +16,30 @@
 
 .indicator {
   grid-area: 1 / 1;
-  width: 12vw;
-  aspect-ratio: 1 / 1;
+  width: 100%;
+  display: flex;
+  place-self: center;
   z-index: 2;
-  border: 4px solid;
-  border-radius: 100%;
-  color: var(--bole);
+  color: var(--atomic-tangerine);
+
+  .dot {
+    border: 4px solid;
+    border-radius: 100%;
+    width: 12vw;
+    aspect-ratio: 1 / 1;
+  }
 }
 
 .tuner-container {
   display: flex;
   flex-direction: column;
   z-index: 1;
+  color: var(--bole);
 
   ion-text {
     text-align: center;
     font-weight: 500;
     font-size: 16px;
-    color: var(--bole);
   }
 }
 
@@ -53,6 +59,7 @@
   border: 4px solid var(--alice-blue);
   border-radius: 100%;
   margin: 6vw;
+  color: var(--atomic-tangerine);
 
   span {
     font-weight: 600;
@@ -75,4 +82,8 @@
     font-variation-settings:
       'FILL' 1
   }
+}
+
+.reached {
+  color: var(--caribbean-current);
 }
