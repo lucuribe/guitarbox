@@ -8,10 +8,10 @@ const mongoose = require('mongoose');
 
 const indexRouter = require('./routes/index');
 const songsRouter = require('./routes/songs');
+const artistsRouter = require('./routes/artists');
 
 const app = express();
-mongoose.connect("mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASSWORD +
-  "@cluster0.j8z3wlp.mongodb.net/" + process.env.DB_NAME + "?retryWrites=true&w=majority")
+mongoose.connect(process.env.DB_URI)
   .then(() => {
     debug("Connected to database");
   })
@@ -26,5 +26,6 @@ app.use(cookieParser());
 
 app.use('/', indexRouter);
 app.use('/songs', songsRouter);
+app.use('/artists', artistsRouter);
 
 module.exports = app;
