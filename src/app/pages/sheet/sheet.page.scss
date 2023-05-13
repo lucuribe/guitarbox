@@ -1,0 +1,23 @@
+.title-song {
+  --color: var(--bole);
+}
+
+.artist-song {
+  --color: var(--atomic-tangerine);
+}
+
+span {
+  color: var(--bole);
+}
+.card-lyrics {
+  height: 380px;
+  overflow: hidden;
+  overflow-y: auto;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.song{
+  line-height: 230%;
+}

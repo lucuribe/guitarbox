@@ -1,6 +1,4 @@
 import { Routes } from '@angular/router';
-import { SongDisplayerComponent } from './components/song-displayer/song-displayer.component';
-import { SongListComponent } from './components/song-list/song-list.component';
 
 export const routes: Routes = [
   {
@@ -33,7 +31,10 @@ export const routes: Routes = [
             path: 'songs',
             loadComponent: () => import('./pages/songs/songs.page').then( m => m.SongsPage)
           },
-          
+          {
+            path: 'songs/:id',
+            loadComponent: () => import('./pages/sheet/sheet.page').then( m => m.SheetPage)
+          },
         ]
       }
     ]
@@ -50,6 +51,8 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () => import('./pages/login/login.page').then( m => m.LoginPage)
   },
-  // { path: 'song', component: SongListComponent },
-  // { path: 'song/:id', component: SongDisplayerComponent}
+  {
+    path: 'sheet',
+    loadComponent: () => import('./pages/sheet/sheet.page').then( m => m.SheetPage)
+  }
 ];
