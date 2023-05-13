@@ -1,4 +1,5 @@
 <ion-content [fullscreen]="true">
+  <div class="main-container">
   <ion-card>
     <ion-card-header>
       <ion-card-title class="title-song ion-padding-bottom">{{song.title}}</ion-card-title>
@@ -8,7 +9,7 @@
       </ion-row>
     </ion-card-header>
   </ion-card>
-  <ion-card class="card-lyrics">
+  <ion-card class="card-lyrics" (click)="autoScroll(50)">
     <div class="ion-padding">
       <div class="song">
         <!-- TODO: arreglar estilo de letras y acordes -->
@@ -16,4 +17,5 @@
       </div>
     </div>
   </ion-card>
+</div>
 </ion-content>

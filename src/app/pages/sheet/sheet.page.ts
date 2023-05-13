@@ -43,4 +43,45 @@ export class SheetPage implements OnInit {
   getSheet() {
 
   }
+
+  scrollSpeed = 50;
+  autoScrollActive = false;
+  autoScrollInterval: any;
+  
+
+
+  autoScroll(scrollSpeed: number) {
+    console.log('Toggle AutoScroll');
+    const card = document.querySelector('.card-lyrics') as HTMLElement;
+    if (card) {
+      console.log('card:', card);
+      card.scrollTop = 0;
+      const scrollHeight = card.scrollHeight - card.clientHeight;
+      const scrollStep = Math.PI / (scrollHeight / 2);
+      let count = 0;
+      if (this.autoScrollActive) { // si el autoscroll está activo, detenerlo
+        clearInterval(this.autoScrollInterval);
+        this.autoScrollActive = false;
+        console.log('AutoScroll detenido');
+      } else { // si el autoscroll no está activo, iniciarlo
+        this.autoScrollActive = true;
+        console.log('AutoScroll iniciado');
+        console.log('autoScrollActive:', this.autoScrollActive);
+        this.autoScrollInterval = setInterval(() => {
+          if (count < scrollHeight && this.autoScrollActive) {
+            card.scrollTop = count;
+            count = count + scrollStep * scrollSpeed;
+          } else {
+            clearInterval(this.autoScrollInterval);
+            if (count >= scrollHeight) {
+              this.autoScrollActive = false;
+              console.log('AutoScroll completado');
+            }
+          }
+        }, 15);
+      }
+    }
+  }
+
+
 }

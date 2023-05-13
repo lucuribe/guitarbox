@@ -1,3 +1,7 @@
+.main-container {
+  background: var(--pale-dogwood);
+}
+
 .title-song {
   --color: var(--bole);
 }
@@ -9,13 +13,14 @@
 span {
   color: var(--bole);
 }
-.card-lyrics {
-  height: 380px;
-  overflow: hidden;
-  overflow-y: auto;
-  ::-webkit-scrollbar {
-    display: none;
-  }
+
+$altura-encabezado: 145px;
+$altura-pie-pagina: 100px;
+
+.card-lyrics { 
+  height: calc(100vh - #{$altura-encabezado} - #{$altura-pie-pagina});
+  overflow: auto;
+ 
 }
 
 .song{

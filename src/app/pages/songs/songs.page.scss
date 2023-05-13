@@ -1,3 +1,7 @@
+.main-container {
+  background: var(--pale-dogwood);
+}
+
 ion-card-content {
   max-height: calc(100% - #{50px});
   position: relative;
@@ -25,8 +29,8 @@ ion-list {
 .list-content{
   max-width: 600px;
   overflow-y: auto;
-  max-height: 600px;
-  padding-bottom: 50px;
+  // max-height: 600px;
+  // padding-bottom: 50px;
 }
 
 .label-small {
