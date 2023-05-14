@@ -2,7 +2,10 @@
   <div class="main-container">
   <ion-card>
     <ion-card-header>
-      <ion-card-title class="title-song ion-padding-bottom">{{song.title}}</ion-card-title>
+      <ion-row class="ion-justify-content-between">
+        <ion-card-title  class="title-song ion-padding-bottom">{{song.title}}</ion-card-title>
+        <ion-button size="small" id="open-custom-dialog" class="modal-button">Acordes</ion-button>
+      </ion-row>
       <ion-row class="ion-justify-content-between">
         <ion-card-subtitle class="artist-song">{{song.artist}}</ion-card-subtitle>
         <ion-card-subtitle class="artist-song">BPM: {{song.bpm}}</ion-card-subtitle>
@@ -18,4 +21,15 @@
     </div>
   </ion-card>
 </div>
+
+<!-- modal -->
+
+<ion-modal id="example-modal" #modal trigger="open-custom-dialog">
+  <ng-template>
+    <div class="wrapper">
+      <h1>Dialog header</h1>
+      <p>hello world</p>
+    </div>
+  </ng-template>
+</ion-modal>
 </ion-content>
