@@ -1,7 +1,9 @@
-.main-container {
-  background: var(--pale-dogwood);
+// .main-container {
+//   background: var(--pale-dogwood);
+// }
+ion-content{
+  --background: var(--pale-dogwood);
 }
-
 ion-card-content {
   max-height: calc(100% - #{50px});
   position: relative;

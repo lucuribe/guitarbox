@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import {SONGS} from "../../mock-songs";
+// import {SONGS} from "../../mock-songs";
 import {Song} from "../../interfaces/song";
 import {NavigationExtras, Router} from "@angular/router";
 
@@ -14,7 +14,7 @@ import {NavigationExtras, Router} from "@angular/router";
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class SongsPage implements OnInit {
-  songs = SONGS;
+  // songs = SONGS;
   selectedSong?: Song;
 
   constructor(private router: Router) { }
