@@ -13,9 +13,8 @@
 export interface Song {
     id: number;
     title: string;
-    artist: string;
     bpm: number;
     // duration: number;
-    album: Album;
+    album_id: string;
     // lyrics: string;
   }
