@@ -1,0 +1,35 @@
+<ion-content [fullscreen]="true">
+  <div class="main-container">
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="ion-justify-content-between">
+        <ion-card-title  class="title-song ion-padding-bottom">{{song.title}}</ion-card-title>
+        <ion-button size="small" id="open-custom-dialog" class="modal-button">Acordes</ion-button>
+      </ion-row>
+      <ion-row class="ion-justify-content-between">
+        <ion-card-subtitle class="artist-song">{{song.album_id}}</ion-card-subtitle>
+        <ion-card-subtitle class="artist-song">BPM: {{song.bpm}}</ion-card-subtitle>
+      </ion-row>
+    </ion-card-header>
+  </ion-card>
+  <ion-card class="card-lyrics" (click)="autoScroll(50)">
+    <div class="ion-padding">
+      <div class="song">
+        <!-- TODO: arreglar estilo de letras y acordes -->
+        <!-- <div class="lyrics-font" [innerHTML]="song.lyrics"></div> -->
+      </div>
+    </div>
+  </ion-card>
+</div>
+
+<!-- modal -->
+
+<ion-modal id="example-modal" #modal trigger="open-custom-dialog">
+  <ng-template>
+    <div class="wrapper">
+      <h1>Dialog header</h1>
+      <p>hello world</p>
+    </div>
+  </ng-template>
+</ion-modal>
+</ion-content>

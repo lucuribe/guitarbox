@@ -1,1 +1,30 @@
-<app-song-list></app-song-list>
+<ion-content [fullscreen]="true">
+  <div class="main-container">
+    <div class="list-content">
+      <div class="pt-5">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title class="ion-text-center">Lista de canciones</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </div>
+      <ion-searchbar show-clear-button="focus" placeholder="Buscar"></ion-searchbar>
+      <!-- comentado por mientras se hace la conexion de bbdd -->
+      <ion-card *ngFor="let song of songs">
+        <ion-card-content>
+          <ion-card-header>
+            <ion-card-title>{{song.title}}</ion-card-title>
+          </ion-card-header>
+          <ion-row>
+            <ion-col>
+              <p>{{song.album_id}}</p>
+            </ion-col>
+            <ion-button color="dark" fill="clear" type="button" (click)="navigate(song)">
+              <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
+            </ion-button>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>
