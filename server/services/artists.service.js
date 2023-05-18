@@ -1,17 +1,15 @@
 const artistModel = require('../models/artist');
-const debug = require('debug')('gb:artists');
 
 const getArtists = (req, res) => {
   artistModel.find()
     .then((documents) => {
-      debug(documents);
       res.status(200).json({
         message: 'Artists fetched successfully',
         songs: documents
       });
     })
     .catch(err => {
-      debug(err);
+      console.error(err);
       res.status(400).json({
         message: "Couldn't fetch artists",
         error: err.message
@@ -22,14 +20,13 @@ const getArtists = (req, res) => {
 const getArtist = (req, res) => {
   artistModel.findOne({_id: req.params.id})
     .then((documents) => {
-      debug(documents);
       res.status(200).json({
         message: 'Artist fetched successfully',
         songs: documents
       });
     })
     .catch(err => {
-      debug(err);
+      console.error(err);
       res.status(400).json({
         message: "Couldn't fetch artist",
         error: err.message
@@ -48,7 +45,7 @@ const addArtist = (req, res) => {
       });
     })
     .catch(err => {
-      debug(err);
+      console.error(err);
       res.status(400).json({
         message: "Couldn't add artist",
         error: err.message
@@ -59,7 +56,6 @@ const addArtist = (req, res) => {
 const updateArtist = (req, res) => {
   artistModel.updateOne({_id: req.params.id}, req.body)
     .then(result => {
-      debug(result);
       res.status(200).json({
         message: "Artist updated successfully"
       });
