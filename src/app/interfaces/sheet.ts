@@ -5,5 +5,5 @@ export interface Sheet{
     id: number;
     lyrics: string;
     instrument: Instrument;
-    song: Song;
+    song_id: Song;
 }

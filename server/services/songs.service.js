@@ -1,8 +1,18 @@
 const songModel = require('../models/song');
 const debug = require('debug')('gb:songs');
+const albumModel = require('../models/album');
+const genreModel = require('../models/genre');
+const artistModel = require('../models/artist');
 
 const getSongs = (req, res) => {
   songModel.find()
+    .populate({
+      path: 'album_id',
+      populate: [
+        { path: 'artist_id' },
+        { path: 'genre_id' }
+      ]
+    })
     .then((documents) => {
       debug(documents);
       res.status(200).json({
@@ -20,7 +30,14 @@ const getSongs = (req, res) => {
 };
 
 const getSong = (req, res) => {
-  songModel.findOne({_id: req.params.id})
+  songModel.findOne({ _id: req.params.id })
+  .populate({
+    path: 'album_id',
+    populate: [
+      { path: 'artist_id' },
+      { path: 'genre_id' }
+    ]
+  })
     .then((documents) => {
       debug(documents);
       res.status(200).json({
@@ -59,7 +76,7 @@ const addSong = (req, res) => {
 };
 
 const updateSong = (req, res) => {
-  songModel.updateOne({_id: req.params.id}, req.body)
+  songModel.updateOne({ _id: req.params.id }, req.body)
     .then(result => {
       debug(result);
       res.status(200).json({
@@ -75,7 +92,7 @@ const updateSong = (req, res) => {
 };
 
 const deleteSong = (req, res) => {
-  songModel.deleteOne({_id: req.params.id})
+  songModel.deleteOne({ _id: req.params.id })
     .then(result => {
       debug(result);
       res.status(200).json({

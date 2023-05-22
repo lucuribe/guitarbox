@@ -3,12 +3,12 @@
   <ion-card>
     <ion-card-header>
       <ion-row class="ion-justify-content-between">
-        <ion-card-title  class="title-song ion-padding-bottom">{{song.title}}</ion-card-title>
+        <ion-card-title  class="title-song ion-padding-bottom">{{sheet.song_id.title}}</ion-card-title>
         <ion-button size="small" id="open-custom-dialog" class="modal-button">Acordes</ion-button>
       </ion-row>
       <ion-row class="ion-justify-content-between">
-        <ion-card-subtitle class="artist-song">{{song.album_id}}</ion-card-subtitle>
-        <ion-card-subtitle class="artist-song">BPM: {{song.bpm}}</ion-card-subtitle>
+        <ion-card-subtitle class="artist-song">{{sheet.song_id.album_id.artist_id.name}}</ion-card-subtitle>
+        <ion-card-subtitle class="artist-song">BPM: {{sheet.song_id.bpm}}</ion-card-subtitle>
       </ion-row>
     </ion-card-header>
   </ion-card>
@@ -16,7 +16,7 @@
     <div class="ion-padding">
       <div class="song">
         <!-- TODO: arreglar estilo de letras y acordes -->
-        <!-- <div class="lyrics-font" [innerHTML]="song.lyrics"></div> -->
+        <div class="lyrics-font" [innerHTML]="sheet.lyrics"></div>
       </div>
     </div>
   </ion-card>

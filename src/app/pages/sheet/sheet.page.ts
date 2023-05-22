@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import {Song} from "../../interfaces/song";
 import {ActivatedRoute, Router} from "@angular/router";
+import { Sheet } from 'src/app/interfaces/sheet';
 
 @Component({
   selector: 'app-sheet',
@@ -13,13 +13,13 @@ import {ActivatedRoute, Router} from "@angular/router";
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class SheetPage implements OnInit {
-  song!: Song;
+  sheet!: Sheet;
 
   constructor(private router: Router, private activeroute: ActivatedRoute) {
     this.activeroute.queryParams.subscribe(params => {
       const navParams = this.router.getCurrentNavigation();
       if(navParams?.extras.state) {
-        this.song = navParams.extras.state['song'];
+        this.sheet = navParams.extras.state['sheet'];
       }
     });
   }

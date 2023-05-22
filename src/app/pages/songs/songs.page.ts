@@ -6,6 +6,8 @@ import { IonicModule } from '@ionic/angular';
 import {Song} from "../../interfaces/song";
 import {NavigationExtras, Router} from "@angular/router";
 import { SongsService } from 'src/app/services/songs.service';
+import { Sheet } from 'src/app/interfaces/sheet';
+import { SheetsService } from 'src/app/services/sheets.service';
 
 @Component({
   selector: 'app-songs',
@@ -16,18 +18,18 @@ import { SongsService } from 'src/app/services/songs.service';
 })
 export class SongsPage implements OnInit {
   // songs = SONGS;
-  selectedSong?: Song;
-  songs: Song[]=[];
+  selectedSheet?: Sheet;
+  sheets: Sheet[]=[];
 
-  constructor(private router: Router, private songService: SongsService) {
+  constructor(private router: Router, private songService: SongsService, private sheetService: SheetsService) {
     
    }
    
 
   ngOnInit() {
-    this.songService.getSongs().subscribe(res => {
-      console.log(res.songs); // Verificar si se obtiene un arreglo de canciones
-      this.songs = res.songs;
+    this.sheetService.getSheets().subscribe(res => {
+      console.log(res.sheets); // Verificar si se obtiene un arreglo de canciones
+      this.sheets = res.sheets;
     });
   }
 
@@ -35,20 +37,20 @@ export class SongsPage implements OnInit {
     console.log("hola");
   }
 
-  onSelect(song: Song): void {
-    this.selectedSong = song;
+  onSelect(sheet: Sheet): void {
+    this.selectedSheet = sheet;
   }
 
   resetSong(){
-    this.selectedSong = null!;
+    this.selectedSheet = null!;
   }
 
-  navigate(song: Song) {
+  navigate(sheet: Sheet) {
     const navigationExtras: NavigationExtras = {
-      state: { song: song },
+      state: { sheet: sheet },
     };
 
-    const urlId = song.album_id + "-" + song.title.replace(" ", "-")
+    const urlId = sheet.song_id.album_id + "-" + sheet.song_id.title.replace(" ", "-")
     this.router.navigate(["songs/" + urlId], navigationExtras);
   }
 

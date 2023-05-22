@@ -10,16 +10,16 @@
       </div>
       <ion-searchbar show-clear-button="focus" placeholder="Buscar"></ion-searchbar>
       <!-- comentado por mientras se hace la conexion de bbdd -->
-      <ion-card *ngFor="let song of songs">
+      <ion-card *ngFor="let sheet of sheets">
         <ion-card-content>
           <ion-card-header>
-            <ion-card-title>{{song.title}}</ion-card-title>
+            <ion-card-title>{{sheet.song_id.title}}</ion-card-title>
           </ion-card-header>
           <ion-row>
             <ion-col>
-              <p>{{song.album_id}}</p>
+              <p>{{sheet.song_id.album_id.artist_id.name}}</p>
             </ion-col>
-            <ion-button color="dark" fill="clear" type="button" (click)="navigate(song)">
+            <ion-button color="dark" fill="clear" type="button" (click)="navigate(sheet)">
               <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
             </ion-button>
           </ion-row>
