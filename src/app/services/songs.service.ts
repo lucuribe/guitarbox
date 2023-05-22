@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class SongsService {
   songs: Song[] = [];
-  urlBase = 'http://localhost:3000';
+  urlBase = 'http://localhost:3001';
 
   constructor(private httpClient: HttpClient) { }
 

@@ -14,14 +14,13 @@ const getSongs = (req, res) => {
       ]
     })
     .then((documents) => {
-      debug(documents);
       res.status(200).json({
         message: 'Songs fetched successfully',
         songs: documents
       });
     })
     .catch(err => {
-      debug(err);
+      console.error(err);
       res.status(400).json({
         message: "Couldn't fetch songs",
         error: err.message
@@ -39,14 +38,13 @@ const getSong = (req, res) => {
     ]
   })
     .then((documents) => {
-      debug(documents);
       res.status(200).json({
         message: 'Song fetched successfully',
         songs: documents
       });
     })
     .catch(err => {
-      debug(err);
+      console.error(err);
       res.status(400).json({
         message: "Couldn't fetch song",
         error: err.message
@@ -67,7 +65,7 @@ const addSong = (req, res) => {
       });
     })
     .catch(err => {
-      debug(err);
+      console.error(err);
       res.status(400).json({
         message: "Couldn't add song",
         error: err.message
@@ -78,7 +76,6 @@ const addSong = (req, res) => {
 const updateSong = (req, res) => {
   songModel.updateOne({ _id: req.params.id }, req.body)
     .then(result => {
-      debug(result);
       res.status(200).json({
         message: "Song updated successfully"
       });
@@ -94,7 +91,6 @@ const updateSong = (req, res) => {
 const deleteSong = (req, res) => {
   songModel.deleteOne({ _id: req.params.id })
     .then(result => {
-      debug(result);
       res.status(200).json({
         message: "Song deleted successfully"
       });
