@@ -83,5 +83,21 @@ export class SheetPage implements OnInit {
     }
   }
 
+  //TODO: probar esta función
+
+  extraerCaracteres(cadena: string): string[] {
+    const caracteres: Set<string> = new Set();
+  
+    const regex = /{([^}]+)}/g;
+    let match;
+    while ((match = regex.exec(cadena)) !== null) {
+      const contenidoLlaves = match[1];
+      const caracteresLlaves = contenidoLlaves.split('');
+      caracteresLlaves.forEach((caracter) => caracteres.add(caracter));
+    }
+  
+    return Array.from(caracteres);
+  }
+
 
 }
