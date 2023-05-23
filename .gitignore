@@ -29,6 +29,7 @@ log.txt
 /out-tsc
 /bazel-out
 
+/songs/
 # Node
 /node_modules
 npm-debug.log

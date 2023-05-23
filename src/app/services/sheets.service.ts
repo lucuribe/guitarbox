@@ -8,7 +8,8 @@ import { Sheet } from '../interfaces/sheet';
 })
 export class SheetsService {
   sheets: Sheet[] = [];
-  urlBase = 'http://localhost:3001';
+  // urlBase = 'http://localhost:3001';
+  urlBase = 'https://gb-web-service.onrender.com';
 
   constructor(private httpClient: HttpClient) { }
 
