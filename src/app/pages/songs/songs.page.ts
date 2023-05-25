@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-// import {SONGS} from "../../mock-songs";
-import {Song} from "../../interfaces/song";
-import {NavigationExtras, Router} from "@angular/router";
+import { Song } from "../../interfaces/song";
+import { NavigationExtras, Router } from "@angular/router";
 import { SongsService } from 'src/app/services/songs.service';
 import { Sheet } from 'src/app/interfaces/sheet';
 import { SheetsService } from 'src/app/services/sheets.service';
@@ -19,18 +18,34 @@ import { SheetsService } from 'src/app/services/sheets.service';
 export class SongsPage implements OnInit {
   // songs = SONGS;
   selectedSheet?: Sheet;
-  sheets: Sheet[]=[];
+  sheets: Sheet[] = [];
+  filteredSheets: Sheet[] = [];
 
-  constructor(private router: Router, private songService: SongsService, private sheetService: SheetsService) {
-    
-   }
-   
+  constructor(
+    private router: Router,
+    private songService: SongsService,
+    private sheetService: SheetsService) { }
+
+  searchText: string = ''; // Variable para almacenar el texto de búsqueda
+
+  filterList() {
+    this.filteredSheets = this.sheets.filter(sheet => {
+      // Filtra por song_id.title o artist_id.name
+      return (
+        sheet.song_id.title.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        sheet.song_id.album_id.artist_id.name.toLowerCase().includes(this.searchText.toLowerCase())
+      );
+    });
+    // console.log(this.filteredSheets);
+  }
 
   ngOnInit() {
     this.sheetService.getSheets().subscribe(res => {
       console.log(res.sheets); // Verificar si se obtiene un arreglo de canciones
       this.sheets = res.sheets;
+      this.filterList();
     });
+    
   }
 
   ngOnDestroy(): void {
@@ -41,7 +56,7 @@ export class SongsPage implements OnInit {
     this.selectedSheet = sheet;
   }
 
-  resetSong(){
+  resetSong() {
     this.selectedSheet = null!;
   }
 

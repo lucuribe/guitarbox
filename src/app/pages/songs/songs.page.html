@@ -1,30 +1,29 @@
 <ion-content [fullscreen]="true">
-  <div class="main-container">
-    <div class="list-content">
-      <div class="pt-5">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title class="ion-text-center">Lista de canciones</ion-card-title>
-          </ion-card-header>
-        </ion-card>
-      </div>
-      <ion-searchbar show-clear-button="focus" placeholder="Buscar"></ion-searchbar>
-      <!-- comentado por mientras se hace la conexion de bbdd -->
-      <ion-card *ngFor="let sheet of sheets">
-        <ion-card-content>
-          <ion-card-header>
-            <ion-card-title>{{sheet.song_id.title}}</ion-card-title>
-          </ion-card-header>
-          <ion-row>
-            <ion-col>
-              <p>{{sheet.song_id.album_id.artist_id.name}}</p>
-            </ion-col>
-            <ion-button color="dark" fill="clear" type="button" (click)="navigate(sheet)">
-              <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
-            </ion-button>
-          </ion-row>
-        </ion-card-content>
-      </ion-card>
+    <div class="main-container">
+        <div class="list-content">
+            <div class="pt-5">
+                <ion-card>
+                    <ion-card-header>
+                        <ion-card-title class="ion-text-center">Lista de canciones</ion-card-title>
+                    </ion-card-header>
+                </ion-card>
+            </div>
+            <ion-searchbar show-clear-button="focus" placeholder="Buscar" [(ngModel)]="searchText" (ionInput)="filterList()"></ion-searchbar>
+            <ion-card *ngFor="let sheet of filteredSheets">
+                <ion-card-content>
+                    <ion-card-header>
+                        <ion-card-title>{{sheet.song_id.title}}</ion-card-title>
+                    </ion-card-header>
+                    <ion-row>
+                        <ion-col>
+                            <p>{{sheet.song_id.album_id.artist_id.name}}</p>
+                        </ion-col>
+                        <ion-button color="dark" fill="clear" type="button" (click)="navigate(sheet)">
+                            <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
+                        </ion-button>
+                    </ion-row>
+                </ion-card-content>
+            </ion-card>
+        </div>
     </div>
-  </div>
 </ion-content>
