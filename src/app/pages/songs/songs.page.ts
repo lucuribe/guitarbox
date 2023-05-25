@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Song } from "../../interfaces/song";
 import { NavigationExtras, Router } from "@angular/router";
-import { SongsService } from 'src/app/services/songs.service';
 import { Sheet } from 'src/app/interfaces/sheet';
 import { SheetsService } from 'src/app/services/sheets.service';
 
@@ -23,7 +21,6 @@ export class SongsPage implements OnInit {
 
   constructor(
     private router: Router,
-    private songService: SongsService,
     private sheetService: SheetsService) { }
 
   searchText: string = ''; // Variable para almacenar el texto de búsqueda
@@ -36,7 +33,6 @@ export class SongsPage implements OnInit {
         sheet.song_id.album_id.artist_id.name.toLowerCase().includes(this.searchText.toLowerCase())
       );
     });
-    // console.log(this.filteredSheets);
   }
 
   ngOnInit() {
