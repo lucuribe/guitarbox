@@ -12,13 +12,16 @@
       </ion-row>
     </ion-card-header>
   </ion-card>
-  <ion-card class="card-lyrics" (click)="autoScroll(50)">
+  <ion-card *ngIf="this.verificadorLetras(sheet.lyrics)" class="card-lyrics" (click)="autoScroll(50)">
     <div class="ion-padding">
       <div class="song">
         <!-- TODO: arreglar estilo de letras y acordes -->
         <div class="lyrics-font" [innerHTML]="sheet.lyrics"></div>
       </div>
     </div>
+  </ion-card>
+  <ion-card *ngIf="!this.verificadorLetras(sheet.lyrics)" class="ion-text-center">
+  <h3 class="no-lyrics-warning" >Actualmente esta canción no tiene letras.</h3>
   </ion-card>
 </div>
 

@@ -1,9 +1,7 @@
 ion-content{
   --background: var(--pale-dogwood);
 }
-// .main-container {
-//   background: var(--pale-dogwood);
-// }
+
 
 .title-song {
   --color: var(--bole);
@@ -23,7 +21,6 @@ $altura-pie-pagina: 100px;
 .card-lyrics { 
   height: calc(100vh - #{$altura-encabezado} - #{$altura-pie-pagina});
   overflow: auto;
- 
 }
 
 .song{
@@ -44,12 +41,9 @@ ion-modal#example-modal h1 {
 
 ion-modal#example-modal ion-icon {
   margin-right: 6px;
-
   width: 48px;
   height: 48px;
-
   padding: 4px 0;
-
   color: #aaaaaa;
 }
 

@@ -1,6 +1,4 @@
-// .main-container {
-//   background: var(--pale-dogwood);
-// }
+
 ion-content{
   --background: var(--pale-dogwood);
 }
@@ -51,4 +49,27 @@ ion-button{
   position: relative;
   left: 7px;
   top: 4px;
+}
+
+:host ::ng-deep .custom-spinner circle{   
+  // stroke: var(--atomic-tangerine);
+}
+
+.center {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+.overlay{
+  height:100vh;
+  width:100%;
+  // background-color:rgba(0, 0, 0, 0.586);
+  z-index:    10;
+  top:        0; 
+  left:       0; 
+  position:   fixed;
+  backdrop-filter: blur(3px);
 }

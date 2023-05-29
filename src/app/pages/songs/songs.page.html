@@ -8,7 +8,13 @@
                     </ion-card-header>
                 </ion-card>
             </div>
-            <ion-searchbar show-clear-button="focus" placeholder="Buscar" [(ngModel)]="searchText" (ionInput)="filterList()"></ion-searchbar>
+            <ion-searchbar show-clear-button="focus" placeholder="Buscar" [(ngModel)]="searchText"
+                (ionInput)="filterList()"></ion-searchbar>
+            <div *ngIf="loading" class="overlay"> 
+                <div class="center" >
+                    <mat-spinner class="custom-spinner" color="warn" mode="indeterminate"></mat-spinner>
+                </div>
+            </div>
             <ion-card *ngFor="let sheet of filteredSheets">
                 <ion-card-content>
                     <ion-card-header>

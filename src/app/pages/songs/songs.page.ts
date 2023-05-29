@@ -5,19 +5,20 @@ import { IonicModule } from '@ionic/angular';
 import { NavigationExtras, Router } from "@angular/router";
 import { Sheet } from 'src/app/interfaces/sheet';
 import { SheetsService } from 'src/app/services/sheets.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-songs',
   templateUrl: './songs.page.html',
   styleUrls: ['./songs.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, MatProgressSpinnerModule]
 })
 export class SongsPage implements OnInit {
-  // songs = SONGS;
   selectedSheet?: Sheet;
   sheets: Sheet[] = [];
   filteredSheets: Sheet[] = [];
+  loading: boolean = true;
 
   constructor(
     private router: Router,
@@ -37,9 +38,9 @@ export class SongsPage implements OnInit {
 
   ngOnInit() {
     this.sheetService.getSheets().subscribe(res => {
-      console.log(res.sheets); // Verificar si se obtiene un arreglo de canciones
       this.sheets = res.sheets;
       this.filterList();
+      this.loading = false;
     });
     
   }
