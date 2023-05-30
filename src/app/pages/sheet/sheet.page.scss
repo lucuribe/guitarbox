@@ -62,3 +62,22 @@ ion-modal#example-modal .wrapper {
   color: black;
   margin: 15px;
 }
+
+// .chord{
+//   scale: 90%;
+// }
+
+.image-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.image-container > div {
+  text-align: center;
+}
+.titulo-nota{
+  position:relative;
+  top: 20px;
+  font-weight: 500;
+
+}
