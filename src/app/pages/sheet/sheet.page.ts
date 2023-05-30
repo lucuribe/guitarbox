@@ -26,9 +26,7 @@ export class SheetPage implements OnInit {
 
   ngOnInit() {
     this.loadScript('assets/html-chords.js');
-    this.getSheet();
-    console.log(this.verificadorLetras(this.sheet.lyrics));
-    console.log(this.extraerNotas(this.sheet.lyrics));
+    console.log(this.agruparStrings(this.reemplazarSlashConGuionBajo(this.extraerNotas(this.sheet.lyrics))));
   }
 
   loadScript(url: string) {
@@ -41,15 +39,9 @@ export class SheetPage implements OnInit {
     body.appendChild(script);
   }
 
-  getSheet() {
-
-  }
-
   scrollSpeed = 50;
   autoScrollActive = false;
   autoScrollInterval: any;
-
-
 
   autoScroll(scrollSpeed: number) {
     console.log('Toggle AutoScroll');
@@ -104,6 +96,15 @@ export class SheetPage implements OnInit {
     return Array.from(wordsSet);
   }
 
+  reemplazarSlashConGuionBajo(strings: string[]): string[] {
+    const modifiedStrings: string[] = [];
+    for (let str of strings) {
+      const modifiedStr = str.replace(/\//g, "_");
+      modifiedStrings.push(modifiedStr);
+    }
+    return modifiedStrings;
+  }
+
   // verifica si letras existen
   verificadorLetras(letras: string){
     if (letras.trim()==""){
@@ -111,6 +112,19 @@ export class SheetPage implements OnInit {
     }else{
       return true;
     }
+  }
+
+  agruparStrings(strings: string[]): string[][] {
+    const groupedStrings: string[][] = [];
+    let sublist: string[] = [];
+    for (let i = 0; i < strings.length; i++) {
+      sublist.push(strings[i]);
+      if ((i + 1) % 3 === 0 || i === strings.length - 1) {
+        groupedStrings.push(sublist);
+        sublist = [];
+      }
+    }
+    return groupedStrings;
   }
 
 }

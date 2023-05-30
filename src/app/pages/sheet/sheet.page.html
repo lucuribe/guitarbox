@@ -1,55 +1,72 @@
 <ion-content [fullscreen]="true">
-  <div class="main-container">
-    <ion-card>
-      <ion-card-header>
-        <ion-row class="ion-justify-content-between">
-          <ion-card-title class="title-song ion-padding-bottom">{{sheet.song_id.title}}</ion-card-title>
-          <ion-button size="small" id="open-custom-dialog" class="modal-button">Acordes</ion-button>
-        </ion-row>
-        <ion-row class="ion-justify-content-between">
-          <ion-card-subtitle class="artist-song">{{sheet.song_id.album_id.artist_id.name}}</ion-card-subtitle>
-          <ion-card-subtitle class="artist-song">BPM: {{sheet.song_id.bpm}}</ion-card-subtitle>
-        </ion-row>
-      </ion-card-header>
-    </ion-card>
-    <ion-card *ngIf="this.verificadorLetras(sheet.lyrics)" class="card-lyrics" (click)="autoScroll(50)">
-      <div class="ion-padding">
-        <div class="song">
-          <!-- TODO: arreglar estilo de letras y acordes -->
-          <div class="lyrics-font" [innerHTML]="sheet.lyrics"></div>
-        </div>
-      </div>
-    </ion-card>
-    <ion-card *ngIf="!this.verificadorLetras(sheet.lyrics)" class="ion-text-center">
-      <h3 class="no-lyrics-warning">Actualmente esta canción no tiene letras.</h3>
-    </ion-card>
-  </div>
+    <div class="main-container">
+        <ion-card>
+            <ion-card-header>
+                <ion-row class="ion-justify-content-between">
+                    <ion-card-title class="title-song ion-padding-bottom">{{sheet.song_id.title}}</ion-card-title>
+                    <ion-button size="small" id="open-custom-dialog" class="modal-button">Acordes</ion-button>
+                </ion-row>
+                <ion-row class="ion-justify-content-between">
+                    <ion-card-subtitle class="artist-song">{{sheet.song_id.album_id.artist_id.name}}</ion-card-subtitle>
+                    <ion-card-subtitle class="artist-song">BPM: {{sheet.song_id.bpm}}</ion-card-subtitle>
+                </ion-row>
+            </ion-card-header>
+        </ion-card>
+        <ion-card *ngIf="this.verificadorLetras(sheet.lyrics)" class="card-lyrics" (click)="autoScroll(50)">
+            <div class="ion-padding">
+                <div class="song">
+                    <!-- TODO: arreglar estilo de letras y acordes -->
+                    <div class="lyrics-font" [innerHTML]="sheet.lyrics"></div>
+                </div>
+            </div>
+        </ion-card>
+        <ion-card *ngIf="!this.verificadorLetras(sheet.lyrics)" class="ion-text-center">
+            <h3 class="no-lyrics-warning">Actualmente esta canción no tiene letras.</h3>
+        </ion-card>
+    </div>
 
-  <!-- modal -->
+    <!-- modal -->
 
-  <ion-modal id="example-modal" #modal trigger="open-custom-dialog">
-    <ng-template>
-      <div class="wrapper">
-        <div class="text-center">
-          <h1 class>Notas</h1>
-        </div>
-        <div class="image-container">
-          <div>
-            <h3 class="titulo-nota">C</h3>
-            <img src="../../../assets/guitar/C.png" class="chord" alt="Imagen PNG">
-          </div>
-          <div>
-            <h3 class="titulo-nota">C7</h3>
-            <img src="../../../assets/guitar/C7.png" class="chord" alt="Imagen PNG">
-          </div>
-          <div>
-            <h3 class="titulo-nota">Cm</h3>
-            <img src="../../../assets/guitar/Cm.png" class="chord" alt="Imagen PNG">
-          </div>
-        </div>
-      </div>
-    </ng-template>
-  </ion-modal>
+    <ion-modal id="example-modal" #modal trigger="open-custom-dialog">
+        <ng-template>
+            <div class="wrapper">
+                <div class="text-center">
+                    <h1 class>Notas</h1>
+                </div>
+                <div class="image-container">
+                    <ion-row>
+                        <div>
+                            <h3 class="titulo-nota">C</h3>
+                            <img src="../../../assets/guitar/C.png" class="chord" alt="Imagen PNG">
+                        </div>
+                        <div>
+                            <h3 class="titulo-nota">C7</h3>
+                            <img src="../../../assets/guitar/C7.png" class="chord" alt="Imagen PNG">
+                        </div>
+                        <div>
+                            <h3 class="titulo-nota">Cm</h3>
+                            <img src="../../../assets/guitar/Cm.png" class="chord" alt="Imagen PNG">
+                        </div>
+                    </ion-row>
+                    <ion-row>
+                        <div>
+                            <h3 class="titulo-nota">A</h3>
+                            <img src="../../../assets/guitar/A.png" class="chord" alt="Imagen PNG">
+                        </div>
+                        <div>
+                            <h3 class="titulo-nota">B</h3>
+                            <img src="../../../assets/guitar/B.png" class="chord" alt="Imagen PNG">
+                        </div>
+                        <div>
+                            <h3 class="titulo-nota">D</h3>
+                            <img src="../../../assets/guitar/D.png" class="chord" alt="Imagen PNG">
+                        </div>
+                    </ion-row>
+
+                </div>
+            </div>
+        </ng-template>
+    </ion-modal>
 
 
 </ion-content>
