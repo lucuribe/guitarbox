@@ -14,6 +14,7 @@ import { Sheet } from 'src/app/interfaces/sheet';
 })
 export class SheetPage implements OnInit {
   sheet!: Sheet;
+  listaChords!: string[][];
 
   constructor(private router: Router, private activeroute: ActivatedRoute) {
     this.activeroute.queryParams.subscribe(params => {
@@ -26,7 +27,8 @@ export class SheetPage implements OnInit {
 
   ngOnInit() {
     this.loadScript('assets/html-chords.js');
-    console.log(this.agruparStrings(this.reemplazarSlashConGuionBajo(this.extraerNotas(this.sheet.lyrics))));
+    this.listaChords=this.agruparStrings(this.reemplazarSlashConGuionBajo(this.extraerNotas(this.sheet.lyrics)));
+    console.log(this.listaChords);
   }
 
   loadScript(url: string) {
@@ -99,7 +101,8 @@ export class SheetPage implements OnInit {
   reemplazarSlashConGuionBajo(strings: string[]): string[] {
     const modifiedStrings: string[] = [];
     for (let str of strings) {
-      const modifiedStr = str.replace(/\//g, "_");
+      const modifiedStr = str.replace(/\//g, "_").replace("#", "Sharp");
+      
       modifiedStrings.push(modifiedStr);
     }
     return modifiedStrings;
@@ -119,7 +122,7 @@ export class SheetPage implements OnInit {
     let sublist: string[] = [];
     for (let i = 0; i < strings.length; i++) {
       sublist.push(strings[i]);
-      if ((i + 1) % 3 === 0 || i === strings.length - 1) {
+      if ((i + 1) % 2 === 0 || i === strings.length - 1) {
         groupedStrings.push(sublist);
         sublist = [];
       }

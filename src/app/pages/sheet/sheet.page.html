@@ -34,32 +34,52 @@
                     <h1 class>Notas</h1>
                 </div>
                 <div class="image-container">
-                    <ion-row>
+                    <!-- <ion-row>
                         <div>
-                            <h3 class="titulo-nota">C</h3>
-                            <img src="../../../assets/guitar/C.png" class="chord" alt="Imagen PNG">
+                            <ion-col>
+                                <h3 class="titulo-nota">C</h3>
+                                <img src="../../../assets/guitar/C.png" class="chord" alt="Imagen PNG">
+                            </ion-col>
                         </div>
                         <div>
-                            <h3 class="titulo-nota">C7</h3>
-                            <img src="../../../assets/guitar/C7.png" class="chord" alt="Imagen PNG">
+                            <ion-col>
+                                <h3 class="titulo-nota">C7</h3>
+                                <img src="../../../assets/guitar/C7.png" class="chord" alt="Imagen PNG">
+                            </ion-col>
                         </div>
                         <div>
-                            <h3 class="titulo-nota">Cm</h3>
-                            <img src="../../../assets/guitar/Cm.png" class="chord" alt="Imagen PNG">
+                            <ion-col>
+                                <h3 class="titulo-nota">Cm</h3>
+                                <img src="../../../assets/guitar/Cm.png" class="chord" alt="Imagen PNG">
+                            </ion-col>
                         </div>
                     </ion-row>
                     <ion-row>
                         <div>
-                            <h3 class="titulo-nota">A</h3>
-                            <img src="../../../assets/guitar/A.png" class="chord" alt="Imagen PNG">
+                            <ion-col>
+                                <h3 class="titulo-nota">A</h3>
+                                <img src="../../../assets/guitar/A.png" class="chord" alt="Imagen PNG">
+                            </ion-col>
                         </div>
                         <div>
-                            <h3 class="titulo-nota">B</h3>
-                            <img src="../../../assets/guitar/B.png" class="chord" alt="Imagen PNG">
+                            <ion-col>
+                                <h3 class="titulo-nota">B</h3>
+                                <img src="../../../assets/guitar/B.png" class="chord" alt="Imagen PNG">
+                            </ion-col>
                         </div>
                         <div>
-                            <h3 class="titulo-nota">D</h3>
-                            <img src="../../../assets/guitar/D.png" class="chord" alt="Imagen PNG">
+                            <ion-col>
+                                <h3 class="titulo-nota">D</h3>
+                                <img src="../../../assets/guitar/D.png" class="chord" alt="Imagen PNG">
+                            </ion-col>
+                        </div>
+                    </ion-row> -->
+                    <ion-row *ngFor="let row of listaChords">
+                        <div *ngFor="let chord of row">
+                            <ion-col>
+                                <h3 class="titulo-nota">{{ chord }}</h3>
+                                <img [src]="'../../../assets/guitar/' + chord + '.png'" class="chord" alt="Imagen PNG">
+                            </ion-col>
                         </div>
                     </ion-row>
 
