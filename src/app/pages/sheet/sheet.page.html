@@ -77,7 +77,7 @@
                     <ion-row *ngFor="let row of listaChords">
                         <div *ngFor="let chord of row">
                             <ion-col>
-                                <h3 class="titulo-nota">{{ chord }}</h3>
+                                <h3 class="titulo-nota">{{ reemplazarCadena(chord) }}</h3>
                                 <img [src]="'../../../assets/guitar/' + chord + '.png'" class="chord" alt="Imagen PNG">
                             </ion-col>
                         </div>

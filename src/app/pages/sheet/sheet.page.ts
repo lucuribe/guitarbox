@@ -108,6 +108,16 @@ export class SheetPage implements OnInit {
     return modifiedStrings;
   }
 
+  reemplazarCadena(cadena: string): string {
+    // Reemplazar "Sharp" por "#"
+    let nuevaCadena = cadena.replace(/Sharp/g, '#');
+    
+    // Reemplazar "_" por "/"
+    nuevaCadena = nuevaCadena.replace(/_/g, '/');
+    
+    return nuevaCadena;
+  }
+
   // verifica si letras existen
   verificadorLetras(letras: string){
     if (letras.trim()==""){
