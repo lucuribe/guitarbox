@@ -1,13 +1,5 @@
 ion-content {
-    --background: var(--pale-dogwood);
-}
-
-.title-song {
-    --color: var(--bole);
-}
-
-.artist-song {
-    --color: var(--atomic-tangerine);
+  --background: var(--alice-blue);
 }
 
 span {
@@ -61,18 +53,16 @@ ion-modal#example-modal .wrapper {
     margin: 15px;
 }
 
-// .chord{
-//   scale: 90%;
-// }
-// .image-container {
-//     display: flex;
-//     justify-content: center;
-// }
-// .image-container>div {
-//     text-align: center;
-// }
-// .titulo-nota {
-//     position: relative;
-//     top: 20px;
-//     font-weight: 500;
-// }
+ion-item.custom {
+  --ripple-color: var(--atomic-tangerine);
+  --detail-icon-color: var(--bole);
+
+  ion-thumbnail {
+    --border-radius: 8px;
+  }
+
+  p, h2 {
+    color: var(--bole);
+    margin: 0;
+  }
+}

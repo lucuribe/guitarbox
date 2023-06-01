@@ -1,62 +1,57 @@
 <ion-content [fullscreen]="true">
-    <div class="main-container">
-        <ion-card>
-            <ion-card-header>
-                <ion-row class="ion-justify-content-between">
-                    <ion-card-title class="title-song ion-padding-bottom">{{sheet.song_id.title}}</ion-card-title>
-                    <ion-button size="small" id="open-custom-dialog" class="modal-button">Acordes</ion-button>
-                </ion-row>
-                <ion-row class="ion-justify-content-between">
-                    <ion-card-subtitle class="artist-song">{{sheet.song_id.album_id.artist_id.name}}</ion-card-subtitle>
-                    <ion-card-subtitle class="artist-song">BPM: {{sheet.song_id.bpm}}</ion-card-subtitle>
-                </ion-row>
-            </ion-card-header>
-        </ion-card>
-        <ion-card *ngIf="this.verificadorLetras(sheet.lyrics)" class="card-lyrics" (click)="autoScroll(50)">
-            <div class="ion-padding">
-                <div class="song">
-                    <!-- TODO: arreglar estilo de letras y acordes -->
-                    <div class="lyrics-font" [innerHTML]="sheet.lyrics"></div>
-                </div>
-            </div>
-        </ion-card>
-        <ion-card *ngIf="!this.verificadorLetras(sheet.lyrics)" class="ion-text-center">
-            <h3 class="no-lyrics-warning">Actualmente esta canción no tiene letras.</h3>
-        </ion-card>
-    </div>
-
-    <!-- modal -->
-
-    <ion-modal id="example-modal" #modal trigger="open-custom-dialog">
-        <ng-template>
-            <div class="wrapper">
-                <div class="text-center">
-                    <h1 class>Notas</h1>
-                </div>
-                <div class="image-container">
-                    <ng-container *ngFor="let row of listaChords">
-                        <ion-row>
-                            <ng-container *ngFor="let chord of row">
-                                <ng-container *ngIf="row.length > 2">
-                                    <ion-col>
-                                        <h3 class="titulo-nota">{{ reemplazarCadena(chord) }}</h3>
-                                        <img [src]="'../../../assets/guitar/' + chord + '.png'" class="chord" alt="Imagen PNG">
-                                    </ion-col>
-                                </ng-container>
-                                <ng-container *ngIf="row.length <= 2">
-                                    <ion-col size="6">
-                                        <h3 class="titulo-nota">{{ reemplazarCadena(chord) }}</h3>
-                                        <img [src]="'../../../assets/guitar/' + chord + '.png'" class="chord" alt="Imagen PNG">
-                                    </ion-col>
-                                </ng-container>
-                            </ng-container>
-                        </ion-row>
-                    </ng-container>
-                </div>
-
-            </div>
-        </ng-template>
-    </ion-modal>
-
-
+  <div class="main-container">
+    <ion-list>
+      <ion-item class="custom" lines="full">
+        <ion-thumbnail slot="start">
+          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg"/>
+        </ion-thumbnail>
+        <ion-label>
+          <h2 class="ion-text-wrap">{{sheet.song_id.title}}</h2>
+          <p>{{sheet.song_id.album_id.artist_id.name}}</p>
+        </ion-label>
+        <p>BPM: {{sheet.song_id.bpm}}</p>
+        <ion-button slot="end" id="open-custom-dialog" class="modal-button">Acordes</ion-button>
+      </ion-item>
+    </ion-list>
+    <ion-card *ngIf="this.verificadorLetras(sheet.lyrics)" class="card-lyrics" (click)="autoScroll(50)">
+      <div class="ion-padding">
+        <div class="song">
+          <!-- TODO: arreglar estilo de letras y acordes -->
+          <div class="lyrics-font" [innerHTML]="sheet.lyrics"></div>
+        </div>
+      </div>
+    </ion-card>
+    <ion-card *ngIf="!this.verificadorLetras(sheet.lyrics)" class="ion-text-center">
+      <h3 class="no-lyrics-warning">Actualmente esta canción no tiene letras.</h3>
+    </ion-card>
+  </div>
+  <ion-modal id="example-modal" #modal trigger="open-custom-dialog">
+    <ng-template>
+      <div class="wrapper">
+        <div class="text-center">
+          <h1 class>Notas</h1>
+        </div>
+        <div class="image-container">
+          <ng-container *ngFor="let row of listaChords">
+            <ion-row>
+              <ng-container *ngFor="let chord of row">
+                <ng-container *ngIf="row.length > 2">
+                  <ion-col>
+                    <h3 class="titulo-nota">{{ reemplazarCadena(chord) }}</h3>
+                    <img [src]="'../../../assets/guitar/' + chord + '.png'" class="chord" alt="Imagen PNG">
+                  </ion-col>
+                </ng-container>
+                <ng-container *ngIf="row.length <= 2">
+                  <ion-col size="6">
+                    <h3 class="titulo-nota">{{ reemplazarCadena(chord) }}</h3>
+                    <img [src]="'../../../assets/guitar/' + chord + '.png'" class="chord" alt="Imagen PNG">
+                  </ion-col>
+                </ng-container>
+              </ng-container>
+            </ion-row>
+          </ng-container>
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
 </ion-content>

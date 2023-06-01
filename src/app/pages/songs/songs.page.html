@@ -1,35 +1,28 @@
 <ion-content [fullscreen]="true">
-    <div class="main-container">
-        <div class="list-content">
-            <div class="pt-5">
-                <ion-card>
-                    <ion-card-header>
-                        <ion-card-title class="ion-text-center">Lista de canciones</ion-card-title>
-                    </ion-card-header>
-                </ion-card>
-            </div>
-            <ion-searchbar show-clear-button="focus" placeholder="Buscar" [(ngModel)]="searchText"
-                (ionInput)="filterList()"></ion-searchbar>
-            <div *ngIf="loading" class="overlay"> 
-                <div class="center" >
-                    <mat-spinner class="custom-spinner" color="warn" mode="indeterminate"></mat-spinner>
-                </div>
-            </div>
-            <ion-card *ngFor="let sheet of filteredSheets">
-                <ion-card-content>
-                    <ion-card-header>
-                        <ion-card-title>{{sheet.song_id.title}}</ion-card-title>
-                    </ion-card-header>
-                    <ion-row>
-                        <ion-col>
-                            <p>{{sheet.song_id.album_id.artist_id.name}}</p>
-                        </ion-col>
-                        <ion-button color="dark" fill="clear" type="button" (click)="navigate(sheet)">
-                            <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
-                        </ion-button>
-                    </ion-row>
-                </ion-card-content>
-            </ion-card>
-        </div>
+  <div class="main-container">
+    <div *ngIf="loading" class="overlay">
+      <div class="center">
+        <mat-spinner class="custom-spinner" color="warn" mode="indeterminate"></mat-spinner>
+      </div>
     </div>
+    <ion-list>
+      <ion-item lines="none">
+        <ion-searchbar show-clear-button="focus" placeholder="Buscar" [(ngModel)]="searchText"
+                       (ionInput)="filterList()" [debounce]="500" class="custom"></ion-searchbar>
+      </ion-item>
+      <ion-list-header>
+        <ion-label class="title">Trending</ion-label>
+      </ion-list-header>
+      <ion-item button *ngFor="let sheet of filteredSheets" (click)="navigate(sheet)" class="custom" detail="true"
+                lines="full">
+        <ion-thumbnail slot="start">
+          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg"/>
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{sheet.song_id.title}}</h2>
+          <p>{{sheet.song_id.album_id.artist_id.name}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>
