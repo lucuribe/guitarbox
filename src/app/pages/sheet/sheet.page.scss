@@ -17,37 +17,6 @@ $altura-pie-pagina: 100px;
     line-height: 230%;
 }
 
-ion-modal#example-modal {
-    --width: fit-content;
-    --min-width: 250px;
-    --height: fit-content;
-    --border-radius: 6px;
-    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
-}
-
-ion-modal#example-modal h1 {
-    margin: 20px 20px 10px 20px;
-}
-
-ion-modal#example-modal ion-icon {
-    margin-right: 6px;
-    width: 48px;
-    height: 48px;
-    padding: 4px 0;
-    color: #aaaaaa;
-}
-
-ion-modal#example-modal .wrapper {
-    margin-bottom: 10px;
-}
-
-.modal-button {
-    position: relative;
-    bottom: 5px;
-    left: 5px;
-    --background: var(--atomic-tangerine);
-}
-
 .wrapper {
     color: black;
     margin: 15px;
@@ -65,4 +34,36 @@ ion-item.custom {
     color: var(--bole);
     margin: 0;
   }
+}
+
+ion-button.bpm-btn {
+  height: 64px;
+  font-weight: 700;
+  --color: var(--atomic-tangerine);
+
+  ion-icon {
+    color: var(--pale-dogwood);
+    font-size: 64px;
+  }
+
+  ion-text {
+    position: absolute;
+    font-size: 16px;
+  }
+}
+
+ion-button.star-btn {
+  --color: var(--atomic-tangerine);
+}
+
+ion-button.text-btn {
+  --background: var(--pale-dogwood);
+  --ripple-color: var(--atomic-tangerine-50);
+  --box-shadow: 0 2px 6px 0 rgba(127, 73, 57, 0.25);
+  --color: var(--atomic-tangerine);
+  font-weight: 700;
+}
+
+ion-toolbar{
+  color: var(--bole);
 }

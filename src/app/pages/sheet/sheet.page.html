@@ -9,8 +9,16 @@
           <h2 class="ion-text-wrap">{{sheet.song_id.title}}</h2>
           <p>{{sheet.song_id.album_id.artist_id.name}}</p>
         </ion-label>
-        <p>BPM: {{sheet.song_id.bpm}}</p>
-        <ion-button slot="end" id="open-custom-dialog" class="modal-button">Acordes</ion-button>
+        <ion-button slot="end" #bpmPicker class="bpm-btn ion-no-margin" shape="round" fill="clear">
+          <ion-icon slot="icon-only" name="heart"></ion-icon>
+          <ion-text>{{sheet.song_id.bpm}}</ion-text>
+        </ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-button id="open-modal" shape="round" class="text-btn">Charts</ion-button>
+        <ion-button slot="end" class="star-btn" size="small" shape="round" fill="clear">
+          <ion-icon slot="icon-only" name="star-outline"></ion-icon>
+        </ion-button>
       </ion-item>
     </ion-list>
     <ion-card *ngIf="this.verificadorLetras(sheet.lyrics)" class="card-lyrics" (click)="autoScroll(50)">
@@ -25,33 +33,22 @@
       <h3 class="no-lyrics-warning">Actualmente esta canción no tiene letras.</h3>
     </ion-card>
   </div>
-  <ion-modal id="example-modal" #modal trigger="open-custom-dialog">
+  <ion-modal trigger="open-modal" class="modal" (willPresent)="showCharts();">
     <ng-template>
-      <div class="wrapper">
-        <div class="text-center">
-          <h1 class>Notas</h1>
-        </div>
-        <div class="image-container">
-          <ng-container *ngFor="let row of listaChords">
-            <ion-row>
-              <ng-container *ngFor="let chord of row">
-                <ng-container *ngIf="row.length > 2">
-                  <ion-col>
-                    <h3 class="titulo-nota">{{ reemplazarCadena(chord) }}</h3>
-                    <img [src]="'../../../assets/guitar/' + chord + '.png'" class="chord" alt="Imagen PNG">
-                  </ion-col>
-                </ng-container>
-                <ng-container *ngIf="row.length <= 2">
-                  <ion-col size="6">
-                    <h3 class="titulo-nota">{{ reemplazarCadena(chord) }}</h3>
-                    <img [src]="'../../../assets/guitar/' + chord + '.png'" class="chord" alt="Imagen PNG">
-                  </ion-col>
-                </ng-container>
-              </ng-container>
-            </ion-row>
-          </ng-container>
-        </div>
-      </div>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="dismissCharts();">Back</ion-button>
+          </ion-buttons>
+          <ion-title>Charts</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding-top">
+        <ion-grid>
+          <ion-row #charts class="ion-justify-content-center">
+          </ion-row>
+        </ion-grid>
+      </ion-content>
     </ng-template>
   </ion-modal>
 </ion-content>

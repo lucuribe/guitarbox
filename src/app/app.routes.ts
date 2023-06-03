@@ -32,7 +32,7 @@ export const routes: Routes = [
             loadComponent: () => import('./pages/songs/songs.page').then( m => m.SongsPage)
           },
           {
-            path: 'songs/:id',
+            path: 'songs/sheet',
             loadComponent: () => import('./pages/sheet/sheet.page').then( m => m.SheetPage)
           },
         ]
@@ -51,8 +51,4 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () => import('./pages/login/login.page').then( m => m.LoginPage)
   },
-  {
-    path: 'sheet',
-    loadComponent: () => import('./pages/sheet/sheet.page').then( m => m.SheetPage)
-  }
 ];

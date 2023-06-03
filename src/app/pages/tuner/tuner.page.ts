@@ -33,6 +33,8 @@ export class TunerPage implements OnInit, AfterViewInit {
 
   // P5
   p5: any;
+  pitch: any;
+  audioCtx: any;
 
   // NOTES FREQUENCY
   guitarNotes = [
@@ -51,7 +53,8 @@ export class TunerPage implements OnInit, AfterViewInit {
     bass: this.guitarNotes
   };
 
-  constructor(private alertCtrl: AlertController) { }
+  constructor(private alertCtrl: AlertController) {
+  }
 
   ngOnInit() {
   }
@@ -60,18 +63,30 @@ export class TunerPage implements OnInit, AfterViewInit {
     this.presentAlert();
   }
 
+  ionViewDidLeave() {
+    if(this.hasStarted){
+      this.stopTuner();
+    }
+  }
+
   startStop() {
     if (this.hasStarted) {
-      this.p5.remove();
-      this.hasStarted = false
-      this.advice = this.defaultAdvice;
-      this.reached = false;
-      this.rotation = this.defaultRotation;
-      this.note = '';
+      this.stopTuner();
     } else {
       this.hasStarted = true;
+      this.audioCtx = new AudioContext();
       new p5((tuner: any) => this.handleInput(tuner, this));
     }
+  }
+
+  stopTuner() {
+    this.audioCtx = this.audioCtx.close();
+    this.p5 = this.p5.remove();
+    this.hasStarted = false
+    this.advice = this.defaultAdvice;
+    this.reached = false;
+    this.rotation = this.defaultRotation;
+    this.note = '';
   }
 
   checkTunedQueue() {
@@ -118,18 +133,17 @@ export class TunerPage implements OnInit, AfterViewInit {
 
     tuner.setup = () => {
       const modelUrl = 'https://cdn.jsdelivr.net/gh/ml5js/ml5-data-and-models/models/pitch-detection/crepe/';
-      const audioContext = new AudioContext();
+      object.audioCtx = new AudioContext();
       const mic = new p5.AudioIn();
-      let pitch: any;
       mic.start(loadModel);
       tuner.noCanvas();
 
       function loadModel() {
-        pitch = ml5.pitchDetection(modelUrl, audioContext, mic.stream, modelLoaded);
+        object.pitch = ml5.pitchDetection(modelUrl, object.audioCtx, mic.stream, modelLoaded);
       }
 
       function modelLoaded() {
-        pitch.getPitch(gotPitch);
+        object.pitch.getPitch(gotPitch);
       }
 
       function gotPitch(error: string, frequency: number) {
@@ -139,7 +153,7 @@ export class TunerPage implements OnInit, AfterViewInit {
           if (frequency) {
             freq = frequency;
           }
-          pitch.getPitch(gotPitch);
+          object.pitch.getPitch(gotPitch);
         }
       }
     };

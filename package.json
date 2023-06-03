@@ -1,5 +1,5 @@
 {
-  "name": "GuitarBox",
+  "name": "guitarbox",
   "version": "0.0.1",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
@@ -33,6 +33,7 @@
     "ionicons": "^7.0.0",
     "jquery": "^3.6.4",
     "rxjs": "~7.5.0",
+    "svguitar": "^2.2.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },

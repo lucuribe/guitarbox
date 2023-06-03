@@ -2,14 +2,30 @@ ion-title {
   --color: var(--bole);
 }
 
-ion-menu-button {
-  --color: var(--atomic-tangerine);
+p {
+  font-family: 'Licorice', 'Inter', sans-serif;
+  font-size: 32px;
+  margin: 0;
+  color: var(--atomic-tangerine);
 }
 
-ion-item, ion-button {
+ion-item {
   --color: var(--bole);
+
+  mat-icon {
+    color: var(--bole);
+  }
+}
+
+ion-button {
+  --color: var(--bole);
+  --ripple-color: var(--atomic-tangerine-50);
   --background-focused: var(--bole);
   --background-hover: var(--bole);
+
+  mat-icon {
+    color: var(--atomic-tangerine);
+  }
 }
 
 .avatar {

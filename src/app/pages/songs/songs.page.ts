@@ -15,7 +15,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   imports: [IonicModule, CommonModule, FormsModule, MatProgressSpinnerModule]
 })
 export class SongsPage implements OnInit {
-  selectedSheet?: Sheet;
   sheets: Sheet[] = [];
   filteredSheets: Sheet[] = [];
   loading: boolean = true;
@@ -42,30 +41,16 @@ export class SongsPage implements OnInit {
       this.filterList();
       this.loading = false;
     });
-    
   }
 
   ngOnDestroy(): void {
     console.log("hola");
   }
 
-  onSelect(sheet: Sheet): void {
-    this.selectedSheet = sheet;
-  }
-
-  resetSong() {
-    this.selectedSheet = null!;
-  }
-
   navigate(sheet: Sheet) {
     const navigationExtras: NavigationExtras = {
       state: { sheet: sheet },
     };
-
-    const urlId = sheet.song_id.album_id + "-" + sheet.song_id.title.replace(" ", "-")
-    this.router.navigate(["songs/" + urlId], navigationExtras);
-  }
-
-  getSongs() {
+    this.router.navigate(["songs/sheet"], navigationExtras);
   }
 }
