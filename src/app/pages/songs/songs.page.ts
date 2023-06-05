@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { NavigationExtras, Router } from "@angular/router";
 import { Sheet } from 'src/app/interfaces/sheet';
-import { SheetsService } from 'src/app/services/sheets.service';
+import { DbService } from 'src/app/services/db.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
@@ -21,7 +21,7 @@ export class SongsPage implements OnInit {
 
   constructor(
     private router: Router,
-    private sheetService: SheetsService) { }
+    private dbService: DbService) { }
 
   searchText: string = ''; // Variable para almacenar el texto de búsqueda
 
@@ -36,7 +36,7 @@ export class SongsPage implements OnInit {
   }
 
   ngOnInit() {
-    this.sheetService.getSheets().subscribe(res => {
+    this.dbService.getSheets().subscribe(res => {
       this.sheets = res.sheets;
       this.filterList();
       this.loading = false;
@@ -44,7 +44,7 @@ export class SongsPage implements OnInit {
   }
 
   ngOnDestroy(): void {
-    console.log("hola");
+    console.log("destroy");
   }
 
   navigate(sheet: Sheet) {

@@ -38,17 +38,5 @@ export const routes: Routes = [
         ]
       }
     ]
-  },
-  {
-    path: 'settings',
-    loadComponent: () => import('./pages/settings/settings.page').then( m => m.SettingsPage)
-  },
-  {
-    path: 'help',
-    loadComponent: () => import('./pages/help/help.page').then( m => m.HelpPage)
-  },
-  {
-    path: 'login',
-    loadComponent: () => import('./pages/login/login.page').then( m => m.LoginPage)
-  },
+  }
 ];
