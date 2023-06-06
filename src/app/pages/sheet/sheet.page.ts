@@ -2,11 +2,13 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {IonicModule, IonModal} from '@ionic/angular';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {Sheet} from 'src/app/interfaces/sheet';
 import {MatIconModule} from "@angular/material/icon";
 import {Chord, SVGuitarChord} from 'svguitar';
 import {ChordsService} from "../../services/chords.service";
+import {Instrument} from "../../interfaces/instrument";
+import {StorageService} from "../../services/storage.service";
 
 @Component({
   selector: 'app-sheet',
@@ -19,12 +21,19 @@ export class SheetPage implements OnInit {
   @ViewChild("charts", {read: ElementRef}) charts!: ElementRef;
   @ViewChild(IonModal) modal!: IonModal;
 
-  sheet!: Sheet;
-  listaChords!: string[][];
-  sheetChords!: string[];
-  chords: Chord[] = [];
+  // ROUTER
+  navigationSubscription: any;
 
-  constructor(private router: Router, private activeroute: ActivatedRoute, private chordsService: ChordsService) {
+  sheet!: Sheet;
+  sheetChords!: string[];
+  currentInstrument!: Instrument;
+  chords: Chord[] = [];
+  scrollSpeed = 50;
+  autoScrollActive = false;
+  autoScrollInterval: any;
+  hasLyrics = false;
+
+  constructor(private router: Router, private activeroute: ActivatedRoute, private chordsService: ChordsService, private storage: StorageService) {
     this.activeroute.queryParams.subscribe(params => {
       const navParams = this.router.getCurrentNavigation();
       if (navParams?.extras.state) {
@@ -35,8 +44,35 @@ export class SheetPage implements OnInit {
 
   ngOnInit() {
     this.loadScript('assets/html-chords.js');
-    this.listaChords=this.agruparStrings(this.reemplazarSlashConGuionBajo(this.extraerNotas(this.sheet.lyrics)));
+    this.hasLyrics = this.sheet.lyrics.trim() != "";
     this.sheetChords=this.reemplazarSlashConGuionBajo(this.extraerNotas(this.sheet.lyrics));
+  }
+
+  ionViewWillEnter() {
+    console.log('ionViewWillEnter');
+    this.getCurrentInstrument();
+    if (!this.navigationSubscription) {
+      this.navigationSubscription = this.router.events.subscribe( (e: any) => {
+        // If it is a NavigationEnd event re-initialise the component
+        if (e instanceof NavigationEnd) {
+          this.getCurrentInstrument();
+        }
+      });
+    }
+  }
+
+  ionViewWillLeave() {
+    console.log('ionViewWillLeave');
+    if (this.navigationSubscription) {
+      this.navigationSubscription = this.navigationSubscription.unsubscribe();
+    }
+  }
+
+  async getCurrentInstrument() {
+    if (this.hasLyrics) {
+      this.currentInstrument = await this.storage.get('instrument');
+      this.chordsService.loadChords(this.currentInstrument);
+    }
   }
 
   loadScript(url: string) {
@@ -48,10 +84,6 @@ export class SheetPage implements OnInit {
     script.defer = true;
     body.appendChild(script);
   }
-
-  scrollSpeed = 50;
-  autoScrollActive = false;
-  autoScrollInterval: any;
 
   autoScroll(scrollSpeed: number) {
     console.log('Toggle AutoScroll');
@@ -126,27 +158,10 @@ export class SheetPage implements OnInit {
     return nuevaCadena;
   }
 
-  // verifica si letras existen
-  verificadorLetras(letras: string){
-    return letras.trim() != "";
-  }
-
-  agruparStrings(strings: string[]): string[][] {
-    const groupedStrings: string[][] = [];
-    let sublist: string[] = [];
-    for (let i = 0; i < strings.length; i++) {
-      sublist.push(strings[i]);
-      if ((i + 1) % 2 === 0 || i === strings.length - 1) {
-        groupedStrings.push(sublist);
-        sublist = [];
-      }
-    }
-    return groupedStrings;
-  }
-
   showCharts() {
     const otherChords = [];
     for (const sheetChord of this.sheetChords) {
+    //for (const sheetChord of this.chordsService.chords) {
       const chord = this.chordsService.getChord(sheetChord);
       if (chord) {
         const chartCol = document.createElement('ion-col');
@@ -156,11 +171,18 @@ export class SheetPage implements OnInit {
         chartCol.appendChild(chartDiv);
         this.charts.nativeElement.appendChild(chartCol);
 
+        let strings = 6;
+        if (this.currentInstrument.id === 'ukulele') {
+          strings = 4;
+        }
+
         const chart = new SVGuitarChord(chartDiv)
         chart
           .configure({
-            frets: 4,
-            fretSize: 1.2,
+            strings: strings,
+            frets: 5,
+            fretSize: 1,
+            fretLabelFontSize: 32,
             fontFamily: 'Inter, sans-serif',
             strokeWidth: 4,
             titleBottomMargin: 60,
@@ -170,8 +192,6 @@ export class SheetPage implements OnInit {
           .draw()
       } else {
         otherChords.push(sheetChord);
-        console.log(sheetChord);
-
       }
     }
     if (otherChords.length > 0) {
@@ -196,6 +216,7 @@ export class SheetPage implements OnInit {
       }
     }
   }
+
   dismissCharts() {
     this.modal.dismiss(null, 'cancel');
   }

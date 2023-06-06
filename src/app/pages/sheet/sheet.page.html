@@ -15,13 +15,13 @@
         </ion-button>
       </ion-item>
       <ion-item>
-        <ion-button id="open-modal" shape="round" class="text-btn">Charts</ion-button>
+        <ion-button *ngIf="this.hasLyrics" id="open-modal" shape="round" class="text-btn">Charts</ion-button>
         <ion-button slot="end" class="star-btn" size="small" shape="round" fill="clear">
           <ion-icon slot="icon-only" name="star-outline"></ion-icon>
         </ion-button>
       </ion-item>
     </ion-list>
-    <ion-card *ngIf="this.verificadorLetras(sheet.lyrics)" class="card-lyrics" (click)="autoScroll(50)">
+    <ion-card *ngIf="this.hasLyrics" class="card-lyrics" (click)="autoScroll(50)">
       <div class="ion-padding">
         <div class="song">
           <!-- TODO: arreglar estilo de letras y acordes -->
@@ -29,7 +29,7 @@
         </div>
       </div>
     </ion-card>
-    <ion-card *ngIf="!this.verificadorLetras(sheet.lyrics)" class="ion-text-center">
+    <ion-card *ngIf="!this.hasLyrics" class="ion-text-center">
       <h3 class="no-lyrics-warning">Actualmente esta canción no tiene letras.</h3>
     </ion-card>
   </div>

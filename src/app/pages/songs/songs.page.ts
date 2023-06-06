@@ -29,8 +29,8 @@ export class SongsPage implements OnInit {
     this.filteredSheets = this.sheets.filter(sheet => {
       // Filtra por song_id.title o artist_id.name
       return (
-        sheet.song_id.title.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        sheet.song_id.album_id.artist_id.name.toLowerCase().includes(this.searchText.toLowerCase())
+        sheet.song_id.title.toLowerCase().includes(this.searchText.trim().toLowerCase()) ||
+        sheet.song_id.album_id.artist_id.name.toLowerCase().includes(this.searchText.trim().toLowerCase())
       );
     });
   }
@@ -41,10 +41,6 @@ export class SongsPage implements OnInit {
       this.filterList();
       this.loading = false;
     });
-  }
-
-  ngOnDestroy(): void {
-    console.log("destroy");
   }
 
   navigate(sheet: Sheet) {

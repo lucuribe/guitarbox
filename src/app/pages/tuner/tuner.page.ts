@@ -1,8 +1,11 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {AlertController, IonicModule} from '@ionic/angular';
+import {IonicModule} from '@ionic/angular';
 import {MatIconModule} from "@angular/material/icon";
+import {Instrument} from "../../interfaces/instrument";
+import {StorageService} from "../../services/storage.service";
+import {NavigationEnd, Router} from "@angular/router";
 
 declare const p5: any;
 declare const ml5: any;
@@ -14,7 +17,10 @@ declare const ml5: any;
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, MatIconModule]
 })
-export class TunerPage implements OnInit, AfterViewInit {
+export class TunerPage implements OnInit {
+  // ROUTER
+  navigationSubscription: any;
+
   // STATE
   hasStarted = false;
   pitchReachedDelay = false;
@@ -28,15 +34,14 @@ export class TunerPage implements OnInit, AfterViewInit {
   advice = this.defaultAdvice;
 
   // STATS
-  detuneDifference = 4;
+  detuneDifference = 2;
   elapsedTimeRightPitch: any;
 
   // P5
   p5: any;
-  pitch: any;
   audioCtx: any;
 
-  // NOTES FREQUENCY
+  // NOTES FREQUENCIES
   guitarNotes = [
     { note: 'E¹', freq: 82.41 },
     { note: 'A', freq: 110.00 },
@@ -45,42 +50,70 @@ export class TunerPage implements OnInit, AfterViewInit {
     { note: 'B', freq: 246.94 },
     { note: 'E²', freq: 329.63 }
   ];
+  ukuleleNotes = [
+    { note: "A", freq: 440 },
+    { note: "E", freq: 329.63 },
+    { note: "C", freq: 261.63 },
+    { note: "G", freq: 392 }
+  ];
 
   // UTIL
-  selected = 'guitar';
-  selectedToNote = {
-    guitar: this.guitarNotes,
-    bass: this.guitarNotes
-  };
+  pitchReached = new Audio('../../assets/audio/pitch-reached.mp3');
+  selected!: Instrument;
+  selectedNotes: { note: string, freq: number }[] = [];
 
-  constructor(private alertCtrl: AlertController) {
+  constructor(private storage: StorageService, private router: Router) {
   }
 
   ngOnInit() {
   }
 
-  ngAfterViewInit() {
-    this.presentAlert();
-  }
-
-  ionViewDidLeave() {
-    if(this.hasStarted){
-      this.stopTuner();
+  ionViewWillEnter() {
+    console.log('ionViewWillEnter')
+    if (!this.navigationSubscription) {
+      this.navigationSubscription = this.router.events.subscribe((e: any) => {
+        // If it is a NavigationEnd event re-initialise the component
+        if (e instanceof NavigationEnd) {
+          if(this.hasStarted){
+            this.stopTuner();
+          }
+        }
+      });
     }
   }
 
-  startStop() {
+  ionViewWillLeave() {
+    console.log('ionViewWillLeave')
+    if(this.hasStarted){
+      this.stopTuner();
+    }
+    if (this.navigationSubscription) {
+      this.navigationSubscription = this.navigationSubscription.unsubscribe();
+    }
+  }
+
+  async startStop() {
     if (this.hasStarted) {
       this.stopTuner();
     } else {
       this.hasStarted = true;
       this.audioCtx = new AudioContext();
+      this.selected = await this.storage.get('instrument');
+      if (this.selected.id === "guitar") {
+        this.selectedNotes = this.guitarNotes;
+      } else if (this.selected.id === "ukulele") {
+        this.selectedNotes = this.ukuleleNotes;
+      }
       new p5((tuner: any) => this.handleInput(tuner, this));
     }
   }
 
   stopTuner() {
-    this.audioCtx = this.audioCtx.close();
+    this.audioCtx.close()
+      .then((res: any) => {
+        this.audioCtx = res
+        console.log(this.audioCtx);
+      })
     this.p5 = this.p5.remove();
     this.hasStarted = false
     this.advice = this.defaultAdvice;
@@ -96,7 +129,7 @@ export class TunerPage implements OnInit, AfterViewInit {
     const endTime = performance.now();
     if (Math.round((endTime - this.elapsedTimeRightPitch) / 1000) > 1 && !this.pitchReachedDelay) {
       this.pitchReachedDelay = true;
-      //this.pitchReached.play();
+      this.pitchReached.play();
       setTimeout(() => {
         this.pitchReachedDelay = false;
         this.elapsedTimeRightPitch = null;
@@ -133,17 +166,17 @@ export class TunerPage implements OnInit, AfterViewInit {
 
     tuner.setup = () => {
       const modelUrl = 'https://cdn.jsdelivr.net/gh/ml5js/ml5-data-and-models/models/pitch-detection/crepe/';
-      object.audioCtx = new AudioContext();
       const mic = new p5.AudioIn();
       mic.start(loadModel);
+      let pitch: any;
       tuner.noCanvas();
 
       function loadModel() {
-        object.pitch = ml5.pitchDetection(modelUrl, object.audioCtx, mic.stream, modelLoaded);
+        pitch = ml5.pitchDetection(modelUrl, object.audioCtx, mic.stream, modelLoaded);
       }
 
       function modelLoaded() {
-        object.pitch.getPitch(gotPitch);
+        pitch.getPitch(gotPitch);
       }
 
       function gotPitch(error: string, frequency: number) {
@@ -153,7 +186,7 @@ export class TunerPage implements OnInit, AfterViewInit {
           if (frequency) {
             freq = frequency;
           }
-          object.pitch.getPitch(gotPitch);
+          pitch.getPitch(gotPitch);
         }
       }
     };
@@ -161,7 +194,7 @@ export class TunerPage implements OnInit, AfterViewInit {
     tuner.draw = () => {
       let noteDetected;
       let toneDiff = Infinity;
-      this.selectedToNote.guitar.forEach(note => {
+      this.selectedNotes.forEach(note => {
         const diff = freq - note.freq;
         if (tuner.abs(diff) < tuner.abs(toneDiff)) {
           noteDetected = note;
@@ -170,28 +203,5 @@ export class TunerPage implements OnInit, AfterViewInit {
       });
       object.renderDisplay(tuner, toneDiff, noteDetected);
     };
-  }
-
-  async presentAlert() {
-    console.log(localStorage.getItem('micPermission'))
-    if (localStorage.getItem('micPermission') !== null) {
-      return
-    }
-    const alert = await this.alertCtrl.create({
-      header: 'Permission Alert',
-      subHeader: '',
-      message: 'GuitarBox Tuner needs your audio input to analyze your sound.',
-      buttons: [
-        {
-          text: 'Authorize',
-          role: 'confirm',
-          handler: () => {
-            localStorage.setItem('micPermission', 'true');
-          },
-        },
-      ],
-    });
-
-    await alert.present();
   }
 }
