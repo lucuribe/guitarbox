@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {IonicModule} from '@ionic/angular';
+import {IonicModule, Platform} from '@ionic/angular';
 import {MatIconModule} from "@angular/material/icon";
 import {Instrument} from "../../interfaces/instrument";
 import {StorageService} from "../../services/storage.service";
-import {NavigationEnd, Router} from "@angular/router";
+import {Router} from "@angular/router";
 
 declare const p5: any;
 declare const ml5: any;
@@ -18,8 +18,9 @@ declare const ml5: any;
   imports: [IonicModule, CommonModule, FormsModule, MatIconModule]
 })
 export class TunerPage implements OnInit {
-  // ROUTER
-  navigationSubscription: any;
+  // SUBSCRIPTIONS
+  storageSub: any;
+  platformSub: any;
 
   // STATE
   hasStarted = false;
@@ -62,7 +63,7 @@ export class TunerPage implements OnInit {
   selected!: Instrument;
   selectedNotes: { note: string, freq: number }[] = [];
 
-  constructor(private storage: StorageService, private router: Router) {
+  constructor(private storage: StorageService, private router: Router, private platform: Platform) {
   }
 
   ngOnInit() {
@@ -70,16 +71,19 @@ export class TunerPage implements OnInit {
 
   ionViewWillEnter() {
     console.log('ionViewWillEnter')
-    if (!this.navigationSubscription) {
-      this.navigationSubscription = this.router.events.subscribe((e: any) => {
-        // If it is a NavigationEnd event re-initialise the component
-        if (e instanceof NavigationEnd) {
-          if(this.hasStarted){
-            this.stopTuner();
-          }
+    this.platformSub = this.platform.pause.subscribe(async () => {
+      console.log('platform paused')
+      if(this.hasStarted){
+        this.stopTuner();
+      }
+    });
+    this.storageSub = this.storage.watchStorage().subscribe(res => {
+      if(res.key === "instrument") {
+        if(this.hasStarted){
+          this.stopTuner();
         }
-      });
-    }
+      }
+    });
   }
 
   ionViewWillLeave() {
@@ -87,9 +91,8 @@ export class TunerPage implements OnInit {
     if(this.hasStarted){
       this.stopTuner();
     }
-    if (this.navigationSubscription) {
-      this.navigationSubscription = this.navigationSubscription.unsubscribe();
-    }
+    this.storageSub = this.storageSub.unsubscribe();
+    this.platformSub = this.platformSub.unsubscribe();
   }
 
   async startStop() {

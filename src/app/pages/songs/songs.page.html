@@ -1,10 +1,6 @@
 <ion-content [fullscreen]="true">
   <div class="main-container">
-    <div *ngIf="loading" class="overlay">
-      <div class="center">
-        <mat-spinner class="custom-spinner" color="warn" mode="indeterminate"></mat-spinner>
-      </div>
-    </div>
+    <app-loading *ngIf="isLoading"></app-loading>
     <ion-list>
       <ion-item lines="none">
         <ion-searchbar show-clear-button="focus" placeholder="Buscar" [(ngModel)]="searchText"

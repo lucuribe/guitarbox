@@ -6,18 +6,19 @@ import { NavigationExtras, Router } from "@angular/router";
 import { Sheet } from 'src/app/interfaces/sheet';
 import { DbService } from 'src/app/services/db.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {LoadingComponent} from "../../components/loading/loading.component";
 
 @Component({
   selector: 'app-songs',
   templateUrl: './songs.page.html',
   styleUrls: ['./songs.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, MatProgressSpinnerModule]
+  imports: [IonicModule, CommonModule, FormsModule, MatProgressSpinnerModule, LoadingComponent]
 })
 export class SongsPage implements OnInit {
   sheets: Sheet[] = [];
   filteredSheets: Sheet[] = [];
-  loading: boolean = true;
+  isLoading: boolean = true;
 
   constructor(
     private router: Router,
@@ -39,7 +40,7 @@ export class SongsPage implements OnInit {
     this.dbService.getSheets().subscribe(res => {
       this.sheets = res.sheets;
       this.filterList();
-      this.loading = false;
+      this.isLoading = false;
     });
   }
 

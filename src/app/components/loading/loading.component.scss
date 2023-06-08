@@ -1,0 +1,20 @@
+:host ::ng-deep .custom-spinner circle{
+  stroke: var(--atomic-tangerine);
+}
+
+.center {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.overlay{
+  height: 100vh;
+  width: 100%;
+  background-color: var(--alice-blue);
+  z-index: 10;
+  position: fixed;
+}

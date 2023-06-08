@@ -1,0 +1,28 @@
+<ion-content>
+  <div class="main-container full-height">
+    <ion-grid>
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="ion-text-center" size="12">
+          <p>GuitarBox</p>
+          <ion-label class="subtitle">Welcome to GuitarBox!</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <swiper-container [modules]="swiperModules" pagination="true" style="max-width: 200px">
+            <swiper-slide>Slide 1</swiper-slide>
+            <swiper-slide>Slide 2</swiper-slide>
+            <swiper-slide>Slide 3</swiper-slide>
+          </swiper-container>
+        </ion-col>
+        <ion-col size="auto">
+          <ion-nav-link router-direction="forward" [component]="component">
+            <ion-button class="icon-btn" size="medium" shape="round">
+              <mat-icon slot="icon-only" aria-hidden="false" aria-label="Next icon"
+                        fontSet="material-symbols-rounded">navigate_next
+              </mat-icon>
+            </ion-button>
+          </ion-nav-link>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {IonicModule, IonModal} from '@ionic/angular';
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Sheet} from 'src/app/interfaces/sheet';
 import {MatIconModule} from "@angular/material/icon";
 import {Chord, SVGuitarChord} from 'svguitar';
@@ -21,8 +21,8 @@ export class SheetPage implements OnInit {
   @ViewChild("charts", {read: ElementRef}) charts!: ElementRef;
   @ViewChild(IonModal) modal!: IonModal;
 
-  // ROUTER
-  navigationSubscription: any;
+  // SUBSCRIPTIONS
+  storageSub: any;
 
   sheet!: Sheet;
   sheetChords!: string[];
@@ -45,17 +45,16 @@ export class SheetPage implements OnInit {
   ngOnInit() {
     this.loadScript('assets/html-chords.js');
     this.hasLyrics = this.sheet.lyrics.trim() != "";
-    this.sheetChords=this.reemplazarSlashConGuionBajo(this.extraerNotas(this.sheet.lyrics));
+    this.sheetChords = this.reemplazarSlashConGuionBajo(this.extraerNotas(this.sheet.lyrics));
   }
 
   ionViewWillEnter() {
     console.log('ionViewWillEnter');
     this.getCurrentInstrument();
-    if (!this.navigationSubscription) {
-      this.navigationSubscription = this.router.events.subscribe( (e: any) => {
-        // If it is a NavigationEnd event re-initialise the component
-        if (e instanceof NavigationEnd) {
-          this.getCurrentInstrument();
+    if (this.hasLyrics) {
+      this.storageSub = this.storage.watchStorage().subscribe(res => {
+        if (res.key === "instrument") {
+          this.currentInstrument = res.value;
         }
       });
     }
@@ -63,8 +62,8 @@ export class SheetPage implements OnInit {
 
   ionViewWillLeave() {
     console.log('ionViewWillLeave');
-    if (this.navigationSubscription) {
-      this.navigationSubscription = this.navigationSubscription.unsubscribe();
+    if (this.storageSub) {
+      this.storageSub = this.storageSub.unsubscribe();
     }
   }
 
@@ -161,7 +160,7 @@ export class SheetPage implements OnInit {
   showCharts() {
     const otherChords = [];
     for (const sheetChord of this.sheetChords) {
-    //for (const sheetChord of this.chordsService.chords) {
+      //for (const sheetChord of this.chordsService.chords) {
       const chord = this.chordsService.getChord(sheetChord);
       if (chord) {
         const chartCol = document.createElement('ion-col');

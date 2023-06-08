@@ -5,7 +5,7 @@ import {
   AlertController,
   GestureController,
   GestureDetail,
-  IonicModule, ToastController
+  IonicModule, Platform, ToastController
 } from '@ionic/angular';
 import {MatIconModule} from "@angular/material/icon";
 import {Bar} from "../../interfaces/bar";
@@ -21,6 +21,9 @@ import {arrayFade, fade} from "../../animations";
 })
 export class MetronomePage implements OnInit, AfterViewInit {
   @ViewChild("bpmPicker", {read: ElementRef}) bpmPicker!: ElementRef;
+
+  // SUBSCRIPTIONS
+  platformSub: any;
 
   audioContext: any;
   intervalID: any;
@@ -41,7 +44,7 @@ export class MetronomePage implements OnInit, AfterViewInit {
   isRunning = false;
   changesBeenMade = false;
 
-  constructor(private gestureCtrl: GestureController, private alertCtrl: AlertController, private toastCtrl: ToastController) {
+  constructor(private gestureCtrl: GestureController, private alertCtrl: AlertController, private toastCtrl: ToastController, private platform: Platform) {
   }
 
   ngOnInit() {
@@ -58,6 +61,19 @@ export class MetronomePage implements OnInit, AfterViewInit {
     }, true);
 
     swipeBpmGesture.enable();
+  }
+
+  ionViewWillEnter() {
+    this.platformSub = this.platform.pause.subscribe(async () => {
+      console.log('platform paused')
+      if (this.isRunning) {
+        this.stop();
+      }
+    });
+  }
+
+  ionViewWillLeave() {
+    this.platformSub = this.platformSub.unsubscribe();
   }
 
   async showBpmInput() {
@@ -229,7 +245,7 @@ export class MetronomePage implements OnInit, AfterViewInit {
   start() {
     if (this.isRunning) return;
     if (this.audioContext == null) {
-      this.audioContext = new (window.AudioContext)();
+      this.audioContext = new AudioContext();
     }
     this.isRunning = true;
     this.currentQuarterNote = 0;

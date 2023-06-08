@@ -1,0 +1,42 @@
+<ion-content>
+  <div class="main-container full-height">
+    <ion-grid>
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="ion-text-center" size="auto">
+          <ion-label class="subtitle">Select your instrument:</ion-label>
+        </ion-col>
+        <ion-col size="12">
+          <ion-radio-group [(ngModel)]="currentInstrument">
+            <ion-row class="ion-justify-content-center">
+              <ion-col size="auto">
+                <div class="radio-container">
+                  <ion-radio aria-label="Guitar" [value]="instruments[0]"></ion-radio>
+                  <div class="content">
+                    <ion-img src="../../../assets/images/guitar.png"></ion-img>
+                    <ion-label>Guitar</ion-label>
+                  </div>
+                </div>
+              </ion-col>
+              <ion-col size="auto">
+                <div class="radio-container">
+                  <ion-radio aria-label="Ukulele" [value]="instruments[1]"></ion-radio>
+                  <div class="content">
+                    <ion-img src="../../../assets/images/ukulele.png"></ion-img>
+                    <ion-label>Ukulele</ion-label>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-radio-group>
+        </ion-col>
+        <ion-col size="auto">
+          <ion-button (click)="finishSetup();" class="icon-btn" size="medium" shape="round">
+            <mat-icon slot="icon-only" aria-hidden="false" aria-label="Next icon"
+                      fontSet="material-symbols-rounded">navigate_next
+            </mat-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
