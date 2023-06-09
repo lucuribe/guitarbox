@@ -3,7 +3,7 @@
     <ion-grid>
       <ion-row class="ion-justify-content-center">
         <ion-col class="ion-text-center" size="auto">
-          <ion-label class="subtitle">Select your instrument:</ion-label>
+          <ion-label class="subtitle">Now it's time to select the instrument you want to work with in Guitarbox.</ion-label>
         </ion-col>
         <ion-col size="12">
           <ion-radio-group [(ngModel)]="currentInstrument">
@@ -29,10 +29,15 @@
             </ion-row>
           </ion-radio-group>
         </ion-col>
+        <ion-col class="ion-text-center" size="12">
+          <ion-label>However, please note that you can change the instrument at any time in the app's settings.</ion-label>
+          <br><br>
+          <ion-label class="subtitle">Press the button to exit the setup</ion-label>
+        </ion-col>
         <ion-col size="auto">
           <ion-button (click)="finishSetup();" class="icon-btn" size="medium" shape="round">
             <mat-icon slot="icon-only" aria-hidden="false" aria-label="Next icon"
-                      fontSet="material-symbols-rounded">navigate_next
+                      fontSet="material-symbols-rounded">done
             </mat-icon>
           </ion-button>
         </ion-col>

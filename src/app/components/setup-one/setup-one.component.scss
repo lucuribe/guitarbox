@@ -31,8 +31,11 @@ ion-label.subtitle {
 
   .material-symbols-rounded {
     color: var(--atomic-tangerine);
-    transform: scale(1.5);
     font-variation-settings:
       'FILL' 1
   }
+}
+
+swiper-container {
+  max-width: 240px;
 }

@@ -10,6 +10,7 @@ import {
 import {MatIconModule} from "@angular/material/icon";
 import {Bar} from "../../interfaces/bar";
 import {arrayFade, fade} from "../../animations";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-metronome',
@@ -44,7 +45,13 @@ export class MetronomePage implements OnInit, AfterViewInit {
   isRunning = false;
   changesBeenMade = false;
 
-  constructor(private gestureCtrl: GestureController, private alertCtrl: AlertController, private toastCtrl: ToastController, private platform: Platform) {
+  constructor(private gestureCtrl: GestureController, private alertCtrl: AlertController, private toastCtrl: ToastController, private platform: Platform, private activeroute: ActivatedRoute, private router: Router) {
+    this.activeroute.queryParams.subscribe(params => {
+      const navParams = this.router.getCurrentNavigation();
+      if (navParams?.extras.state) {
+        this.bpm = navParams.extras.state['bpm'];
+      }
+    });
   }
 
   ngOnInit() {

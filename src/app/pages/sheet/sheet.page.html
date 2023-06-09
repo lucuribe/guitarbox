@@ -3,13 +3,13 @@
     <ion-list>
       <ion-item class="custom" lines="full">
         <ion-thumbnail slot="start">
-          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg"/>
+          <img alt="Song" src="../../../assets/images/song.png"/>
         </ion-thumbnail>
         <ion-label>
           <h2 class="ion-text-wrap">{{sheet.song_id.title}}</h2>
           <p>{{sheet.song_id.album_id.artist_id.name}}</p>
         </ion-label>
-        <ion-button slot="end" #bpmPicker class="bpm-btn ion-no-margin" shape="round" fill="clear">
+        <ion-button (click)="navToMetronomeView()" slot="end" class="bpm-btn ion-no-margin" shape="round" fill="clear">
           <ion-icon slot="icon-only" name="heart"></ion-icon>
           <ion-text>{{sheet.song_id.bpm}}</ion-text>
         </ion-button>
@@ -30,7 +30,7 @@
       </div>
     </ion-card>
     <ion-card *ngIf="!this.hasLyrics" class="ion-text-center">
-      <h3 class="no-lyrics-warning">Actualmente esta canción no tiene letras.</h3>
+      <h3 class="no-lyrics-warning">At the moment, this song doesn't have lyrics.</h3>
     </ion-card>
   </div>
   <ion-modal trigger="open-modal" class="modal" (willPresent)="showCharts();">

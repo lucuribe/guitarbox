@@ -1,19 +1,19 @@
 <ion-content class="ion-padding">
   <div class="main-container full-height">
-    <ion-grid *ngIf="permissionDenied">
+    <ion-grid>
       <ion-row class="ion-justify-content-center">
         <ion-col class="ion-text-center" size="auto">
-          <ion-label class="subtitle">Before you can start using the tuner, we need your permission to use the mic!</ion-label>
+          <ion-label>To fully utilize the tuner feature in Guitarbox, we need your permission to access the microphone on your device.</ion-label>
+          <br><br>
+          <ion-label class="subtitle">Press the button to continue</ion-label>
         </ion-col>
         <ion-col size="12"></ion-col>
         <ion-col size="auto">
-          <ion-nav-link router-direction="forward" [component]="component">
-            <ion-button class="icon-btn" size="medium" shape="round">
-              <mat-icon slot="icon-only" aria-hidden="false" aria-label="Next icon"
-                        fontSet="material-symbols-rounded">navigate_next
-              </mat-icon>
-            </ion-button>
-          </ion-nav-link>
+          <ion-button (click)="requestMicPermission()" class="icon-btn" size="medium" shape="round">
+            <mat-icon slot="icon-only" aria-hidden="false" aria-label="Next icon"
+                      fontSet="material-symbols-rounded">mic
+            </mat-icon>
+          </ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

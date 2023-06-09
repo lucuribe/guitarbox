@@ -27,7 +27,16 @@ ion-item.custom {
   --detail-icon-color: var(--bole);
 
   ion-thumbnail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--tiffany-blue);
     --border-radius: 8px;
+
+    img {
+      width: 36px;
+      height: 36px;
+    }
   }
 
   p, h2 {

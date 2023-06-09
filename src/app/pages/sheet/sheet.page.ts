@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {IonicModule, IonModal} from '@ionic/angular';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, NavigationExtras, Router} from "@angular/router";
 import {Sheet} from 'src/app/interfaces/sheet';
 import {MatIconModule} from "@angular/material/icon";
 import {Chord, SVGuitarChord} from 'svguitar';
@@ -155,6 +155,13 @@ export class SheetPage implements OnInit {
     nuevaCadena = nuevaCadena.replace(/_/g, '/');
 
     return nuevaCadena;
+  }
+
+  navToMetronomeView() {
+    const navigationExtras: NavigationExtras = {
+      state: { bpm: this.sheet.song_id.bpm },
+    };
+    this.router.navigate(['metronome'], navigationExtras)
   }
 
   showCharts() {
