@@ -84,13 +84,14 @@ export class SheetPage implements OnInit {
   }
 
   autoScroll(scrollSpeed: number) {
+    scrollSpeed = scrollSpeed*(this.sheet.song_id.bpm/300);
     console.log('Toggle AutoScroll');
     const card = document.querySelector('.card-lyrics') as HTMLElement;
     if (card) {
       console.log('card:', card);
       card.scrollTop = 0;
       const scrollHeight = card.scrollHeight - card.clientHeight;
-      const scrollStep = Math.PI / (scrollHeight / 2);
+      const scrollStep = (Math.PI / (scrollHeight / 2));
       let count = 0;
       if (this.autoScrollActive) { // si el autoscroll está activo, detenerlo
         clearInterval(this.autoScrollInterval);
@@ -215,7 +216,7 @@ export class SheetPage implements OnInit {
           chartImg.src = '../../../assets/ukulele/' + sheetChord + '.png'
         }
         chartImg.style.maxWidth = '180px';
-        chartDetail.innerHTML = sheetChord;
+        chartDetail.innerHTML = this.reemplazarCadena(sheetChord);
         chartContainer.appendChild(chartDetail);
         chartContainer.appendChild(chartImg);
         chartCol.appendChild(chartContainer);
