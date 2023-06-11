@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import {IonicModule, Platform} from '@ionic/angular';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {AlertController, IonicModule, Platform} from '@ionic/angular';
 import {MatIconModule} from "@angular/material/icon";
 import {Instrument} from "../../interfaces/instrument";
 import {StorageService} from "../../services/storage.service";
 import {Router} from "@angular/router";
+import {AndroidPermissions} from "@awesome-cordova-plugins/android-permissions/ngx";
 
 declare const p5: any;
 declare const ml5: any;
@@ -20,7 +21,8 @@ declare const ml5: any;
 export class TunerPage implements OnInit {
   // SUBSCRIPTIONS
   storageSub: any;
-  platformSub: any;
+  platformPauseSub: any;
+  platformResumeSub: any;
 
   // STATE
   hasStarted = false;
@@ -28,6 +30,7 @@ export class TunerPage implements OnInit {
   reached = false;
   defaultRotation = 'rotate(0deg)';
   rotation = this.defaultRotation;
+  hasPermission = true;
 
   // DISPLAY
   note = '';
@@ -35,7 +38,7 @@ export class TunerPage implements OnInit {
   advice = this.defaultAdvice;
 
   // STATS
-  detuneDifference = 2;
+  detuneDifference = 1;
   elapsedTimeRightPitch: any;
 
   // P5
@@ -44,18 +47,18 @@ export class TunerPage implements OnInit {
 
   // NOTES FREQUENCIES
   guitarNotes = [
-    { note: 'E¹', freq: 82.41 },
-    { note: 'A', freq: 110.00 },
-    { note: 'D', freq: 146.83 },
-    { note: 'G', freq: 196.00 },
-    { note: 'B', freq: 246.94 },
-    { note: 'E²', freq: 329.63 }
+    {note: 'E¹', freq: 82.41},
+    {note: 'A', freq: 110.00},
+    {note: 'D', freq: 146.83},
+    {note: 'G', freq: 196.00},
+    {note: 'B', freq: 246.94},
+    {note: 'E²', freq: 329.63}
   ];
   ukuleleNotes = [
-    { note: "A", freq: 440 },
-    { note: "E", freq: 329.63 },
-    { note: "C", freq: 261.63 },
-    { note: "G", freq: 392 }
+    {note: "A", freq: 440},
+    {note: "E", freq: 329.63},
+    {note: "C", freq: 261.63},
+    {note: "G", freq: 392}
   ];
 
   // UTIL
@@ -63,23 +66,26 @@ export class TunerPage implements OnInit {
   selected!: Instrument;
   selectedNotes: { note: string, freq: number }[] = [];
 
-  constructor(private storage: StorageService, private router: Router, private platform: Platform) {
+  constructor(private storage: StorageService, private router: Router, private platform: Platform, private androidPermissions: AndroidPermissions, private alertCtrl: AlertController) {
   }
 
   ngOnInit() {
   }
 
   ionViewWillEnter() {
-    console.log('ionViewWillEnter')
-    this.platformSub = this.platform.pause.subscribe(async () => {
-      console.log('platform paused')
-      if(this.hasStarted){
+    console.log('ionViewWillEnter TUNER');
+    this.checkMicPermission();
+    this.platformPauseSub = this.platform.pause.subscribe( () => {
+      if (this.hasStarted) {
         this.stopTuner();
       }
     });
+    this.platformResumeSub = this.platform.resume.subscribe( async () => {
+      await this.checkMicPermission();
+    });
     this.storageSub = this.storage.watchStorage().subscribe(res => {
-      if(res.key === "instrument") {
-        if(this.hasStarted){
+      if (res.key === "instrument") {
+        if (this.hasStarted) {
           this.stopTuner();
         }
       }
@@ -87,27 +93,31 @@ export class TunerPage implements OnInit {
   }
 
   ionViewWillLeave() {
-    console.log('ionViewWillLeave')
-    if(this.hasStarted){
+    if (this.hasStarted) {
       this.stopTuner();
     }
     this.storageSub = this.storageSub.unsubscribe();
-    this.platformSub = this.platformSub.unsubscribe();
+    this.platformResumeSub = this.platformResumeSub.unsubscribe();
+    this.platformPauseSub = this.platformPauseSub.unsubscribe();
   }
 
   async startStop() {
     if (this.hasStarted) {
       this.stopTuner();
     } else {
-      this.hasStarted = true;
-      this.audioCtx = new AudioContext();
-      this.selected = await this.storage.get('instrument');
-      if (this.selected.id === "guitar") {
-        this.selectedNotes = this.guitarNotes;
-      } else if (this.selected.id === "ukulele") {
-        this.selectedNotes = this.ukuleleNotes;
+      if (this.hasPermission) {
+        this.hasStarted = true;
+        this.audioCtx = new AudioContext();
+        this.selected = await this.storage.get('instrument');
+        if (this.selected.id === "guitar") {
+          this.selectedNotes = this.guitarNotes;
+        } else if (this.selected.id === "ukulele") {
+          this.selectedNotes = this.ukuleleNotes;
+        }
+        new p5((tuner: any) => this.handleInput(tuner, this));
+      } else {
+        await this.presentAlert();
       }
-      new p5((tuner: any) => this.handleInput(tuner, this));
     }
   }
 
@@ -123,6 +133,11 @@ export class TunerPage implements OnInit {
     this.reached = false;
     this.rotation = this.defaultRotation;
     this.note = '';
+  }
+
+  async checkMicPermission() {
+    const check = await this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.RECORD_AUDIO)
+    this.hasPermission = check.hasPermission;
   }
 
   checkTunedQueue() {
@@ -153,7 +168,7 @@ export class TunerPage implements OnInit {
       this.rotation = 'rotate(180deg)';
       this.advice = 'Tune down';
       this.elapsedTimeRightPitch = null;
-    } else if (toneDiff < -this.detuneDifference ) {
+    } else if (toneDiff < -this.detuneDifference) {
       this.rotation = 'rotate(0deg)';
       this.advice = 'Tune up';
       this.elapsedTimeRightPitch = null;
@@ -206,5 +221,15 @@ export class TunerPage implements OnInit {
       });
       object.renderDisplay(tuner, toneDiff, noteDetected);
     };
+  }
+
+  async presentAlert() {
+    const alert = await this.alertCtrl.create({
+      header: 'Microphone Permission Not Granted',
+      message: "It appears you haven't granted microphone permission. The tuner feature requires microphone access. You can manually grant permissions in your device's settings.",
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 }

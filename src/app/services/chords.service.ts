@@ -17,7 +17,7 @@ export class ChordsService {
         this.chords = res['chords'];
       });
     } else {
-      this.httpClient.get<{chords: Chord[]}>(this.urlBase + '/ukelele.json').subscribe(res => {
+      this.httpClient.get<{chords: Chord[]}>(this.urlBase + '/ukulele.json').subscribe(res => {
         this.chords = res['chords'];
       });
     }

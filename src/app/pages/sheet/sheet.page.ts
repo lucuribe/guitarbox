@@ -45,23 +45,22 @@ export class SheetPage implements OnInit {
   ngOnInit() {
     this.loadScript('assets/html-chords.js');
     this.hasLyrics = this.sheet.lyrics.trim() != "";
-    this.sheetChords = this.reemplazarSlashConGuionBajo(this.extraerNotas(this.sheet.lyrics));
+    this.sheetChords = this.extraerNotas(this.sheet.lyrics);
   }
 
   ionViewWillEnter() {
-    console.log('ionViewWillEnter');
     this.getCurrentInstrument();
     if (this.hasLyrics) {
       this.storageSub = this.storage.watchStorage().subscribe(res => {
         if (res.key === "instrument") {
           this.currentInstrument = res.value;
+          this.chordsService.loadChords(this.currentInstrument);
         }
       });
     }
   }
 
   ionViewWillLeave() {
-    console.log('ionViewWillLeave');
     if (this.storageSub) {
       this.storageSub = this.storageSub.unsubscribe();
     }
@@ -137,14 +136,8 @@ export class SheetPage implements OnInit {
     return Array.from(wordsSet);
   }
 
-  reemplazarSlashConGuionBajo(input: string[]): string[] {
-    const modifiedStrings: string[] = [];
-    for (let str of input) {
-      const modifiedStr = str.replace(/\//g, "_").replace("#", "Sharp");
-
-      modifiedStrings.push(modifiedStr);
-    }
-    return modifiedStrings;
+  reemplazarSlashConGuionBajo(title: string) {
+    return title.replace(/\//g, "_").replace("#", "Sharp");
   }
 
   reemplazarCadena(cadena: string): string {
@@ -168,6 +161,7 @@ export class SheetPage implements OnInit {
     const otherChords = [];
     for (const sheetChord of this.sheetChords) {
       //for (const sheetChord of this.chordsService.chords) {
+      console.log(sheetChord);
       const chord = this.chordsService.getChord(sheetChord);
       if (chord) {
         const chartCol = document.createElement('ion-col');
@@ -202,6 +196,8 @@ export class SheetPage implements OnInit {
     }
     if (otherChords.length > 0) {
       for (let sheetChord of otherChords) {
+        sheetChord = this.reemplazarSlashConGuionBajo(sheetChord);
+
         const chartCol = document.createElement('ion-col');
         chartCol.size = 'auto';
         this.charts.nativeElement.appendChild(chartCol);
@@ -213,7 +209,11 @@ export class SheetPage implements OnInit {
         const chartDetail = document.createElement('p');
         chartDetail.style.fontSize = '15px';
         const chartImg = document.createElement('img');
-        chartImg.src = '../../../assets/guitar/' + sheetChord + '.png'
+        if (this.currentInstrument.id === 'guitar') {
+          chartImg.src = '../../../assets/guitar/' + sheetChord + '.png'
+        } else {
+          chartImg.src = '../../../assets/ukulele/' + sheetChord + '.png'
+        }
         chartImg.style.maxWidth = '180px';
         chartDetail.innerHTML = sheetChord;
         chartContainer.appendChild(chartDetail);

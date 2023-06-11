@@ -263,6 +263,17 @@
       "position": 0,
       "barres": [],
       "title": "Am7"
+    },
+    {
+      "fingers": [
+        [1, 0],
+        [2, 2, "3"],
+        [3, 2, "2"],
+        [4, 2, "1"]
+      ],
+      "position": 0,
+      "barres": [],
+      "title": "D/F#"
     }
   ]
 }

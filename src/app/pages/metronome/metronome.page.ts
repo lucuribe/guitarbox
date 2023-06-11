@@ -134,19 +134,16 @@ export class MetronomePage implements OnInit, AfterViewInit {
 
   onBpmMove(detail: GestureDetail) {
     const velocityX = detail.velocityX;
-    const deltaX = detail.deltaX
 
-    if (deltaX % 5 === 0) {
-      if (velocityX < 0) {
-        // swipe left
-        if (this.bpm < this.maxBpm) {
-          this.bpm++;
-        }
-      } else {
-        // swipe right
-        if (this.bpm > this.minBpm) {
-          this.bpm--;
-        }
+    if (velocityX < 0) {
+      // swipe left
+      if (this.bpm < this.maxBpm) {
+        this.bpm++;
+      }
+    } else {
+      // swipe right
+      if (this.bpm > this.minBpm) {
+        this.bpm--;
       }
     }
   }

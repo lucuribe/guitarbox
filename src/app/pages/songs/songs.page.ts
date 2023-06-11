@@ -7,24 +7,37 @@ import { Sheet } from 'src/app/interfaces/sheet';
 import { DbService } from 'src/app/services/db.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {LoadingComponent} from "../../components/loading/loading.component";
+import {arrayFade, fade} from "../../animations";
 
 @Component({
   selector: 'app-songs',
   templateUrl: './songs.page.html',
   styleUrls: ['./songs.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, MatProgressSpinnerModule, LoadingComponent]
+  imports: [IonicModule, CommonModule, FormsModule, MatProgressSpinnerModule, LoadingComponent],
+  animations: [arrayFade, fade]
 })
 export class SongsPage implements OnInit {
   sheets: Sheet[] = [];
   filteredSheets: Sheet[] = [];
-  isLoading: boolean = true;
+  isLoading: boolean = false;
+  searchText: string = ''; // Variable para almacenar el texto de búsqueda
 
   constructor(
     private router: Router,
     private dbService: DbService) { }
 
-  searchText: string = ''; // Variable para almacenar el texto de búsqueda
+  ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.dbService.getSheets().subscribe(res => {
+      this.sheets = res.sheets;
+      this.filterList();
+      this.isLoading = false;
+    });
+  }
 
   filterList() {
     this.filteredSheets = this.sheets.filter(sheet => {
@@ -36,11 +49,15 @@ export class SongsPage implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.dbService.getSheets().subscribe(res => {
+  handleRefresh(event: any) {
+    this.sheets = [];
+    this.filteredSheets = [];
+    this.isLoading = true;
+    this.dbService.getSheets().subscribe( res => {
+      this.isLoading = false;
       this.sheets = res.sheets;
       this.filterList();
-      this.isLoading = false;
+      event.target.complete();
     });
   }
 
