@@ -3,7 +3,7 @@
     <ion-grid>
       <ion-row class="ion-justify-content-center">
         <ion-col class="ion-no-padding" size="auto">
-          <ion-button #bpmPicker (click)="showBpmInput()" class="bpm-btn ion-no-margin" shape="round" fill="clear">
+          <ion-button #bpmPicker (tap)="tapBpm()" (press)="showBpmInput()" (panstart)="panBpmStart($event)" (panend)="panBpmEnd()" (pan)="panBpm($event)" class="bpm-btn ion-no-margin" shape="round" fill="clear">
             <ion-icon slot="icon-only" name="heart"></ion-icon>
             <ion-text>{{bpm}}</ion-text>
           </ion-button>

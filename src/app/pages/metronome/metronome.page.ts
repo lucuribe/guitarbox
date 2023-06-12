@@ -1,11 +1,8 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {
-  AlertController,
-  GestureController,
-  GestureDetail,
-  IonicModule, Platform, ToastController
+  AlertController, IonicModule, Platform, ToastController
 } from '@ionic/angular';
 import {MatIconModule} from "@angular/material/icon";
 import {Bar} from "../../interfaces/bar";
@@ -20,7 +17,7 @@ import {ActivatedRoute, Router} from "@angular/router";
   imports: [IonicModule, CommonModule, FormsModule, MatIconModule],
   animations: [arrayFade, fade]
 })
-export class MetronomePage implements OnInit, AfterViewInit {
+export class MetronomePage implements OnInit {
   @ViewChild("bpmPicker", {read: ElementRef}) bpmPicker!: ElementRef;
 
   // SUBSCRIPTIONS
@@ -35,6 +32,10 @@ export class MetronomePage implements OnInit, AfterViewInit {
     {id: 3, accent: false, current: false}
   ];
   bars: Bar[] = JSON.parse(JSON.stringify(this.defaultBars));
+  taps: number[] = [];
+  maxTapInterval: number = 1500; // Maximum time in milliseconds between taps
+  panStartX: any;
+  panSensitivity: number = 0.25; // Adjust this value to control the sensitivity of the pan gesture, less is slower
   minBpm = 40;
   maxBpm = 220;
   bpm = 120;
@@ -45,7 +46,7 @@ export class MetronomePage implements OnInit, AfterViewInit {
   isRunning = false;
   changesBeenMade = false;
 
-  constructor(private gestureCtrl: GestureController, private alertCtrl: AlertController, private toastCtrl: ToastController, private platform: Platform, private activeroute: ActivatedRoute, private router: Router) {
+  constructor(private alertCtrl: AlertController, private toastCtrl: ToastController, private platform: Platform, private activeroute: ActivatedRoute, private router: Router) {
     this.activeroute.queryParams.subscribe(params => {
       const navParams = this.router.getCurrentNavigation();
       if (navParams?.extras.state) {
@@ -55,19 +56,6 @@ export class MetronomePage implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-  }
-
-  ngAfterViewInit() {
-    const swipeBpmGesture = this.gestureCtrl.create({
-      el: this.bpmPicker.nativeElement,
-      gestureName: 'bpmPickerGesture',
-      direction: 'x',
-      onMove: (detail) => {
-        this.onBpmMove(detail);
-      }
-    }, true);
-
-    swipeBpmGesture.enable();
   }
 
   ionViewWillEnter() {
@@ -86,6 +74,7 @@ export class MetronomePage implements OnInit, AfterViewInit {
   async showBpmInput() {
     const alert = await this.alertCtrl.create({
       header: "Enter BPM",
+      cssClass: "custom-alert",
       inputs: [
         {
           cssClass: "custom-alert-input",
@@ -130,22 +119,6 @@ export class MetronomePage implements OnInit, AfterViewInit {
     });
 
     await toast.present();
-  }
-
-  onBpmMove(detail: GestureDetail) {
-    const velocityX = detail.velocityX;
-
-    if (velocityX < 0) {
-      // swipe left
-      if (this.bpm < this.maxBpm) {
-        this.bpm++;
-      }
-    } else {
-      // swipe right
-      if (this.bpm > this.minBpm) {
-        this.bpm--;
-      }
-    }
   }
 
   addBar() {
@@ -201,10 +174,60 @@ export class MetronomePage implements OnInit, AfterViewInit {
     }
   }
 
+  calculateAverageInterval() {
+    const intervals = [];
+    for (let i = 1; i < this.taps.length; i++) {
+      const interval = this.taps[i] - this.taps[i - 1];
+      intervals.push(interval);
+    }
+    const sum = intervals.reduce((a, b) => a + b, 0);
+    return sum / intervals.length;
+  }
+
+  tapBpm() {
+    const currentTime = Date.now();
+    this.taps.push(currentTime);
+
+    // Remove taps that are older than the maximum interval
+    const cutoffTime = currentTime - this.maxTapInterval;
+    this.taps = this.taps.filter(tapTime => tapTime > cutoffTime);
+
+    if (this.taps.length > 1) {
+      const averageInterval = this.calculateAverageInterval();
+      const tempo = 60000 / averageInterval; // Convert to beats per minute
+      if (tempo >= this.minBpm && tempo <= this.maxBpm ) {
+        this.bpm = Math.round(tempo);
+      }
+    }
+  }
+
+  panBpmStart(ev: any) {
+    this.panStartX = ev.center.x;
+  }
+
+  panBpmEnd() {
+    this.panStartX = null;
+  }
+
+  panBpm(ev: any) {
+    if (this.panStartX !== null) {
+      const deltaX = ev.center.x - this.panStartX;
+      const increment = Math.round(deltaX * this.panSensitivity);
+      const newBpm = this.bpm + increment;
+      if (newBpm >= this.minBpm && newBpm <= this.maxBpm ) {
+        this.bpm = newBpm;
+      }
+      this.panStartX = ev.center.x;
+    }
+  }
+
   scheduleNote(time: number) {
     // create an oscillator
     const osc = this.audioContext.createOscillator();
     const envelope = this.audioContext.createGain();
+
+    osc.connect(envelope);
+    envelope.connect(this.audioContext.destination);
 
     // set frequency
     osc.frequency.value = 1000;
@@ -219,9 +242,6 @@ export class MetronomePage implements OnInit, AfterViewInit {
     envelope.gain.value = 1;
     envelope.gain.exponentialRampToValueAtTime(1, time + 0.001);
     envelope.gain.exponentialRampToValueAtTime(0.001, time + 0.02);
-
-    osc.connect(envelope);
-    envelope.connect(this.audioContext.destination);
 
     osc.start(time);
     osc.stop(time + 0.03);
@@ -248,7 +268,7 @@ export class MetronomePage implements OnInit, AfterViewInit {
 
   start() {
     if (this.isRunning) return;
-    if (this.audioContext == null) {
+    if (!this.audioContext) {
       this.audioContext = new AudioContext();
     }
     this.isRunning = true;
