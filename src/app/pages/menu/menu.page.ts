@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import {IonicModule, ModalController} from '@ionic/angular';
 import {MatIconModule} from "@angular/material/icon";
 import {StorageService} from "../../services/storage.service";
@@ -9,6 +9,10 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {Router} from "@angular/router";
 import {LoadingComponent} from "../../components/loading/loading.component";
 import {SetupComponent} from "../../components/setup/setup.component";
+import {Directory, Filesystem} from '@capacitor/filesystem';
+import {HttpClient} from "@angular/common/http";
+import {FileOpener} from "@capacitor-community/file-opener";
+
 
 @Component({
   selector: 'app-menu',
@@ -25,10 +29,11 @@ export class MenuPage implements OnInit {
     {id: "ukulele", name: "Ukulele"}
   ];
   currentInstrument: Instrument = this.instruments[0];
+  userManualUri = '';
 
   isLoading = true;
 
-  constructor(private router: Router, private storage: StorageService, private modalCtrl: ModalController) { }
+  constructor(private router: Router, private storage: StorageService, private modalCtrl: ModalController, private httpClient: HttpClient) { }
 
   ngOnInit() {
   }
@@ -36,7 +41,15 @@ export class MenuPage implements OnInit {
   async ionViewWillEnter() {
     await this.checkSetupDone();
     await this.getCurrentInstrument();
+    await this.getUserManualUri();
     this.isLoading = false;
+  }
+
+  async openUserManual() {
+    await FileOpener.open({
+      filePath: this.userManualUri,
+      contentType: 'application/pdf'
+    })
   }
 
   async getCurrentInstrument() {
@@ -44,6 +57,34 @@ export class MenuPage implements OnInit {
     if (instrument) {
       this.currentInstrument = instrument;
     }
+  }
+
+  async getUserManualUri() {
+    const uri = await this.storage.get('userManualUri');
+    if (uri) {
+      this.userManualUri = uri;
+    } else {
+      const url = 'assets/userManual_ES.pdf';
+      this.httpClient.get(url, {responseType: 'blob'}).subscribe(async res => {
+        const name = url.substring(url.lastIndexOf('/') + 1);
+        const base64 = await this.convertBlobToBase64(res) as string;
+        const userManual = await Filesystem.writeFile({
+          path: name,
+          data: base64,
+          directory: Directory.Data
+        });
+        this.userManualUri = userManual.uri;
+        this.storage.set('userManualUri', userManual.uri);
+      });
+    }
+  }
+
+  convertBlobToBase64(blob: Blob) {
+    return new Promise((resolve, _) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.readAsDataURL(blob);
+    });
   }
 
   async checkSetupDone() {
