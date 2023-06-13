@@ -8,6 +8,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {Bar} from "../../interfaces/bar";
 import {arrayFade, fade} from "../../animations";
 import {ActivatedRoute, Router} from "@angular/router";
+import {KeepAwake} from "@capacitor-community/keep-awake";
 
 @Component({
   selector: 'app-metronome',
@@ -272,6 +273,7 @@ export class MetronomePage implements OnInit {
       this.audioContext = new AudioContext();
     }
     this.isRunning = true;
+    KeepAwake.keepAwake();
     this.currentQuarterNote = 0;
     this.nextNoteTime = this.audioContext.currentTime + 0.05;
     this.intervalID = setInterval(() => this.scheduler(), this.lookahead);
@@ -282,6 +284,7 @@ export class MetronomePage implements OnInit {
       bar.current = false;
     }
     this.isRunning = false;
+    KeepAwake.allowSleep();
     clearInterval(this.intervalID);
   }
 

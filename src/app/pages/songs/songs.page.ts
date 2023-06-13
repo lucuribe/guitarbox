@@ -20,7 +20,7 @@ import {arrayFade, fade} from "../../animations";
 export class SongsPage implements OnInit {
   sheets: Sheet[] = [];
   filteredSheets: Sheet[] = [];
-  isLoading: boolean = false;
+  isLoading: boolean = true;
   searchText: string = ''; // Variable para almacenar el texto de búsqueda
 
   constructor(

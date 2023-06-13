@@ -9,6 +9,7 @@ import {Chord, SVGuitarChord} from 'svguitar';
 import {ChordsService} from "../../services/chords.service";
 import {Instrument} from "../../interfaces/instrument";
 import {StorageService} from "../../services/storage.service";
+import {KeepAwake} from "@capacitor-community/keep-awake";
 
 @Component({
   selector: 'app-sheet',
@@ -28,7 +29,7 @@ export class SheetPage implements OnInit {
   sheetChords!: string[];
   currentInstrument!: Instrument;
   chords: Chord[] = [];
-  scrollSpeed = 50;
+  autoScrollSpeed = 6;
   autoScrollActive = false;
   autoScrollInterval: any;
   hasLyrics = false;
@@ -60,9 +61,13 @@ export class SheetPage implements OnInit {
     }
   }
 
-  ionViewWillLeave() {
+  async ionViewWillLeave() {
     if (this.storageSub) {
       this.storageSub = this.storageSub.unsubscribe();
+    }
+    const result = await KeepAwake.isKeptAwake();
+    if (result.isKeptAwake) {
+      await KeepAwake.allowSleep();
     }
   }
 
@@ -83,10 +88,10 @@ export class SheetPage implements OnInit {
     body.appendChild(script);
   }
 
-  autoScroll(scrollSpeed: number) {
-    scrollSpeed = scrollSpeed*(this.sheet.song_id.bpm/300);
+  autoScroll() {
     console.log('Toggle AutoScroll');
     const card = document.querySelector('.card-lyrics') as HTMLElement;
+    const scrollSpeed = this.sheet.song_id.bpm/this.autoScrollSpeed;
     if (card) {
       console.log('card:', card);
       card.scrollTop = 0;
@@ -96,9 +101,11 @@ export class SheetPage implements OnInit {
       if (this.autoScrollActive) { // si el autoscroll está activo, detenerlo
         clearInterval(this.autoScrollInterval);
         this.autoScrollActive = false;
+        KeepAwake.allowSleep();
         console.log('AutoScroll detenido');
       } else { // si el autoscroll no está activo, iniciarlo
         this.autoScrollActive = true;
+        KeepAwake.keepAwake();
         console.log('AutoScroll iniciado');
         console.log('autoScrollActive:', this.autoScrollActive);
         this.autoScrollInterval = setInterval(() => {
@@ -109,6 +116,7 @@ export class SheetPage implements OnInit {
             clearInterval(this.autoScrollInterval);
             if (count >= scrollHeight) {
               this.autoScrollActive = false;
+              KeepAwake.allowSleep();
               console.log('AutoScroll completado');
             }
           }
@@ -160,9 +168,16 @@ export class SheetPage implements OnInit {
 
   showCharts() {
     const otherChords = [];
+    if (this.autoScrollActive) {
+      clearInterval(this.autoScrollInterval);
+      this.autoScrollActive = false;
+    }
+    KeepAwake.isKeptAwake().then((res) => {
+      if (res.isKeptAwake) {
+        KeepAwake.allowSleep();
+      }
+    });
     for (const sheetChord of this.sheetChords) {
-      //for (const sheetChord of this.chordsService.chords) {
-      console.log(sheetChord);
       const chord = this.chordsService.getChord(sheetChord);
       if (chord) {
         const chartCol = document.createElement('ion-col');
@@ -211,9 +226,9 @@ export class SheetPage implements OnInit {
         chartDetail.style.fontSize = '15px';
         const chartImg = document.createElement('img');
         if (this.currentInstrument.id === 'guitar') {
-          chartImg.src = '../../../assets/guitar/' + sheetChord + '.png'
+          chartImg.src = '../../../assets/images/guitar/' + sheetChord + '.png'
         } else {
-          chartImg.src = '../../../assets/ukulele/' + sheetChord + '.png'
+          chartImg.src = '../../../assets/images/ukulele/' + sheetChord + '.png'
         }
         chartImg.style.maxWidth = '180px';
         chartDetail.innerHTML = this.reemplazarCadena(sheetChord);

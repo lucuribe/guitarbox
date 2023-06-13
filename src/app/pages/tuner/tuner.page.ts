@@ -7,6 +7,7 @@ import {Instrument} from "../../interfaces/instrument";
 import {StorageService} from "../../services/storage.service";
 import {Router} from "@angular/router";
 import {AndroidPermissions} from "@awesome-cordova-plugins/android-permissions/ngx";
+import {KeepAwake} from "@capacitor-community/keep-awake";
 
 declare const p5: any;
 declare const ml5: any;
@@ -114,6 +115,7 @@ export class TunerPage implements OnInit {
         } else if (this.selected.id === "ukulele") {
           this.selectedNotes = this.ukuleleNotes;
         }
+        await KeepAwake.keepAwake();
         new p5((tuner: any) => this.handleInput(tuner, this));
       } else {
         await this.presentAlert();
@@ -125,7 +127,6 @@ export class TunerPage implements OnInit {
     this.audioCtx.close()
       .then((res: any) => {
         this.audioCtx = res
-        console.log(this.audioCtx);
       })
     this.p5 = this.p5.remove();
     this.hasStarted = false
@@ -133,6 +134,7 @@ export class TunerPage implements OnInit {
     this.reached = false;
     this.rotation = this.defaultRotation;
     this.note = '';
+    KeepAwake.allowSleep();
   }
 
   async checkMicPermission() {
