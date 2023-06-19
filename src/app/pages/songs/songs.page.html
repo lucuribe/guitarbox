@@ -25,26 +25,31 @@
       </ion-item>
     </ion-list>
     <ng-template #loaded>
-      <ion-list @fade>
+      <ion-list @fadeIn>
         <ion-item lines="none">
           <ion-searchbar show-clear-button="focus" placeholder="Search" [(ngModel)]="searchText"
-                         (ionInput)="filterList()" [debounce]="500" class="custom"></ion-searchbar>
+                         (ionInput)="filterSongs()" [debounce]="500" class="custom"></ion-searchbar>
         </ion-item>
         <ion-list-header>
           <ion-label class="title">Songs</ion-label>
         </ion-list-header>
-        <ion-item button *ngFor="let sheet of filteredSheets" (click)="navigate(sheet)" class="custom" detail="true"
+        <ion-item button *ngFor="let song of filteredSongs" (click)="navigate(song)" class="custom" detail="true"
                   lines="full">
           <ion-thumbnail slot="start">
             <img alt="Song" src="../../../assets/images/song.png"/>
           </ion-thumbnail>
           <ion-label>
-            <h2>{{sheet.song_id.title}}</h2>
-            <p>{{sheet.song_id.album_id.artist_id.name}}</p>
+            <h2>{{song.title}}</h2>
+            <p>
+              <span *ngFor="let artist of song.artists">{{artist.name}}</span>
+            </p>
           </ion-label>
         </ion-item>
-        <ion-item *ngIf="filteredSheets.length === 0" class="custom ion-text-center" lines="full">
-          <ion-label>Couldn't find any songs.</ion-label>
+        <ion-item *ngIf="filteredSongs.length === 0" class="custom ion-text-center" lines="full">
+          <ion-label *ngIf="connected; else disconnected">Couldn't find any songs.</ion-label>
+          <ng-template #disconnected>
+            <ion-label class="ion-text-wrap">No connection. Please check your internet connection.</ion-label>
+          </ng-template>
         </ion-item>
       </ion-list>
     </ng-template>

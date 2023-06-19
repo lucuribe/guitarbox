@@ -2,10 +2,8 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {IonicModule, ModalController} from '@ionic/angular';
-import {MatIconModule} from "@angular/material/icon";
 import {StorageService} from "../../services/storage.service";
 import {Instrument} from "../../interfaces/instrument";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {Router} from "@angular/router";
 import {LoadingComponent} from "../../components/loading/loading.component";
 import {SetupComponent} from "../../components/setup/setup.component";
@@ -19,7 +17,7 @@ import {FileOpener} from "@capacitor-community/file-opener";
   templateUrl: './menu.page.html',
   styleUrls: ['./menu.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, MatIconModule, MatProgressSpinnerModule, LoadingComponent]
+  imports: [IonicModule, CommonModule, FormsModule, LoadingComponent]
 })
 export class MenuPage implements OnInit {
   @ViewChild("instrumentSelect", {read: ElementRef}) instrumentSelect!: ElementRef;

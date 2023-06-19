@@ -32,46 +32,46 @@
                 <div *ngIf="bars.length < 12; then addBtnEnabled else addBtnDisabled"></div>
                 <ng-template #addBtnEnabled>
                   <ion-button (click)="addBar()" class="icon-btn" size="small" shape="round">
-                    <mat-icon slot="icon-only" aria-hidden="false" aria-label="Add icon"
-                              fontSet="material-symbols-rounded">add
-                    </mat-icon>
+                    <span slot="icon-only" aria-label="Add icon"
+                          class="material-symbols-rounded">add
+                    </span>
                   </ion-button>
                 </ng-template>
                 <ng-template #addBtnDisabled>
                   <ion-button class="icon-btn" size="small" shape="round" disabled="true">
-                    <mat-icon slot="icon-only" aria-hidden="false" aria-label="Add icon"
-                              fontSet="material-symbols-rounded">add
-                    </mat-icon>
+                    <span slot="icon-only" aria-label="Add icon"
+                          class="material-symbols-rounded">add
+                    </span>
                   </ion-button>
                 </ng-template>
                 <div *ngIf="bars.length > 1; then removeBtnEnabled else removeBtnDisabled"></div>
                 <ng-template #removeBtnEnabled>
                   <ion-button (click)="removeBar()" class="icon-btn" size="small" shape="round">
-                    <mat-icon slot="icon-only" aria-hidden="false" aria-label="Add icon"
-                              fontSet="material-symbols-rounded">remove
-                    </mat-icon>
+                    <span slot="icon-only" aria-label="Add icon"
+                          class="material-symbols-rounded">remove
+                    </span>
                   </ion-button>
                 </ng-template>
                 <ng-template #removeBtnDisabled>
                   <ion-button class="icon-btn" size="small" shape="round" disabled="true">
-                    <mat-icon slot="icon-only" aria-hidden="false" aria-label="Remove icon"
-                              fontSet="material-symbols-rounded">remove
-                    </mat-icon>
+                    <span slot="icon-only" aria-label="Remove icon"
+                          class="material-symbols-rounded">remove
+                    </span>
                   </ion-button>
                 </ng-template>
                 <div *ngIf="changesBeenMade; then resetBtnEnabled else resetBtnDisabled"></div>
                 <ng-template #resetBtnEnabled>
                   <ion-button (click)="resetBars()" class="icon-btn" size="small" shape="round">
-                    <mat-icon slot="icon-only" aria-hidden="false" aria-label="Refresh icon"
-                              fontSet="material-symbols-rounded">refresh
-                    </mat-icon>
+                    <span slot="icon-only" aria-label="Refresh icon"
+                          class="material-symbols-rounded">refresh
+                    </span>
                   </ion-button>
                 </ng-template>
                 <ng-template #resetBtnDisabled>
                   <ion-button class="icon-btn" size="small" shape="round" disabled="true">
-                    <mat-icon slot="icon-only" aria-hidden="false" aria-label="Refresh icon"
-                              fontSet="material-symbols-rounded">refresh
-                    </mat-icon>
+                    <span slot="icon-only" aria-label="Refresh icon"
+                          class="material-symbols-rounded">refresh
+                    </span>
                   </ion-button>
                 </ng-template>
               </div>
@@ -82,14 +82,14 @@
           <ion-button (click)="startStop()" class="icon-btn" shape="round">
             <div *ngIf="isRunning; then stopBtn else startBtn"></div>
             <ng-template #stopBtn>
-              <mat-icon slot="icon-only" aria-hidden="false" aria-label="Stop icon"
-                        fontSet="material-symbols-rounded">stop
-              </mat-icon>
+              <span slot="icon-only" aria-label="Stop icon"
+                    class="material-symbols-rounded">stop
+              </span>
             </ng-template>
             <ng-template #startBtn>
-              <mat-icon slot="icon-only" aria-hidden="false" aria-label="Play icon"
-                        fontSet="material-symbols-rounded">play_arrow
-              </mat-icon>
+              <span slot="icon-only" aria-label="Play icon"
+                    class="material-symbols-rounded">play_arrow
+              </span>
             </ng-template>
           </ion-button>
         </ion-col>

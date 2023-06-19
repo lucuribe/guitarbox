@@ -1,5 +1,5 @@
-:host ::ng-deep .custom-spinner circle{
-  stroke: var(--atomic-tangerine);
+ion-spinner {
+  --color: var(--atomic-tangerine);
 }
 
 .center {

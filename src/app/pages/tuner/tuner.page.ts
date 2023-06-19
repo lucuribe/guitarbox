@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {AlertController, IonicModule, Platform} from '@ionic/angular';
-import {MatIconModule} from "@angular/material/icon";
 import {Instrument} from "../../interfaces/instrument";
 import {StorageService} from "../../services/storage.service";
 import {Router} from "@angular/router";
@@ -17,7 +16,7 @@ declare const ml5: any;
   templateUrl: './tuner.page.html',
   styleUrls: ['./tuner.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, MatIconModule]
+  imports: [IonicModule, CommonModule, FormsModule]
 })
 export class TunerPage implements OnInit {
   // SUBSCRIPTIONS
@@ -39,7 +38,7 @@ export class TunerPage implements OnInit {
   advice = this.defaultAdvice;
 
   // STATS
-  detuneDifference = 1;
+  detuneDifference = 1.2;
   elapsedTimeRightPitch: any;
 
   // P5

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {IonicModule, ModalController} from "@ionic/angular";
 import {Router} from "@angular/router";
-import {MatIconModule} from "@angular/material/icon";
 import {Instrument} from "../../interfaces/instrument";
 import {StorageService} from "../../services/storage.service";
 import {FormsModule} from "@angular/forms";
@@ -11,7 +10,7 @@ import {FormsModule} from "@angular/forms";
   templateUrl: './setup-three.component.html',
   styleUrls: ['./setup-three.component.scss'],
   standalone: true,
-  imports: [IonicModule, MatIconModule, FormsModule]
+  imports: [IonicModule, FormsModule]
 })
 export class SetupThreeComponent  implements OnInit {
   instruments: Instrument[] = [

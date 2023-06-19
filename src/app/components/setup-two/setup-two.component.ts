@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {SetupThreeComponent} from "../setup-three/setup-three.component";
 import {AlertController, IonicModule, IonNav, Platform, ToastController} from "@ionic/angular";
-import {MatIconModule} from "@angular/material/icon";
 import {AndroidPermissions} from "@awesome-cordova-plugins/android-permissions/ngx"
 import {NgIf} from "@angular/common";
 
@@ -10,7 +9,7 @@ import {NgIf} from "@angular/common";
   templateUrl: './setup-two.component.html',
   styleUrls: ['./setup-two.component.scss'],
   standalone: true,
-  imports: [IonicModule, MatIconModule, NgIf]
+  imports: [IonicModule, NgIf]
 })
 export class SetupTwoComponent  implements OnInit {
   component = SetupThreeComponent;

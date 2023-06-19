@@ -11,7 +11,6 @@ const artistsRouter = require('./routes/artists');
 const genresRouter = require('./routes/genres');
 const albumsRouter = require('./routes/albums');
 const sheetsRouter = require('./routes/sheets');
-const instrumentsRouter = require('./routes/instruments');
 
 const app = express();
 mongoose.connect(process.env.DB_URI)
@@ -33,7 +32,6 @@ app.use('/artists', artistsRouter);
 app.use('/genres',genresRouter);
 app.use('/albums',albumsRouter);
 app.use('/sheets',sheetsRouter);
-app.use('/instruments',instrumentsRouter);
 
 module.exports = app;
 

@@ -5,13 +5,17 @@
         <ion-thumbnail slot="start">
           <img alt="Song" src="../../../assets/images/song.png"/>
         </ion-thumbnail>
-        <ion-label>
-          <h2 class="ion-text-wrap">{{sheet.song_id.title}}</h2>
-          <p>{{sheet.song_id.album_id.artist_id.name}}</p>
+        <ion-label class="ion-text-wrap">
+          <h2>{{song.title}}</h2>
+          <p>{{song.album.title}}</p>
+          <p>
+            <span *ngFor="let artist of song.artists">{{artist.name}}</span>
+          </p>
+          <ion-chip *ngFor="let genre of song.genres">{{genre.name}}</ion-chip>
         </ion-label>
         <ion-button (click)="navToMetronomeView()" slot="end" class="bpm-btn ion-no-margin" shape="round" fill="clear">
           <ion-icon slot="icon-only" name="heart"></ion-icon>
-          <ion-text>{{sheet.song_id.bpm}}</ion-text>
+          <ion-text>{{song.bpm}}</ion-text>
         </ion-button>
       </ion-item>
       <ion-item>
@@ -25,7 +29,7 @@
       <div class="ion-padding">
         <div class="song">
           <!-- TODO: arreglar estilo de letras y acordes -->
-          <div class="lyrics-font" [innerHTML]="sheet.lyrics"></div>
+          <div class="lyrics-font" [innerHTML]="song.lyrics"></div>
         </div>
       </div>
     </ion-card>

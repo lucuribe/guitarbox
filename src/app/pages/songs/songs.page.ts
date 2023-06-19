@@ -3,67 +3,101 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { NavigationExtras, Router } from "@angular/router";
-import { Sheet } from 'src/app/interfaces/sheet';
 import { DbService } from 'src/app/services/db.service';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {LoadingComponent} from "../../components/loading/loading.component";
-import {arrayFade, fade} from "../../animations";
+import {fadeIn} from "../../animations";
+import {Song} from "../../interfaces/song";
+import {StorageService} from "../../services/storage.service";
+import { Network } from '@capacitor/network';
 
 @Component({
   selector: 'app-songs',
   templateUrl: './songs.page.html',
   styleUrls: ['./songs.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, MatProgressSpinnerModule, LoadingComponent],
-  animations: [arrayFade, fade]
+  imports: [IonicModule, CommonModule, FormsModule, LoadingComponent],
+  animations: [fadeIn]
 })
 export class SongsPage implements OnInit {
-  sheets: Sheet[] = [];
-  filteredSheets: Sheet[] = [];
-  isLoading: boolean = true;
-  searchText: string = ''; // Variable para almacenar el texto de búsqueda
+  songs: Song[] = [];
+  filteredSongs: Song[] = [];
+  isLoading = false;
+  connected = true;
+  networkListener: any;
+  searchText = '';
 
-  constructor(
-    private router: Router,
-    private dbService: DbService) { }
+  constructor(private router: Router, private storage: StorageService, private dbService: DbService) {
+  }
 
   ngOnInit() {
   }
 
   ionViewWillEnter() {
-    this.isLoading = true;
-    this.dbService.getSheets().subscribe(res => {
-      this.sheets = res.sheets;
-      this.filterList();
+    this.loadSongs();
+  }
+
+  findSongsByTitle(song: Song) {
+    return song.title.toLowerCase().includes(this.searchText.trim().toLowerCase());
+  }
+
+  findSongsByArtist(song: Song) {
+    for (let artist of song.artists) {
+      if (artist.name.includes(this.searchText.trim().toLowerCase())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  filterSongs() {
+    this.filteredSongs = this.songs.filter(song => {
+      return this.findSongsByTitle(song) || this.findSongsByArtist(song);
+    });
+  }
+
+  async loadSongs() {
+    const status = await Network.getStatus();
+    this.connected = status.connected;
+    if (this.connected) {
+      this.isLoading = true;
+      const dbSongs = await this.dbService.getSongs();
+      if (dbSongs) {
+        this.songs = dbSongs;
+        this.storage.set('songs', this.songs);
+        console.log("Songs loaded: db", this.songs);
+      }
       this.isLoading = false;
-    });
+    } else {
+      if (!this.networkListener) {
+        this.networkListener = Network.addListener('networkStatusChange', status => {
+          if (status.connected) {
+            this.dbService.songsChanged = true;
+            this.loadSongs();
+            this.networkListener = this.networkListener.remove();
+            console.log("Listener removed:", this.networkListener);
+          }
+        });
+        console.log("Listener added:", this.networkListener);
+      }
+      if (this.songs.length === 0) {
+        const localSongs = await this.storage.get('songs');
+        if (localSongs) {
+          this.songs = localSongs;
+        }
+      }
+      console.log("Songs loaded: local", this.songs);
+    }
+    this.filterSongs();
   }
 
-  filterList() {
-    this.filteredSheets = this.sheets.filter(sheet => {
-      // Filtra por song_id.title o artist_id.name
-      return (
-        sheet.song_id.title.toLowerCase().includes(this.searchText.trim().toLowerCase()) ||
-        sheet.song_id.album_id.artist_id.name.toLowerCase().includes(this.searchText.trim().toLowerCase())
-      );
-    });
+  async handleRefresh(event: any) {
+    await this.loadSongs();
+    event.target.complete();
   }
 
-  handleRefresh(event: any) {
-    this.sheets = [];
-    this.filteredSheets = [];
-    this.isLoading = true;
-    this.dbService.getSheets().subscribe( res => {
-      this.isLoading = false;
-      this.sheets = res.sheets;
-      this.filterList();
-      event.target.complete();
-    });
-  }
-
-  navigate(sheet: Sheet) {
+  navigate(song: Song) {
     const navigationExtras: NavigationExtras = {
-      state: { sheet: sheet },
+      state: { song: song },
     };
     this.router.navigate(["songs/sheet"], navigationExtras);
   }

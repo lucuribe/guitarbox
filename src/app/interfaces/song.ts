@@ -1,20 +1,13 @@
-// export interface Song {
-//     id: number;
-//     title: string;
-//     artist: string;
-//     id_album: number;
-//     lyrics: string;
-//     bpm: number;
-//     duration: number;
-//   }
-
-  import { Album } from "./album";
+import {Album} from "./album";
+import {Genre} from "./genre";
+import {Artist} from "./artist";
 
 export interface Song {
-    id: number;
-    title: string;
-    bpm: number;
-    // duration: number;
-    album_id: Album;
-    // lyrics: string;
-  }
+  _id: string;
+  title: string;
+  bpm: number;
+  lyrics: string;
+  album: Album;
+  artists: Artist[];
+  genres: Genre[];
+}

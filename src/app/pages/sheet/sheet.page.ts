@@ -3,20 +3,19 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {IonicModule, IonModal} from '@ionic/angular';
 import {ActivatedRoute, NavigationExtras, Router} from "@angular/router";
-import {Sheet} from 'src/app/interfaces/sheet';
-import {MatIconModule} from "@angular/material/icon";
 import {Chord, SVGuitarChord} from 'svguitar';
 import {ChordsService} from "../../services/chords.service";
 import {Instrument} from "../../interfaces/instrument";
 import {StorageService} from "../../services/storage.service";
 import {KeepAwake} from "@capacitor-community/keep-awake";
+import {Song} from "../../interfaces/song";
 
 @Component({
   selector: 'app-sheet',
   templateUrl: './sheet.page.html',
   styleUrls: ['./sheet.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, MatIconModule]
+  imports: [IonicModule, CommonModule, FormsModule]
 })
 export class SheetPage implements OnInit {
   @ViewChild("charts", {read: ElementRef}) charts!: ElementRef;
@@ -25,7 +24,7 @@ export class SheetPage implements OnInit {
   // SUBSCRIPTIONS
   storageSub: any;
 
-  sheet!: Sheet;
+  song!: Song;
   sheetChords!: string[];
   currentInstrument!: Instrument;
   chords: Chord[] = [];
@@ -38,15 +37,16 @@ export class SheetPage implements OnInit {
     this.activeroute.queryParams.subscribe(params => {
       const navParams = this.router.getCurrentNavigation();
       if (navParams?.extras.state) {
-        this.sheet = navParams.extras.state['sheet'];
+        this.song = navParams.extras.state['song'];
+        console.log(this.song);
       }
     });
   }
 
   ngOnInit() {
     this.loadScript('assets/html-chords.js');
-    this.hasLyrics = this.sheet.lyrics.trim() != "";
-    this.sheetChords = this.extraerNotas(this.sheet.lyrics);
+    this.hasLyrics = this.song.lyrics.trim() != "";
+    this.sheetChords = this.extraerNotas(this.song.lyrics);
   }
 
   ionViewWillEnter() {
@@ -91,7 +91,7 @@ export class SheetPage implements OnInit {
   autoScroll() {
     console.log('Toggle AutoScroll');
     const card = document.querySelector('.card-lyrics') as HTMLElement;
-    const scrollSpeed = this.sheet.song_id.bpm/this.autoScrollSpeed;
+    const scrollSpeed = this.song.bpm/this.autoScrollSpeed;
     if (card) {
       console.log('card:', card);
       card.scrollTop = 0;
@@ -161,7 +161,7 @@ export class SheetPage implements OnInit {
 
   navToMetronomeView() {
     const navigationExtras: NavigationExtras = {
-      state: { bpm: this.sheet.song_id.bpm },
+      state: { bpm: this.song.bpm },
     };
     this.router.navigate(['metronome'], navigationExtras)
   }

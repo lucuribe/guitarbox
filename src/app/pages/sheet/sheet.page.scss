@@ -73,6 +73,11 @@ ion-button.text-btn {
   font-weight: 700;
 }
 
+ion-chip {
+  --background: var(--atomic-tangerine);
+  --color: var(--alice-blue);
+}
+
 ion-toolbar{
   color: var(--bole);
 }

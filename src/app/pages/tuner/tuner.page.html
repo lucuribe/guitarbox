@@ -1,5 +1,3 @@
-<!--app-tuner-component></app-tuner-component-->
-
 <ion-content [fullscreen]="true">
   <div class="main-container full-height">
     <div class="tuner-container stack">
@@ -25,14 +23,14 @@
       <ion-button (click)="startStop()" class="icon-btn" shape="round">
         <div *ngIf="hasStarted; then stopBtn else startBtn"></div>
         <ng-template #stopBtn>
-          <mat-icon slot="icon-only" aria-hidden="false" aria-label="Stop icon"
-                    fontSet="material-symbols-rounded">mic
-          </mat-icon>
+          <span slot="icon-only" aria-label="Stop icon"
+                class="material-symbols-rounded">mic
+          </span>
         </ng-template>
         <ng-template #startBtn>
-          <mat-icon slot="icon-only" aria-hidden="false" aria-label="Play icon"
-                    fontSet="material-symbols-rounded">mic_off
-          </mat-icon>
+          <span slot="icon-only" aria-label="Play icon"
+                    class="material-symbols-rounded">mic_off
+          </span>
         </ng-template>
       </ion-button>
     </div>

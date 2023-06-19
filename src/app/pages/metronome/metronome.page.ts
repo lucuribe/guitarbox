@@ -4,7 +4,6 @@ import {FormsModule} from '@angular/forms';
 import {
   AlertController, IonicModule, Platform, ToastController
 } from '@ionic/angular';
-import {MatIconModule} from "@angular/material/icon";
 import {Bar} from "../../interfaces/bar";
 import {arrayFade, fade} from "../../animations";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -15,7 +14,7 @@ import {KeepAwake} from "@capacitor-community/keep-awake";
   templateUrl: './metronome.page.html',
   styleUrls: ['./metronome.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, MatIconModule],
+  imports: [IonicModule, CommonModule, FormsModule],
   animations: [arrayFade, fade]
 })
 export class MetronomePage implements OnInit {

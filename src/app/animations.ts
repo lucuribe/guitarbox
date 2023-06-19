@@ -9,6 +9,13 @@ export const fade = trigger('fade', [
   ])
 ]);
 
+export const fadeIn = trigger('fadeIn', [
+  transition(':enter', [
+    style({ opacity: 0 }),
+    animate('100ms', style({ opacity: 1 })),
+  ])
+]);
+
 export const arrayFade = trigger('arrayFade', [
   transition(':enter, * => 0, * => -1', []),
   transition(':increment', [

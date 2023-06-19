@@ -12,7 +12,7 @@ p {
 ion-item {
   --color: var(--bole);
 
-  mat-icon {
+  span {
     color: var(--bole);
   }
 }
@@ -23,7 +23,7 @@ ion-button {
   --background-focused: var(--bole);
   --background-hover: var(--bole);
 
-  mat-icon {
+  span {
     color: var(--atomic-tangerine);
   }
 }

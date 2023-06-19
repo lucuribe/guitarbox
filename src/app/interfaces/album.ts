@@ -1,10 +1,12 @@
 import { Artist } from "./artist";
 import { Genre } from "./genre";
+import {Song} from "./song";
 
-export interface Album{
-    id: number;
-    title: string;
-    releaseDate?: Date;
-    artist_id: Artist;
-    genre_id: Genre;
+export interface Album {
+  _id: string;
+  title: string;
+  releaseDate?: Date;
+  songs: Song[];
+  artists: Artist[];
+  genres: Genre[];
 }

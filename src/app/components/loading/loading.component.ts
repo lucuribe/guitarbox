@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {IonicModule} from "@ionic/angular";
 
 @Component({
   selector: 'app-loading',
@@ -7,7 +7,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
   styleUrls: ['./loading.component.scss'],
   standalone: true,
   imports: [
-    MatProgressSpinnerModule
+    IonicModule
   ]
 })
 export class LoadingComponent  implements OnInit {
