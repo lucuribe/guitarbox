@@ -1,26 +1,25 @@
 <ion-menu menuId="settings" side="start" contentId="main-content">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Settings</ion-title>
+      <ion-title>{{ 'SETTINGS' | translate }}</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content>
     <ion-list class="ion-no-padding" lines="full">
       <ion-item class="medium-weight">
-        <ion-label slot="start">Instrument</ion-label>
-        <ion-select #instrumentSelect slot="end" aria-label="Instrument" [value]="currentInstrument" [compareWith]="compareWith" (ionChange)="changeInstrument($event)" placeholder="Select instrument">
-          <ion-select-option *ngFor="let instrument of instruments" [value]="instrument">{{instrument.name}}</ion-select-option>
+        <ion-label slot="start">{{ 'INSTRUMENT' | translate }}</ion-label>
+        <ion-select slot="end" aria-label="Instrument" [(ngModel)]="currentInstrument" [selectedText]="currentInstrument | translate" (ionChange)="changeInstrument($event)" placeholder="Select instrument">
+          <ion-select-option *ngFor="let instrument of instruments" [value]="instrument">{{ instrument | translate }}</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item detail="false" class="medium-weight">
-        <ion-label>Language</ion-label>
-        <ion-select slot="end" aria-label="Language" value="en" placeholder="Select instrument">
-          <ion-select-option value="en">English</ion-select-option>
-          <ion-select-option value="es">Spanish</ion-select-option>
+        <ion-label>{{ 'LANGUAGE' | translate }}</ion-label>
+        <ion-select slot="end" aria-label="Language" [(ngModel)]="currentLanguage" [selectedText]="'LANGUAGES.' + currentLanguage | translate" (ionChange)="changeLanguage($event)" placeholder="Select language">
+          <ion-select-option *ngFor="let language of languages" [value]="language">{{ 'LANGUAGES.' + language | translate }}</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item detail="false" class="medium-weight">
-        <ion-label>Theme</ion-label>
+        <ion-label>{{ 'THEME' | translate }}</ion-label>
         <ion-row slot="end" class="ion-align-items-center ion-no-padding">
           <ion-col size="auto">
             <span aria-label="Dark Mode icon" class="material-symbols-rounded">dark_mode</span>
@@ -39,17 +38,17 @@
 <ion-menu menuId="help" side="end" contentId="main-content">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Help</ion-title>
+      <ion-title>{{ 'HELP' | translate }}</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content>
     <ion-list class="ion-no-padding" lines="full">
       <ion-item button detail="true" class="medium-weight">
-        <ion-label>Tutorial</ion-label>
+        <ion-label>{{ 'TUTORIAL' | translate }}</ion-label>
         <span slot="end" aria-label="Lesson icon" class="material-symbols-rounded">school</span>
       </ion-item>
       <ion-item button (click)="openUserManual()" detail="true" class="medium-weight">
-        <ion-label>User Manual</ion-label>
+        <ion-label>{{ 'USER_MANUAL' | translate }}</ion-label>
         <span slot="end" aria-label="Book icon" class="material-symbols-rounded">menu_book</span>
       </ion-item>
     </ion-list>

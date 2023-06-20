@@ -12,10 +12,12 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 import { IonicStorageModule } from "@ionic/storage-angular";
 import {AndroidPermissions} from "@awesome-cordova-plugins/android-permissions/ngx";
 import 'hammerjs';
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 
 if (environment.production) {
   enableProdMode();
@@ -28,12 +30,33 @@ export class MyHammerConfig extends HammerGestureConfig {
   };
 }
 
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
+
 bootstrapApplication(AppComponent, {
   providers: [
-    AndroidPermissions,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    importProvidersFrom(IonicModule.forRoot({}), IonicStorageModule.forRoot({name: 'localdb'}), BrowserAnimationsModule, HttpClientModule, HammerModule),
-    provideRouter(routes),
     { provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig },
+    importProvidersFrom(
+      IonicModule.forRoot({}),
+      IonicStorageModule.forRoot({
+        name: 'localdb'
+      }),
+      TranslateModule.forRoot({
+        loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+        },
+        defaultLanguage: 'en',
+        useDefaultLang: true,
+      }),
+      BrowserAnimationsModule,
+      HttpClientModule,
+      HammerModule
+    ),
+    provideRouter(routes),
+    AndroidPermissions
   ],
 });

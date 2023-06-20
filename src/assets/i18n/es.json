@@ -1,0 +1,22 @@
+{
+  "SETTINGS": "Ajustes",
+  "INSTRUMENT": "Instrumento",
+  "GUITAR": "Guitarra",
+  "UKULELE": "Ukelele",
+  "LANGUAGE": "Idioma",
+  "LANGUAGES": {
+    "en": "Inglés",
+    "es": "Español"
+  },
+  "THEME": "Tema",
+  "HELP": "Ayuda",
+  "USER_MANUAL": "Manual de Usuario",
+  "TUTORIAL": "Tutorial",
+  "TUNER": {
+    "START": "Presiona para activar tu micrófono",
+    "UP": "Afina hacia arriba",
+    "DOWN": "Afina hacia abajo",
+    "REACHED": "Ya casi"
+  },
+  "SEARCH": "Buscar"
+}

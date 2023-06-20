@@ -1,12 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {AlertController, IonicModule, Platform} from '@ionic/angular';
-import {Instrument} from "../../interfaces/instrument";
 import {StorageService} from "../../services/storage.service";
 import {Router} from "@angular/router";
 import {AndroidPermissions} from "@awesome-cordova-plugins/android-permissions/ngx";
 import {KeepAwake} from "@capacitor-community/keep-awake";
+import {TranslateModule} from "@ngx-translate/core";
+import {Subscription} from "rxjs";
 
 declare const p5: any;
 declare const ml5: any;
@@ -16,13 +17,11 @@ declare const ml5: any;
   templateUrl: './tuner.page.html',
   styleUrls: ['./tuner.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, TranslateModule]
 })
-export class TunerPage implements OnInit {
+export class TunerPage {
   // SUBSCRIPTIONS
-  storageSub: any;
-  platformPauseSub: any;
-  platformResumeSub: any;
+  subscriptions: Subscription[] = [];
 
   // STATE
   hasStarted = false;
@@ -34,8 +33,7 @@ export class TunerPage implements OnInit {
 
   // DISPLAY
   note = '';
-  defaultAdvice = 'Tap to unmute your mic';
-  advice = this.defaultAdvice;
+  advice = "START";
 
   // STATS
   detuneDifference = 1.2;
@@ -63,42 +61,39 @@ export class TunerPage implements OnInit {
 
   // UTIL
   pitchReached = new Audio('../../assets/audio/pitch-reached.mp3');
-  selected!: Instrument;
+  selected = "GUITAR";
   selectedNotes: { note: string, freq: number }[] = [];
 
   constructor(private storage: StorageService, private router: Router, private platform: Platform, private androidPermissions: AndroidPermissions, private alertCtrl: AlertController) {
   }
 
-  ngOnInit() {
-  }
-
   ionViewWillEnter() {
     console.log('ionViewWillEnter TUNER');
     this.checkMicPermission();
-    this.platformPauseSub = this.platform.pause.subscribe( () => {
+    let platformPauseSub = this.platform.pause.subscribe( () => {
       if (this.hasStarted) {
         this.stopTuner();
       }
     });
-    this.platformResumeSub = this.platform.resume.subscribe( async () => {
+    let platformResumeSub = this.platform.resume.subscribe( async () => {
       await this.checkMicPermission();
     });
-    this.storageSub = this.storage.watchStorage().subscribe(res => {
+    let storageSub = this.storage.watchStorage().subscribe(res => {
       if (res.key === "instrument") {
         if (this.hasStarted) {
           this.stopTuner();
         }
       }
     });
+    this.subscriptions.push(platformPauseSub, platformResumeSub, storageSub)
   }
 
   ionViewWillLeave() {
     if (this.hasStarted) {
       this.stopTuner();
     }
-    this.storageSub = this.storageSub.unsubscribe();
-    this.platformResumeSub = this.platformResumeSub.unsubscribe();
-    this.platformPauseSub = this.platformPauseSub.unsubscribe();
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions = [];
   }
 
   async startStop() {
@@ -109,9 +104,9 @@ export class TunerPage implements OnInit {
         this.hasStarted = true;
         this.audioCtx = new AudioContext();
         this.selected = await this.storage.get('instrument');
-        if (this.selected.id === "guitar") {
+        if (this.selected === "GUITAR") {
           this.selectedNotes = this.guitarNotes;
-        } else if (this.selected.id === "ukulele") {
+        } else if (this.selected === "UKULELE") {
           this.selectedNotes = this.ukuleleNotes;
         }
         await KeepAwake.keepAwake();
@@ -129,7 +124,7 @@ export class TunerPage implements OnInit {
       })
     this.p5 = this.p5.remove();
     this.hasStarted = false
-    this.advice = this.defaultAdvice;
+    this.advice = "START";
     this.reached = false;
     this.rotation = this.defaultRotation;
     this.note = '';
@@ -160,18 +155,18 @@ export class TunerPage implements OnInit {
     this.reached = false;
     if (tuner.abs(toneDiff) < this.detuneDifference) {
       this.rotation = 'rotate(90deg)';
-      this.advice = 'Hold there';
+      this.advice = "REACHED";
       this.reached = true;
       if (this.elapsedTimeRightPitch === null) {
         this.elapsedTimeRightPitch = performance.now();
       }
     } else if (toneDiff > this.detuneDifference) {
       this.rotation = 'rotate(180deg)';
-      this.advice = 'Tune down';
+      this.advice = "DOWN";
       this.elapsedTimeRightPitch = null;
     } else if (toneDiff < -this.detuneDifference) {
       this.rotation = 'rotate(0deg)';
-      this.advice = 'Tune up';
+      this.advice = "UP";
       this.elapsedTimeRightPitch = null;
     }
     this.note = noteDetected.note;

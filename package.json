@@ -37,6 +37,7 @@
     "@ionic/storage-angular": "^4.0.0",
     "@mdi/angular-material": "^2.6.95",
     "@ngx-translate/core": "^15.0.0",
+    "@ngx-translate/http-loader": "^8.0.0",
     "cordova-plugin-android-permissions": "^1.1.5",
     "hammerjs": "^2.0.8",
     "ionicons": "^7.0.0",
