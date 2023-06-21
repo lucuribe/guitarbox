@@ -1,44 +1,44 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {IonicModule, ModalController} from '@ionic/angular';
 import {StorageService} from "../../services/storage.service";
-import {Instrument} from "../../interfaces/instrument";
 import {Router} from "@angular/router";
 import {LoadingComponent} from "../../components/loading/loading.component";
 import {SetupComponent} from "../../components/setup/setup.component";
 import {Directory, Filesystem} from '@capacitor/filesystem';
 import {HttpClient} from "@angular/common/http";
 import {FileOpener} from "@capacitor-community/file-opener";
-
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.page.html',
   styleUrls: ['./menu.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, LoadingComponent]
+  imports: [IonicModule, CommonModule, FormsModule, LoadingComponent, TranslateModule]
 })
-export class MenuPage implements OnInit {
-  @ViewChild("instrumentSelect", {read: ElementRef}) instrumentSelect!: ElementRef;
-
-  instruments: Instrument[] = [
-    {id: "guitar", name: "Guitar"},
-    {id: "ukulele", name: "Ukulele"}
-  ];
-  currentInstrument: Instrument = this.instruments[0];
+export class MenuPage {
+  instruments = ['GUITAR', 'UKULELE'];
+  languages = ['en', 'es'];
+  currentInstrument = this.instruments[0];
+  currentLanguage = this.languages[0];
   userManualUri = '';
 
   isLoading = true;
 
-  constructor(private router: Router, private storage: StorageService, private modalCtrl: ModalController, private httpClient: HttpClient) { }
+  constructor(private router: Router, private storage: StorageService, private modalCtrl: ModalController, private httpClient: HttpClient, private translate: TranslateService) {
+    // this language will be used as a fallback when a translation isn't found in the current language
+    translate.setDefaultLang('en');
 
-  ngOnInit() {
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+    translate.use('en');
   }
 
   async ionViewWillEnter() {
     await this.checkSetupDone();
     await this.getCurrentInstrument();
+    await this.getCurrentLanguage();
     await this.getUserManualUri();
     this.isLoading = false;
   }
@@ -54,6 +54,14 @@ export class MenuPage implements OnInit {
     const instrument = await this.storage.get('instrument');
     if (instrument) {
       this.currentInstrument = instrument;
+    }
+  }
+
+  async getCurrentLanguage() {
+    const language = await this.storage.get('language');
+    if (language) {
+      this.translate.use(language);
+      this.currentLanguage = language;
     }
   }
 
@@ -96,8 +104,9 @@ export class MenuPage implements OnInit {
     this.storage.set('instrument', ev.target.value);
   }
 
-  compareWith(o1: any, o2: any) {
-    return o1 && o2 ? o1.id === o2.id : o1 === o2;
+  changeLanguage(ev: any) {
+    this.translate.use(ev.target.value);
+    this.storage.set('language', ev.target.value);
   }
 
   navToMainView() {

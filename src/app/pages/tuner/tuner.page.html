@@ -1,7 +1,7 @@
 <ion-content [fullscreen]="true">
   <div class="main-container full-height">
     <div class="tuner-container stack">
-      <ion-text>{{ advice }}</ion-text>
+      <ion-text>{{ 'TUNER.' + advice | translate }}</ion-text>
       <div *ngIf="reached; else circleContainerEl" class="circle-container">
         <div [ngStyle]="{'transform': rotation}" class="indicator">
           <div class="dot reached"></div>

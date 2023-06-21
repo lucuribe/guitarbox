@@ -1,0 +1,22 @@
+{
+  "SETTINGS": "Settings",
+  "INSTRUMENT": "Instrument",
+  "GUITAR": "Guitar",
+  "UKULELE": "Ukulele",
+  "LANGUAGE": "Language",
+  "LANGUAGES": {
+    "en": "English",
+    "es": "Spanish"
+  },
+  "THEME": "Theme",
+  "HELP": "Help",
+  "USER_MANUAL": "User Manual",
+  "TUTORIAL": "Tutorial",
+  "TUNER": {
+    "START": "Tap to unmute your mic",
+    "UP": "Tune up",
+    "DOWN": "Tune down",
+    "REACHED": "Hold there"
+  },
+  "SEARCH": "Search"
+}
