@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {AlertController, IonicModule, Platform} from '@ionic/angular';
+import {IonicModule, Platform} from '@ionic/angular';
 import {StorageService} from "../../services/storage.service";
 import {Router} from "@angular/router";
 import {AndroidPermissions} from "@awesome-cordova-plugins/android-permissions/ngx";
@@ -30,6 +30,7 @@ export class TunerPage {
   defaultRotation = 'rotate(0deg)';
   rotation = this.defaultRotation;
   hasPermission = true;
+  isAlertOpen = false;
 
   // DISPLAY
   note = '';
@@ -64,7 +65,7 @@ export class TunerPage {
   selected = "GUITAR";
   selectedNotes: { note: string, freq: number }[] = [];
 
-  constructor(private storage: StorageService, private router: Router, private platform: Platform, private androidPermissions: AndroidPermissions, private alertCtrl: AlertController) {
+  constructor(private storage: StorageService, private router: Router, private platform: Platform, private androidPermissions: AndroidPermissions) {
   }
 
   ionViewWillEnter() {
@@ -112,7 +113,7 @@ export class TunerPage {
         await KeepAwake.keepAwake();
         new p5((tuner: any) => this.handleInput(tuner, this));
       } else {
-        await this.presentAlert();
+        await this.setOpen(true);
       }
     }
   }
@@ -219,13 +220,7 @@ export class TunerPage {
     };
   }
 
-  async presentAlert() {
-    const alert = await this.alertCtrl.create({
-      header: 'Microphone Permission Not Granted',
-      message: "It appears you haven't granted microphone permission. The tuner feature requires microphone access. You can manually grant permissions in your device's settings.",
-      buttons: ['OK'],
-    });
-
-    await alert.present();
+  setOpen(isOpen: boolean) {
+    this.isAlertOpen = isOpen;
   }
 }

@@ -9,13 +9,14 @@ import {fadeIn} from "../../animations";
 import {Song} from "../../interfaces/song";
 import {StorageService} from "../../services/storage.service";
 import { Network } from '@capacitor/network';
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-songs',
   templateUrl: './songs.page.html',
   styleUrls: ['./songs.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, LoadingComponent],
+  imports: [IonicModule, CommonModule, FormsModule, LoadingComponent, TranslateModule],
   animations: [fadeIn]
 })
 export class SongsPage implements OnInit {

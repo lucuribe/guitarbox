@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Chord} from "svguitar";
-import {Instrument} from "../interfaces/instrument";
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +10,8 @@ export class ChordsService {
   urlBase = 'assets/chords';
   constructor(private httpClient: HttpClient) { }
 
-  loadChords(instrument: Instrument) {
-    if (instrument.id === 'guitar') {
+  loadChords(instrument: string) {
+    if (instrument === 'GUITAR') {
       this.httpClient.get<{chords: Chord[]}>(this.urlBase + '/guitar.json').subscribe(res => {
         this.chords = res['chords'];
       });

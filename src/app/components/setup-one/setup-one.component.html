@@ -5,7 +5,7 @@
         <ion-col class="ion-text-center" size="12">
           <p>GuitarBox</p>
           <br>
-          <ion-label>Welcome to Guitarbox! This mobile app is designed to facilitate guitar practice and learning by offering features such as a metronome, tuner, and a collection of song sheets. We're excited to have you on board. Let's get started with the initial setup of the app.</ion-label>
+          <ion-label>{{ 'SETUP.WELCOME.MESSAGE' | translate }}</ion-label>
         </ion-col>
         <ion-col size="12">
           <swiper-container scrollbar="true" space-between="30" autoplay-delay="2500" autoplay-disable-on-interaction="false">
@@ -21,7 +21,7 @@
           </swiper-container>
         </ion-col>
         <ion-col class="ion-text-center" size="12">
-          <ion-label class="subtitle">Press the button to continue</ion-label>
+          <ion-label class="subtitle">{{ 'SETUP.NEXT' | translate }}</ion-label>
         </ion-col>
         <ion-col size="auto">
           <ion-nav-link router-direction="forward" [component]="component">

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {SetupOneComponent} from "../setup-one/setup-one.component";
 import {IonicModule, IonNav, Platform} from "@ionic/angular";
 import {CommonModule} from "@angular/common";
@@ -10,16 +10,13 @@ import {CommonModule} from "@angular/common";
   standalone: true,
   imports: [IonicModule, CommonModule]
 })
-export class SetupComponent  implements OnInit {
+export class SetupComponent {
   @ViewChild("ionNav", {read: IonNav}) ionNav!: IonNav;
 
   backButtonSub!: any;
   component = SetupOneComponent;
 
   constructor(private platform: Platform) {
-  }
-
-  ngOnInit() {
   }
 
   ionViewWillEnter() {

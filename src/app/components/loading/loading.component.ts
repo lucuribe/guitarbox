@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 
 @Component({
@@ -10,8 +10,6 @@ import {IonicModule} from "@ionic/angular";
     IonicModule
   ]
 })
-export class LoadingComponent  implements OnInit {
+export class LoadingComponent {
   constructor() { }
-
-  ngOnInit() {}
 }

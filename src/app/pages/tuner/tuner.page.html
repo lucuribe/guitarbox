@@ -49,5 +49,12 @@
         </ion-row>
       </ion-grid>
     </div>
+    <ion-alert
+      [isOpen]="isAlertOpen"
+      header="{{ 'TUNER.ALERT.HEADER' | translate }}"
+      message="{{ 'TUNER.ALERT.MESSAGE' | translate }}"
+      [buttons]="['OK']"
+      (didDismiss)="setOpen(false)"
+    ></ion-alert>
   </div>
 </ion-content>

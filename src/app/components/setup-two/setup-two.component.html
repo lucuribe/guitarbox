@@ -3,9 +3,9 @@
     <ion-grid>
       <ion-row class="ion-justify-content-center">
         <ion-col class="ion-text-center" size="auto">
-          <ion-label>To fully utilize the tuner feature in Guitarbox, we need your permission to access the microphone on your device.</ion-label>
+          <ion-label>{{ 'SETUP.MIC.MESSAGE' | translate }}</ion-label>
           <br><br>
-          <ion-label class="subtitle">Press the button to continue</ion-label>
+          <ion-label class="subtitle">{{ 'SETUP.NEXT' | translate }}</ion-label>
         </ion-col>
         <ion-col size="12"></ion-col>
         <ion-col size="auto">
@@ -17,5 +17,18 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+    <ion-alert
+      [isOpen]="isAlertOpen"
+      header="{{ 'SETUP.MIC.ALERT.HEADER' | translate }}"
+      message="{{ 'SETUP.MIC.ALERT.MESSAGE' | translate }}"
+      [buttons]="['OK']"
+      (didDismiss)="setAlertOpen(false)"
+    ></ion-alert>
+    <ion-toast
+      [isOpen]="isToastOpen"
+      message="{{ 'SETUP.MIC.TOAST' | translate }}"
+      [duration]="1000"
+      (didDismiss)="setToastOpen(false)"
+    ></ion-toast>
   </div>
 </ion-content>

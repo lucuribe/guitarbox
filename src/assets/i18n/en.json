@@ -1,4 +1,23 @@
 {
+  "SETUP": {
+    "WELCOME": {
+      "MESSAGE": "Welcome to Guitarbox! This mobile app is designed to facilitate guitar practice and learning by offering features such as a metronome, tuner, and a collection of song sheets. We're excited to have you on board. Let's get started with the initial setup of the app."
+    },
+    "MIC": {
+      "MESSAGE": "To fully utilize the tuner feature in Guitarbox, we need your permission to access the microphone on your device.",
+      "ALERT": {
+        "HEADER": "Microphone Permission Not Granted",
+        "MESSAGE": "It appears you haven't granted microphone permission. The tuner feature requires microphone access. You can manually grant permissions in your device's settings when you're ready."
+      },
+      "TOAST": "Microphone permission already granted!"
+    },
+    "INSTRUMENT": {
+      "MESSAGE": "Now it's time to select the instrument you want to work with in Guitarbox.",
+      "NOTE": "However, please note that you can change the instrument at any time in the app's settings."
+    },
+    "NEXT": "Press the button to continue",
+    "EXIT": "Press the button to exit the setup"
+  },
   "SETTINGS": "Settings",
   "INSTRUMENT": "Instrument",
   "GUITAR": "Guitar",
@@ -16,7 +35,25 @@
     "START": "Tap to unmute your mic",
     "UP": "Tune up",
     "DOWN": "Tune down",
-    "REACHED": "Hold there"
+    "REACHED": "Hold there",
+    "ALERT": {
+      "HEADER": "Microphone Permission Not Granted",
+      "MESSAGE": "It appears you haven't granted microphone permission. The tuner feature requires microphone access. You can manually grant permissions in your device's settings."
+    }
   },
-  "SEARCH": "Search"
+  "METRONOME": {
+    "ALERT": "Enter BPM",
+    "TOAST": "BPM is out of range ({{minBpm}}-{{maxBpm}})"
+  },
+  "CANCEL": "Cancel",
+  "SEARCH": "Search",
+  "CATEGORIES": {
+    "SONGS": "Songs"
+  },
+  "SONGS": {
+    "ANY": "Couldn't find any songs.",
+    "DISCONNECTED": "No connection. Please check your internet connection."
+  },
+  "CHARTS": "Charts",
+  "BACK": "Back"
 }

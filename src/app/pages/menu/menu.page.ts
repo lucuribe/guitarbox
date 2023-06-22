@@ -10,6 +10,7 @@ import {Directory, Filesystem} from '@capacitor/filesystem';
 import {HttpClient} from "@angular/common/http";
 import {FileOpener} from "@capacitor-community/file-opener";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {Device} from "@capacitor/device";
 
 @Component({
   selector: 'app-menu',
@@ -36,9 +37,9 @@ export class MenuPage {
   }
 
   async ionViewWillEnter() {
+    await this.getCurrentLanguage();
     await this.checkSetupDone();
     await this.getCurrentInstrument();
-    await this.getCurrentLanguage();
     await this.getUserManualUri();
     this.isLoading = false;
   }
@@ -58,10 +59,18 @@ export class MenuPage {
   }
 
   async getCurrentLanguage() {
-    const language = await this.storage.get('language');
+    let language = await this.storage.get('language');
     if (language) {
       this.translate.use(language);
       this.currentLanguage = language;
+    } else {
+      let deviceLanguage = await Device.getLanguageCode();
+      language = this.languages.find(lang => deviceLanguage.value === lang)
+      if (language) {
+        this.translate.use(language);
+        this.currentLanguage = language;
+        this.storage.set('language', language);
+      }
     }
   }
 

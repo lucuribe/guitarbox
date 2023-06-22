@@ -5,17 +5,17 @@ import {IonicModule, IonModal} from '@ionic/angular';
 import {ActivatedRoute, NavigationExtras, Router} from "@angular/router";
 import {Chord, SVGuitarChord} from 'svguitar';
 import {ChordsService} from "../../services/chords.service";
-import {Instrument} from "../../interfaces/instrument";
 import {StorageService} from "../../services/storage.service";
 import {KeepAwake} from "@capacitor-community/keep-awake";
 import {Song} from "../../interfaces/song";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-sheet',
   templateUrl: './sheet.page.html',
   styleUrls: ['./sheet.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, TranslateModule]
 })
 export class SheetPage implements OnInit {
   @ViewChild("charts", {read: ElementRef}) charts!: ElementRef;
@@ -26,7 +26,7 @@ export class SheetPage implements OnInit {
 
   song!: Song;
   sheetChords!: string[];
-  currentInstrument!: Instrument;
+  currentInstrument = "GUITAR";
   chords: Chord[] = [];
   autoScrollSpeed = 6;
   autoScrollActive = false;
@@ -44,7 +44,7 @@ export class SheetPage implements OnInit {
   }
 
   ngOnInit() {
-    this.loadScript('assets/html-chords.js');
+    this.loadScript('assets/js/html-chords.js');
     this.hasLyrics = this.song.lyrics.trim() != "";
     this.sheetChords = this.extraerNotas(this.song.lyrics);
   }
@@ -188,7 +188,7 @@ export class SheetPage implements OnInit {
         this.charts.nativeElement.appendChild(chartCol);
 
         let strings = 6;
-        if (this.currentInstrument.id === 'ukulele') {
+        if (this.currentInstrument === 'UKULELE') {
           strings = 4;
         }
 
@@ -225,7 +225,7 @@ export class SheetPage implements OnInit {
         const chartDetail = document.createElement('p');
         chartDetail.style.fontSize = '15px';
         const chartImg = document.createElement('img');
-        if (this.currentInstrument.id === 'guitar') {
+        if (this.currentInstrument === 'GUITAR') {
           chartImg.src = '../../../assets/images/guitar/' + sheetChord + '.png'
         } else {
           chartImg.src = '../../../assets/images/ukulele/' + sheetChord + '.png'

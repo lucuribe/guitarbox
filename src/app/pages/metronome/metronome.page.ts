@@ -1,27 +1,30 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {
-  AlertController, IonicModule, Platform, ToastController
+  AlertController, IonicModule, Platform
 } from '@ionic/angular';
 import {Bar} from "../../interfaces/bar";
 import {arrayFade, fade} from "../../animations";
 import {ActivatedRoute, Router} from "@angular/router";
 import {KeepAwake} from "@capacitor-community/keep-awake";
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {StorageService} from "../../services/storage.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-metronome',
   templateUrl: './metronome.page.html',
   styleUrls: ['./metronome.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule],
+  imports: [IonicModule, CommonModule, FormsModule, TranslateModule],
   animations: [arrayFade, fade]
 })
-export class MetronomePage implements OnInit {
+export class MetronomePage {
   @ViewChild("bpmPicker", {read: ElementRef}) bpmPicker!: ElementRef;
 
   // SUBSCRIPTIONS
-  platformSub: any;
+  subscriptions: Subscription[] = [];
 
   audioContext: any;
   intervalID: any;
@@ -45,8 +48,13 @@ export class MetronomePage implements OnInit {
   nextNoteTime = 0.0; // when the next note is due
   isRunning = false;
   changesBeenMade = false;
+  isToastOpen = false;
+  translations!: {
+    "METRONOME.ALERT": string,
+    "CANCEL": string
+  }
 
-  constructor(private alertCtrl: AlertController, private toastCtrl: ToastController, private platform: Platform, private activeroute: ActivatedRoute, private router: Router) {
+  constructor(private translate: TranslateService, private storage: StorageService, private alertCtrl: AlertController, private platform: Platform, private activeroute: ActivatedRoute, private router: Router) {
     this.activeroute.queryParams.subscribe(params => {
       const navParams = this.router.getCurrentNavigation();
       if (navParams?.extras.state) {
@@ -55,25 +63,34 @@ export class MetronomePage implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
-
   ionViewWillEnter() {
-    this.platformSub = this.platform.pause.subscribe(async () => {
+    this.loadTranslations();
+    let platformPauseSub = this.platform.pause.subscribe(async () => {
       console.log('platform paused')
       if (this.isRunning) {
         this.stop();
       }
     });
+    let storageSub = this.storage.watchStorage().subscribe(res => {
+      if (res.key === "language") {
+        this.loadTranslations();
+      }
+    });
+    this.subscriptions.push(platformPauseSub, storageSub)
   }
 
   ionViewWillLeave() {
-    this.platformSub = this.platformSub.unsubscribe();
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions = [];
+  }
+
+  loadTranslations() {
+    this.translations = this.translate.instant(['METRONOME.ALERT', 'CANCEL']);
   }
 
   async showBpmInput() {
     const alert = await this.alertCtrl.create({
-      header: "Enter BPM",
+      header: this.translations["METRONOME.ALERT"],
       cssClass: "custom-alert",
       inputs: [
         {
@@ -88,7 +105,7 @@ export class MetronomePage implements OnInit {
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: this.translations["CANCEL"],
           cssClass: 'custom-alert-button',
           role: 'cancel',
         },
@@ -100,7 +117,7 @@ export class MetronomePage implements OnInit {
               this.bpm = data.bpm;
               return true;
             } else {
-              this.presentToast('bottom', 'BPM is out of range (' + this.minBpm + '-' + this.maxBpm + ')');
+              this.setToastOpen(true);
               return false;
             }
           }
@@ -111,14 +128,8 @@ export class MetronomePage implements OnInit {
     await alert.present();
   }
 
-  async presentToast(position: 'top' | 'middle' | 'bottom', message: string) {
-    const toast = await this.toastCtrl.create({
-      message: message,
-      duration: 1500,
-      position: position
-    });
-
-    await toast.present();
+  setToastOpen(isOpen: boolean) {
+    this.isToastOpen = isOpen;
   }
 
   addBar() {

@@ -95,5 +95,11 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+    <ion-toast
+      [isOpen]="isToastOpen"
+      message="{{ 'METRONOME.TOAST' | translate:{minBpm, maxBpm} }}"
+      [duration]="1500"
+      (didDismiss)="setToastOpen(false)"
+    ></ion-toast>
   </div>
 </ion-content>

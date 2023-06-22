@@ -1,4 +1,23 @@
 {
+  "SETUP": {
+    "WELCOME": {
+      "MESSAGE": "¡Bienvenido a Guitarbox! Esta aplicación móvil está diseñada para facilitar la práctica y el aprendizaje de la guitarra al ofrecer características como un metrónomo, afinador y una colección de partituras de canciones. Estamos emocionados de tenerte a bordo. Comencemos con la configuración inicial de la aplicación."
+    },
+    "MIC": {
+      "MESSAGE": "Para aprovechar al máximo la función de afinador en Guitarbox, necesitamos tu permiso para acceder al micrófono de tu dispositivo.",
+      "ALERT": {
+        "HEADER": "Permiso de micrófono no concedido",
+        "MESSAGE": "Parece que no has otorgado el permiso de acceso al micrófono. La función de afinador requiere acceso al micrófono. Puedes otorgar los permisos manualmente en la configuración de tu dispositivo cuando estés listo."
+      },
+      "TOAST": "Permiso de micrófono ya otorgado"
+    },
+    "INSTRUMENT": {
+      "MESSAGE": "Ahora es el momento de seleccionar el instrumento que deseas utilizar en Guitarbox.",
+      "NOTE": "Sin embargo, ten en cuenta que puedes cambiar el instrumento en cualquier momento en la configuración de la aplicación."
+    },
+    "NEXT": "Presione el botón para continuar",
+    "EXIT": "Presione el botón para finalizar la configuración"
+  },
   "SETTINGS": "Ajustes",
   "INSTRUMENT": "Instrumento",
   "GUITAR": "Guitarra",
@@ -16,7 +35,25 @@
     "START": "Presiona para activar tu micrófono",
     "UP": "Afina hacia arriba",
     "DOWN": "Afina hacia abajo",
-    "REACHED": "Ya casi"
+    "REACHED": "Ya casi",
+    "ALERT": {
+      "HEADER": "Permiso de micrófono no concedido",
+      "MESSAGE": "Parece que no has otorgado el permiso de acceso al micrófono. La función de afinador requiere acceso al micrófono. Puedes otorgar los permisos manualmente en la configuración de tu dispositivo."
+    }
   },
-  "SEARCH": "Buscar"
+  "METRONOME": {
+    "ALERT": "Ingresar BPM",
+    "TOAST": "BPM fuera de rango ({{minBpm}}-{{maxBpm}})"
+  },
+  "CANCEL": "Cancelar",
+  "SEARCH": "Buscar",
+  "CATEGORIES": {
+    "SONGS": "Canciones"
+  },
+  "SONGS": {
+    "ANY": "No se pudieron encontrar coincidencias.",
+    "DISCONNECTED": "Sin conexión. Por favor verifica tu conexión a Internet."
+  },
+  "CHARTS": "Diagramas",
+  "BACK": "Volver"
 }
