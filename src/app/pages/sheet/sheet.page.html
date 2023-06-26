@@ -1,57 +1,56 @@
-<ion-content [fullscreen]="true">
-  <div class="main-container">
-    <ion-list>
-      <ion-item class="custom" lines="full">
-        <ion-thumbnail slot="start">
-          <img alt="Song" src="../../../assets/images/song.png"/>
-        </ion-thumbnail>
-        <ion-label class="ion-text-wrap">
-          <h2>{{song.title}}</h2>
-          <p>{{song.album.title}}</p>
-          <p>
-            <span *ngFor="let artist of song.artists">{{artist.name}}</span>
-          </p>
-          <ion-chip *ngFor="let genre of song.genres">{{genre.name}}</ion-chip>
-        </ion-label>
-        <ion-button (click)="navToMetronomeView()" slot="end" class="bpm-btn ion-no-margin" shape="round" fill="clear">
-          <ion-icon slot="icon-only" name="heart"></ion-icon>
-          <ion-text>{{song.bpm}}</ion-text>
-        </ion-button>
-      </ion-item>
-      <ion-item lines="full">
-        <ion-button *ngIf="this.hasLyrics" id="open-modal" shape="round" class="text-btn">{{ 'CHARTS' | translate }}</ion-button>
-        <ion-button slot="end" class="star-btn" size="small" shape="round" fill="clear">
-          <ion-icon slot="icon-only" name="star-outline"></ion-icon>
-        </ion-button>
-      </ion-item>
-    </ion-list>
-    <ion-card *ngIf="this.hasLyrics" class="card-lyrics" (click)="autoScroll()">
-      <div class="ion-padding">
-        <div class="song">
-          <!-- TODO: arreglar estilo de letras y acordes -->
-          <div class="lyrics-font" [innerHTML]="song.lyrics"></div>
-        </div>
-      </div>
-    </ion-card>
-    <ion-card *ngIf="!this.hasLyrics" class="ion-text-center">
-      <h3 class="no-lyrics-warning">At the moment, this song doesn't have lyrics.</h3>
-    </ion-card>
-  </div>
-  <ion-modal trigger="open-modal" class="modal" (willPresent)="showCharts();">
-    <ng-template>
-      <ion-header>
-        <ion-toolbar>
-          <ion-buttons slot="start">
-            <ion-button (click)="dismissCharts();">{{ 'BACK' | translate }}</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content class="ion-padding-top">
-        <ion-grid>
-          <ion-row #charts class="ion-justify-content-center">
-          </ion-row>
-        </ion-grid>
-      </ion-content>
-    </ng-template>
-  </ion-modal>
+<ion-header style="box-shadow: none">
+  <ion-list>
+    <ion-item class="custom" lines="full">
+      <ion-thumbnail slot="start">
+        <img alt="Song" src="../../../assets/images/song.png"/>
+      </ion-thumbnail>
+      <ion-label class="ion-text-wrap">
+        <h2>{{song.title}}</h2>
+        <p>{{song.album.title}}</p>
+        <p>
+          <span *ngFor="let artist of song.artists">{{artist.name}}</span>
+        </p>
+        <ion-chip *ngFor="let genre of song.genres">{{genre.name}}</ion-chip>
+      </ion-label>
+      <ion-button (click)="navToMetronomeView()" slot="end" class="bpm-btn ion-no-margin" shape="round" fill="clear">
+        <ion-icon slot="icon-only" name="heart"></ion-icon>
+        <ion-text>{{song.bpm}}</ion-text>
+      </ion-button>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-button *ngIf="this.hasLyrics" id="open-modal" shape="round" class="text-btn">{{ 'CHARTS' | translate }}</ion-button>
+      <ion-button slot="end" class="star-btn" size="small" shape="round" fill="clear">
+        <ion-icon slot="icon-only" name="star-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-header>
+<ion-content [fullscreen]="true" scrollY="false">
+  <ion-card #card *ngIf="this.hasLyrics; else noLyrics" class="ion-no-margin ion-padding-horizontal" (click)="autoScroll()">
+    <div class="song ion-padding-end">
+      <div class="lyrics-font" [innerHTML]="song.lyrics"></div>
+    </div>
+  </ion-card>
+  <ng-template #noLyrics>
+    <ion-label class="ion-text-center ion-text-wrap ion-margin">
+      <h2>{{ "SHEETS.NO_CHORDS" | translate }}</h2>
+    </ion-label>
+  </ng-template>
 </ion-content>
+<ion-modal trigger="open-modal" class="modal" (willPresent)="showCharts();">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="dismissCharts();">{{ 'BACK' | translate }}</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding-top">
+      <ion-grid>
+        <ion-row #charts class="ion-justify-content-center">
+        </ion-row>
+      </ion-grid>
+    </ion-content>
+  </ng-template>
+</ion-modal>

@@ -8,17 +8,13 @@ span {
 
 ion-card {
   --background: var(--bg);
-}
-
-$altura-encabezado: 145px;
-$altura-pie-pagina: 100px;
-.card-lyrics {
-    height: calc(100vh - #{$altura-encabezado} - #{$altura-pie-pagina});
-    overflow: auto;
+  box-shadow: none;
+  height: 100%;
+  overflow: auto;
 }
 
 .song {
-    line-height: 230%;
+  line-height: 32px;
 }
 
 .wrapper {
@@ -50,7 +46,9 @@ ion-item.custom {
       height: 36px;
     }
   }
+}
 
+ion-label {
   p, h2 {
     color: var(--text);
     margin: 0;

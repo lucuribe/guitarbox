@@ -19,6 +19,7 @@ import {TranslateModule} from "@ngx-translate/core";
 })
 export class SheetPage implements OnInit {
   @ViewChild("charts", {read: ElementRef}) charts!: ElementRef;
+  @ViewChild("card", {read: ElementRef}) card!: ElementRef;
   @ViewChild(IonModal) modal!: IonModal;
 
   // SUBSCRIPTIONS
@@ -88,18 +89,16 @@ export class SheetPage implements OnInit {
   }
 
   autoScroll() {
-    console.log('Toggle AutoScroll');
-    const card = document.querySelector('.card-lyrics') as HTMLElement;
+    const card = this.card.nativeElement;
     const scrollSpeed = this.song.bpm/this.autoScrollSpeed;
     if (card) {
-      console.log('card:', card);
       card.scrollTop = 0;
       const scrollHeight = card.scrollHeight - card.clientHeight;
       const scrollStep = (Math.PI / (scrollHeight / 2));
       let count = 0;
       if (this.autoScrollActive) { // si el autoscroll está activo, detenerlo
-        clearInterval(this.autoScrollInterval);
         this.autoScrollActive = false;
+        clearInterval(this.autoScrollInterval);
         KeepAwake.allowSleep();
         console.log('AutoScroll detenido');
       } else { // si el autoscroll no está activo, iniciarlo
