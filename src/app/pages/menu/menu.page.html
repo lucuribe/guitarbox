@@ -22,13 +22,13 @@
         <ion-label>{{ 'THEME' | translate }}</ion-label>
         <ion-row slot="end" class="ion-align-items-center ion-no-padding">
           <ion-col size="auto">
-            <span aria-label="Dark Mode icon" class="material-symbols-rounded">dark_mode</span>
-          </ion-col>
-          <ion-col size="auto">
-            <ion-toggle aria-label="Theme Toggle" style="padding-left: 0"></ion-toggle>
-          </ion-col>
-          <ion-col size="auto">
             <span aria-label="Light Mode icon" class="material-symbols-rounded">light_mode</span>
+          </ion-col>
+          <ion-col size="auto">
+            <ion-toggle #toggleTheme aria-label="Theme Toggle" style="padding-left: 0" [checked]="isDark" (ionChange)="changeTheme($event)"></ion-toggle>
+          </ion-col>
+          <ion-col size="auto">
+            <span aria-label="Dark Mode icon" class="material-symbols-rounded">dark_mode</span>
           </ion-col>
         </ion-row>
       </ion-item>

@@ -1,5 +1,9 @@
+ion-tab-bar {
+  --background: var(--bg);
+}
+
 ion-tab-button {
-  --color: var(--pale-dogwood-2);
-  --color-selected: var(--atomic-tangerine);
-  --color-focused: var(--atomic-tangerine);
+  --color: var(--secondary-shade);
+  --color-selected: var(--primary);
+  --color-focused: var(--primary);
 }

@@ -144,6 +144,7 @@ export class TunerPage {
     const endTime = performance.now();
     if (Math.round((endTime - this.elapsedTimeRightPitch) / 1000) > 1 && !this.pitchReachedDelay) {
       this.pitchReachedDelay = true;
+      this.advice = "OK";
       this.pitchReached.play();
       setTimeout(() => {
         this.pitchReachedDelay = false;
@@ -153,24 +154,26 @@ export class TunerPage {
   }
 
   renderDisplay(tuner: any, toneDiff: number, noteDetected: any) {
-    this.reached = false;
-    if (tuner.abs(toneDiff) < this.detuneDifference) {
-      this.rotation = 'rotate(90deg)';
-      this.advice = "REACHED";
-      this.reached = true;
-      if (this.elapsedTimeRightPitch === null) {
-        this.elapsedTimeRightPitch = performance.now();
+    if (!this.pitchReachedDelay) {
+      this.reached = false;
+      this.note = noteDetected.note;
+      if (tuner.abs(toneDiff) < this.detuneDifference) {
+        this.rotation = 'rotate(90deg)';
+        this.advice = "REACHED";
+        this.reached = true;
+        if (this.elapsedTimeRightPitch === null) {
+          this.elapsedTimeRightPitch = performance.now();
+        }
+      } else if (toneDiff > this.detuneDifference) {
+        this.rotation = 'rotate(180deg)';
+        this.advice = "DOWN";
+        this.elapsedTimeRightPitch = null;
+      } else if (toneDiff < -this.detuneDifference) {
+        this.rotation = 'rotate(0deg)';
+        this.advice = "UP";
+        this.elapsedTimeRightPitch = null;
       }
-    } else if (toneDiff > this.detuneDifference) {
-      this.rotation = 'rotate(180deg)';
-      this.advice = "DOWN";
-      this.elapsedTimeRightPitch = null;
-    } else if (toneDiff < -this.detuneDifference) {
-      this.rotation = 'rotate(0deg)';
-      this.advice = "UP";
-      this.elapsedTimeRightPitch = null;
     }
-    this.note = noteDetected.note;
     this.checkTunedQueue();
   }
 

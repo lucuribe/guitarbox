@@ -38,7 +38,6 @@ export class SheetPage implements OnInit {
       const navParams = this.router.getCurrentNavigation();
       if (navParams?.extras.state) {
         this.song = navParams.extras.state['song'];
-        console.log(this.song);
       }
     });
   }
@@ -177,6 +176,14 @@ export class SheetPage implements OnInit {
         KeepAwake.allowSleep();
       }
     });
+
+    let strings = 6;
+    if (this.currentInstrument === 'UKULELE') {
+      strings = 4;
+    }
+    let color = getComputedStyle(document.body).getPropertyValue('--text');
+    let textColor = getComputedStyle(document.body).getPropertyValue('--primary-contrast');
+
     for (const sheetChord of this.sheetChords) {
       const chord = this.chordsService.getChord(sheetChord);
       if (chord) {
@@ -184,18 +191,16 @@ export class SheetPage implements OnInit {
         chartCol.size = 'auto';
         const chartDiv = document.createElement('div');
         chartDiv.style.minWidth = '180px';
+        chartDiv.style.fontWeight = '600';
         chartCol.appendChild(chartDiv);
         this.charts.nativeElement.appendChild(chartCol);
-
-        let strings = 6;
-        if (this.currentInstrument === 'UKULELE') {
-          strings = 4;
-        }
 
         const chart = new SVGuitarChord(chartDiv)
         chart
           .configure({
             strings: strings,
+            color: color,
+            fingerTextColor: textColor,
             frets: 5,
             fretSize: 1,
             fretLabelFontSize: 32,

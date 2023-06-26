@@ -36,6 +36,7 @@
     "UP": "Tune up",
     "DOWN": "Tune down",
     "REACHED": "Hold there",
+    "OK": "OK",
     "ALERT": {
       "HEADER": "Microphone Permission Not Granted",
       "MESSAGE": "It appears you haven't granted microphone permission. The tuner feature requires microphone access. You can manually grant permissions in your device's settings."

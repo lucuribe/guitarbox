@@ -36,6 +36,7 @@
     "UP": "Afina hacia arriba",
     "DOWN": "Afina hacia abajo",
     "REACHED": "Ya casi",
+    "OK": "OK",
     "ALERT": {
       "HEADER": "Permiso de micrófono no concedido",
       "MESSAGE": "Parece que no has otorgado el permiso de acceso al micrófono. La función de afinador requiere acceso al micrófono. Puedes otorgar los permisos manualmente en la configuración de tu dispositivo."

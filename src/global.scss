@@ -34,21 +34,21 @@
   .alert-wrapper {
     .alert-head {
       h2 {
-        color: var(--bole);
+        color: var(--text);
       }
     }
   }
 }
 
 button.alert-button.custom-alert-button {
-  color: var(--bole);
+  color: var(--text);
 }
 
 input.alert-input.custom-alert-input {
-  color: var(--atomic-tangerine);
+  color: var(--primary);
   font-weight: 600;
 }
 
 input.alert-input.custom-alert-input:focus {
-  border-bottom-color: var(--atomic-tangerine);
+  border-bottom-color: var(--primary);
 }

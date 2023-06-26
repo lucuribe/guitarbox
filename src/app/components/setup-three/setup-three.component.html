@@ -12,7 +12,10 @@
                 <div class="radio-container">
                   <ion-radio aria-label="Guitar" [value]="instruments[0]"></ion-radio>
                   <div class="content">
-                    <ion-img src="../../../assets/images/guitar.png"></ion-img>
+                    <ion-img *ngIf="isDark; else isLight" src="../../../assets/images/dark/guitar.png"></ion-img>
+                    <ng-template #isLight>
+                      <ion-img src="../../../assets/images/guitar.png"></ion-img>
+                    </ng-template>
                     <ion-label>{{ instruments[0] | translate }}</ion-label>
                   </div>
                 </div>
@@ -21,7 +24,10 @@
                 <div class="radio-container">
                   <ion-radio aria-label="Ukulele" [value]="instruments[1]"></ion-radio>
                   <div class="content">
-                    <ion-img src="../../../assets/images/ukulele.png"></ion-img>
+                    <ion-img *ngIf="isDark; else isLight" src="../../../assets/images/dark/ukulele.png"></ion-img>
+                    <ng-template #isLight>
+                      <ion-img src="../../../assets/images/ukulele.png"></ion-img>
+                    </ng-template>
                     <ion-label>{{ instruments[1] | translate }}</ion-label>
                   </div>
                 </div>

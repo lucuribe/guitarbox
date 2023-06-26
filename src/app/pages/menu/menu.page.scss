@@ -1,31 +1,47 @@
+ion-toolbar {
+  --background: var(--bg);
+}
+
 ion-title {
-  --color: var(--bole);
+  --color: var(--text);
 }
 
 p {
   font-family: 'Licorice', 'Inter', sans-serif;
   font-size: 32px;
   margin: 0;
-  color: var(--atomic-tangerine);
+  color: var(--primary);
+}
+
+ion-menu {
+  ion-content {
+    --background: var(--bg);
+  }
 }
 
 ion-item {
-  --color: var(--bole);
+  --background: var(--bg);
+  --color: var(--text);
 
   span {
-    color: var(--bole);
+    color: var(--text);
   }
 }
 
 ion-button {
-  --color: var(--bole);
-  --ripple-color: var(--atomic-tangerine-50);
-  --background-focused: var(--bole);
-  --background-hover: var(--bole);
+  --color: var(--text);
+  --ripple-color: var(--primary-50);
+  --background-focused: var(--text);
+  --background-hover: var(--text);
 
   span {
-    color: var(--atomic-tangerine);
+    color: var(--primary);
   }
+}
+
+ion-toggle {
+  --handle-background-checked: var(--primary);
+  --track-background-checked: var(--primary-50);
 }
 
 .medium-weight {

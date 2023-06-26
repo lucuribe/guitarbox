@@ -1,9 +1,13 @@
 ion-content {
-  --background: var(--alice-blue);
+  --background: var(--bg);
 }
 
 span {
-    color: var(--bole);
+    color: var(--text);
+}
+
+ion-card {
+  --background: var(--bg);
 }
 
 $altura-encabezado: 145px;
@@ -22,15 +26,23 @@ $altura-pie-pagina: 100px;
     margin: 15px;
 }
 
+ion-list {
+  background: var(--bg);
+}
+
+ion-item {
+  --background: var(--bg);
+}
+
 ion-item.custom {
-  --ripple-color: var(--atomic-tangerine);
-  --detail-icon-color: var(--bole);
+  --ripple-color: var(--primary);
+  --detail-icon-color: var(--text);
 
   ion-thumbnail {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--tiffany-blue);
+    background-color: var(--tertiary);
     --border-radius: 8px;
 
     img {
@@ -40,7 +52,7 @@ ion-item.custom {
   }
 
   p, h2 {
-    color: var(--bole);
+    color: var(--text);
     margin: 0;
   }
 }
@@ -48,10 +60,10 @@ ion-item.custom {
 ion-button.bpm-btn {
   height: 64px;
   font-weight: 700;
-  --color: var(--atomic-tangerine);
+  --color: var(--primary);
 
   ion-icon {
-    color: var(--pale-dogwood);
+    color: var(--secondary);
     font-size: 64px;
   }
 
@@ -62,22 +74,23 @@ ion-button.bpm-btn {
 }
 
 ion-button.star-btn {
-  --color: var(--atomic-tangerine);
+  --color: var(--primary);
 }
 
 ion-button.text-btn {
-  --background: var(--pale-dogwood);
-  --ripple-color: var(--atomic-tangerine-50);
-  --box-shadow: 0 2px 6px 0 rgba(127, 73, 57, 0.25);
-  --color: var(--atomic-tangerine);
+  --background: var(--secondary);
+  --ripple-color: var(--primary-50);
+  --box-shadow: 0 2px 6px 0 var(--primary-shade);
+  --color: var(--primary);
   font-weight: 700;
 }
 
 ion-chip {
-  --background: var(--atomic-tangerine);
-  --color: var(--alice-blue);
+  --background: var(--primary);
+  --color: var(--bg);
 }
 
 ion-toolbar{
-  color: var(--bole);
+  --background: var(--bg);
+  color: var(--text);
 }

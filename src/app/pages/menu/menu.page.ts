@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {IonicModule, ModalController} from '@ionic/angular';
+import {IonicModule, IonToggle, ModalController} from '@ionic/angular';
 import {StorageService} from "../../services/storage.service";
 import {Router} from "@angular/router";
 import {LoadingComponent} from "../../components/loading/loading.component";
@@ -20,24 +20,27 @@ import {Device} from "@capacitor/device";
   imports: [IonicModule, CommonModule, FormsModule, LoadingComponent, TranslateModule]
 })
 export class MenuPage {
+  @ViewChild(IonToggle) toggleTheme!: IonToggle;
+
   instruments = ['GUITAR', 'UKULELE'];
   languages = ['en', 'es'];
   currentInstrument = this.instruments[0];
   currentLanguage = this.languages[0];
   userManualUri = '';
+  isDark = false;
 
   isLoading = true;
 
   constructor(private router: Router, private storage: StorageService, private modalCtrl: ModalController, private httpClient: HttpClient, private translate: TranslateService) {
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang('en');
-
     // the lang to use, if the lang isn't available, it will use the current loader to get them
     translate.use('en');
   }
 
   async ionViewWillEnter() {
     await this.getCurrentLanguage();
+    await this.getCurrentTheme();
     await this.checkSetupDone();
     await this.getCurrentInstrument();
     await this.getUserManualUri();
@@ -72,6 +75,17 @@ export class MenuPage {
         this.storage.set('language', language);
       }
     }
+  }
+
+  async getCurrentTheme() {
+    let isDark = await this.storage.get('dark');
+    if (isDark || isDark === false) {
+      this.isDark = isDark;
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+      this.isDark = prefersDark.matches;
+    }
+    this.changeTheme();
   }
 
   async getUserManualUri() {
@@ -116,6 +130,14 @@ export class MenuPage {
   changeLanguage(ev: any) {
     this.translate.use(ev.target.value);
     this.storage.set('language', ev.target.value);
+  }
+
+  changeTheme(ev?: any) {
+    if (ev) {
+      this.isDark = ev.detail.checked;
+    }
+    document.body.classList.toggle('dark', this.isDark);
+    this.storage.set('dark', this.isDark);
   }
 
   navToMainView() {

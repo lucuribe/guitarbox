@@ -1,7 +1,7 @@
 .main-container {
   display: flex;
   align-items: center;
-  background: var(--alice-blue);
+  background: var(--bg);
 }
 
 .full-height {
@@ -12,12 +12,12 @@ p {
   font-family: 'Licorice', 'Inter', sans-serif;
   font-size: 32px;
   margin: 0;
-  color: var(--atomic-tangerine);
+  color: var(--primary);
 }
 
 ion-label {
   font-size: 16px;
-  color: var(--bole);
+  color: var(--text);
 }
 
 ion-label.subtitle {
@@ -25,12 +25,12 @@ ion-label.subtitle {
 }
 
 .icon-btn {
-  --background: var(--alice-blue);
-  --ripple-color: var(--atomic-tangerine-50);
-  --box-shadow: 0 2px 6px 0 rgba(127, 73, 57, 0.25);
+  --background: var(--primary-contrast);
+  --ripple-color: var(--primary-50);
+  --box-shadow: 0 2px 6px 0 var(--primary-shade);
 
   .material-symbols-rounded {
-    color: var(--atomic-tangerine);
+    color: var(--primary);
     font-variation-settings:
       'FILL' 1
   }

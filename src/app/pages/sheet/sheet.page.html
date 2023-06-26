@@ -18,7 +18,7 @@
           <ion-text>{{song.bpm}}</ion-text>
         </ion-button>
       </ion-item>
-      <ion-item>
+      <ion-item lines="full">
         <ion-button *ngIf="this.hasLyrics" id="open-modal" shape="round" class="text-btn">{{ 'CHARTS' | translate }}</ion-button>
         <ion-button slot="end" class="star-btn" size="small" shape="round" fill="clear">
           <ion-icon slot="icon-only" name="star-outline"></ion-icon>
@@ -44,7 +44,6 @@
           <ion-buttons slot="start">
             <ion-button (click)="dismissCharts();">{{ 'BACK' | translate }}</ion-button>
           </ion-buttons>
-          <ion-title>{{ 'CHARTS' | translate }}</ion-title>
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding-top">
