@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {IonicModule, IonModal} from '@ionic/angular';
+import {IonAccordionGroup, IonicModule, IonModal} from '@ionic/angular';
 import {ActivatedRoute, NavigationExtras, Router} from "@angular/router";
 import {Chord, SVGuitarChord} from 'svguitar';
 import {ChordsService} from "../../services/chords.service";
@@ -9,21 +9,30 @@ import {StorageService} from "../../services/storage.service";
 import {KeepAwake} from "@capacitor-community/keep-awake";
 import {Song} from "../../interfaces/song";
 import {TranslateModule} from "@ngx-translate/core";
+import {YouTubePlayerModule} from "@angular/youtube-player";
 
+let apiLoaded = false;
 @Component({
   selector: 'app-sheet',
   templateUrl: './sheet.page.html',
   styleUrls: ['./sheet.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, TranslateModule]
+  imports: [IonicModule, CommonModule, FormsModule, TranslateModule, YouTubePlayerModule]
 })
 export class SheetPage implements OnInit {
+  @ViewChild('youtubePlayer', {read: ElementRef}) youtubePlayer!: ElementRef;
+  @ViewChild('accordionGroup') accordionGroup!: IonAccordionGroup;
   @ViewChild("charts", {read: ElementRef}) charts!: ElementRef;
   @ViewChild("card", {read: ElementRef}) card!: ElementRef;
   @ViewChild(IonModal) modal!: IonModal;
 
   // SUBSCRIPTIONS
   storageSub: any;
+
+  // VIDEO
+  videoWidth = 0;
+  videoHeight = 0;
+  isVisible = false;
 
   song!: Song;
   sheetChords!: string[];
@@ -33,6 +42,7 @@ export class SheetPage implements OnInit {
   autoScrollActive = false;
   autoScrollInterval: any;
   hasLyrics = false;
+  hasVideo = false;
 
   constructor(private router: Router, private activeroute: ActivatedRoute, private chordsService: ChordsService, private storage: StorageService) {
     this.activeroute.queryParams.subscribe(params => {
@@ -45,7 +55,16 @@ export class SheetPage implements OnInit {
 
   ngOnInit() {
     this.loadScript('assets/js/html-chords.js');
+    if (!apiLoaded) {
+      // This code loads the IFrame Player API code asynchronously, according to the instructions at
+      // https://developers.google.com/youtube/iframe_api_reference#Getting_Started
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.body.appendChild(tag);
+      apiLoaded = true;
+    }
     this.hasLyrics = this.song.lyrics.trim() != "";
+    this.hasVideo = this.song.youtubeId.trim() != "";
     this.sheetChords = this.extraerNotas(this.song.lyrics);
   }
 
@@ -58,6 +77,9 @@ export class SheetPage implements OnInit {
           this.chordsService.loadChords(this.currentInstrument);
         }
       });
+    }
+    if (this.hasVideo) {
+      this.getVideoSize();
     }
   }
 
@@ -77,6 +99,22 @@ export class SheetPage implements OnInit {
       this.chordsService.loadChords(this.currentInstrument);
     }
   }
+
+  getVideoSize() {
+    this.videoWidth = this.youtubePlayer.nativeElement.offsetWidth - 40;
+    this.videoHeight = this.videoWidth * 0.6;
+  }
+
+  toggleAccordion() {
+    const nativeEl = this.accordionGroup;
+    if (nativeEl.value === 'player') {
+      nativeEl.value = undefined;
+      this.isVisible = false;
+    } else {
+      nativeEl.value = 'player';
+      this.isVisible = true;
+    }
+  };
 
   loadScript(url: string) {
     const body = <HTMLDivElement>document.body;

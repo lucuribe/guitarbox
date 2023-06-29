@@ -1,3 +1,8 @@
+ion-header {
+  box-shadow: none;
+  overflow-y: auto;
+}
+
 ion-content {
   --background: var(--bg);
 }
@@ -15,6 +20,10 @@ ion-card {
 
 .song {
   line-height: 32px;
+}
+
+.lyrics-font {
+  color: var(--text);
 }
 
 .wrapper {
@@ -81,6 +90,12 @@ ion-button.text-btn {
   --box-shadow: 0 2px 6px 0 var(--primary-shade);
   --color: var(--primary);
   font-weight: 700;
+
+  .material-symbols-rounded {
+    color: var(--primary);
+    font-variation-settings:
+      'FILL' 1
+  }
 }
 
 ion-chip {
@@ -91,4 +106,9 @@ ion-chip {
 ion-toolbar{
   --background: var(--bg);
   color: var(--text);
+}
+
+.genre-scroller {
+  overflow: auto;
+  white-space: nowrap;
 }

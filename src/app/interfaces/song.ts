@@ -7,6 +7,7 @@ export interface Song {
   title: string;
   bpm: number;
   lyrics: string;
+  youtubeId: string;
   album: Album;
   artists: Artist[];
   genres: Genre[];

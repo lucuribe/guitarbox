@@ -1,4 +1,4 @@
-<ion-header style="box-shadow: none">
+<ion-header>
   <ion-list>
     <ion-item class="custom" lines="full">
       <ion-thumbnail slot="start">
@@ -10,23 +10,48 @@
         <p>
           <span *ngFor="let artist of song.artists">{{artist.name}}</span>
         </p>
-        <ion-chip *ngFor="let genre of song.genres">{{genre.name}}</ion-chip>
+        <div class="genre-scroller">
+          <ion-chip *ngFor="let genre of song.genres">{{genre.name}}</ion-chip>
+        </div>
       </ion-label>
       <ion-button (click)="navToMetronomeView()" slot="end" class="bpm-btn ion-no-margin" shape="round" fill="clear">
         <ion-icon slot="icon-only" name="heart"></ion-icon>
         <ion-text>{{song.bpm}}</ion-text>
       </ion-button>
     </ion-item>
-    <ion-item lines="full">
-      <ion-button *ngIf="this.hasLyrics" id="open-modal" shape="round" class="text-btn">{{ 'CHARTS' | translate }}</ion-button>
-      <ion-button slot="end" class="star-btn" size="small" shape="round" fill="clear">
-        <ion-icon slot="icon-only" name="star-outline"></ion-icon>
+    <ion-item class="custom" slot="header">
+      <ion-button *ngIf="this.hasLyrics" id="open-modal" shape="round"
+                  class="text-btn">{{ 'CHARTS' | translate }}</ion-button>
+      <ion-button *ngIf="this.hasVideo" (click)="toggleAccordion()" slot="end" shape="round" class="text-btn">
+        <div *ngIf="isVisible; then hideBtn else showBtn"></div>
+        <ng-template #hideBtn>
+              <span slot="icon-only" aria-label="Stop icon"
+                    class="material-symbols-rounded">close
+              </span>
+        </ng-template>
+        <ng-template #showBtn>
+              <span slot="icon-only" aria-label="Play icon"
+                    class="material-symbols-rounded">play_arrow
+              </span>
+        </ng-template>
       </ion-button>
     </ion-item>
   </ion-list>
+  <ion-accordion-group #accordionGroup *ngIf="this.hasVideo">
+    <ion-accordion #youtubePlayer value="player">
+      <div slot="content">
+        <ion-row class="ion-justify-content-center">
+          <ion-col size="auto">
+            <youtube-player [width]="videoWidth" [height]="videoHeight" [videoId]="song.youtubeId"></youtube-player>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
 </ion-header>
-<ion-content [fullscreen]="true" scrollY="false">
-  <ion-card #card *ngIf="this.hasLyrics; else noLyrics" class="ion-no-margin ion-padding-horizontal" (click)="autoScroll()">
+<ion-content [fullscreen]="true">
+  <ion-card #card *ngIf="this.hasLyrics; else noLyrics" class="ion-no-margin ion-padding-horizontal"
+            (click)="autoScroll()">
     <div class="song ion-padding-end">
       <div class="lyrics-font" [innerHTML]="song.lyrics"></div>
     </div>
@@ -37,7 +62,7 @@
     </ion-label>
   </ng-template>
 </ion-content>
-<ion-modal trigger="open-modal" class="modal" (willPresent)="showCharts();">
+<ion-modal *ngIf="this.hasLyrics" trigger="open-modal" class="modal" (willPresent)="showCharts();">
   <ng-template>
     <ion-header>
       <ion-toolbar>
