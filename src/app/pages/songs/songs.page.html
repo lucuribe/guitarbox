@@ -48,7 +48,7 @@
         <ion-item *ngIf="filteredSongs.length === 0" class="custom ion-text-center" lines="full">
           <ion-label *ngIf="connected; else disconnected">{{ 'SONGS.ANY' | translate }}</ion-label>
           <ng-template #disconnected>
-            <ion-label class="ion-text-wrap">{{ 'SONGS.DISCONNECTED' | translate }}</ion-label>
+            <ion-label class="ion-text-wrap">{{ 'DISCONNECTED' | translate }}</ion-label>
           </ng-template>
         </ion-item>
       </ion-list>

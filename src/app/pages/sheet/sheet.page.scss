@@ -55,9 +55,15 @@ ion-item.custom {
       height: 36px;
     }
   }
+
+  h2 {
+    font-weight: 500;
+  }
 }
 
 ion-label {
+  color: var(--text);
+
   p, h2 {
     color: var(--text);
     margin: 0;
@@ -103,9 +109,14 @@ ion-chip {
   --color: var(--bg);
 }
 
-ion-toolbar{
+ion-toolbar {
   --background: var(--bg);
   color: var(--text);
+}
+
+ion-spinner {
+  --color: var(--primary);
+  height: 16px;
 }
 
 .genre-scroller {

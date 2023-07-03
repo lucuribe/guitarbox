@@ -22,19 +22,21 @@
     <ion-item class="custom" slot="header">
       <ion-button *ngIf="this.hasLyrics" id="open-modal" shape="round"
                   class="text-btn">{{ 'CHARTS' | translate }}</ion-button>
-      <ion-button *ngIf="this.hasVideo" (click)="toggleAccordion()" slot="end" shape="round" class="text-btn">
-        <div *ngIf="isVisible; then hideBtn else showBtn"></div>
-        <ng-template #hideBtn>
-              <span slot="icon-only" aria-label="Stop icon"
-                    class="material-symbols-rounded">close
-              </span>
-        </ng-template>
-        <ng-template #showBtn>
+      <div *ngIf="hasVideo" slot="end">
+        <ion-spinner *ngIf="loading; else ready"></ion-spinner>
+        <ng-template #ready>
+          <ion-button (click)="toggleAccordion()" shape="round" class="text-btn">
+            <span *ngIf="isVisible; else hidden" slot="icon-only" aria-label="Stop icon"
+                  class="material-symbols-rounded">close
+            </span>
+            <ng-template #hidden>
               <span slot="icon-only" aria-label="Play icon"
                     class="material-symbols-rounded">play_arrow
               </span>
+            </ng-template>
+          </ion-button>
         </ng-template>
-      </ion-button>
+      </div>
     </ion-item>
   </ion-list>
   <ion-accordion-group #accordionGroup *ngIf="this.hasVideo">
@@ -42,7 +44,12 @@
       <div slot="content">
         <ion-row class="ion-justify-content-center">
           <ion-col size="auto">
-            <youtube-player [width]="videoWidth" [height]="videoHeight" [videoId]="song.youtubeId"></youtube-player>
+            <youtube-player *ngIf="connected; else disconnected" [width]="videoWidth" [height]="videoHeight" [videoId]="song.youtubeId" (ready)="onPlayerReady()"></youtube-player>
+            <ng-template #disconnected>
+              <div class="ion-text-center ion-padding-horizontal">
+                <ion-label class="ion-text-wrap">{{ 'DISCONNECTED' | translate }}</ion-label>
+              </div>
+            </ng-template>
           </ion-col>
         </ion-row>
       </div>

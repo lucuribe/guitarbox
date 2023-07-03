@@ -52,12 +52,12 @@
     "SONGS": "Songs"
   },
   "SONGS": {
-    "ANY": "Couldn't find any songs.",
-    "DISCONNECTED": "No connection. Please check your internet connection."
+    "ANY": "Couldn't find any songs."
   },
   "SHEETS": {
     "NO_CHORDS": "At the moment, this song doesn't have chords."
   },
   "CHARTS": "Charts",
-  "BACK": "Back"
+  "BACK": "Back",
+  "DISCONNECTED": "No connection. Please check your internet connection."
 }

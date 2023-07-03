@@ -52,12 +52,12 @@
     "SONGS": "Canciones"
   },
   "SONGS": {
-    "ANY": "No se pudieron encontrar coincidencias.",
-    "DISCONNECTED": "Sin conexión. Por favor verifica tu conexión a Internet."
+    "ANY": "No se pudieron encontrar coincidencias."
   },
   "SHEETS": {
     "NO_CHORDS": "Los acordes de esta canción aún no han sido sugeridos."
   },
   "CHARTS": "Diagramas",
-  "BACK": "Volver"
+  "BACK": "Volver",
+  "DISCONNECTED": "Sin conexión. Por favor verifica tu conexión a Internet."
 }

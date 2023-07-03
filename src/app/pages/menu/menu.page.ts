@@ -89,21 +89,21 @@ export class MenuPage {
   }
 
   async getUserManualUri() {
-    const uri = await this.storage.get('userManualUri');
-    if (uri) {
-      this.userManualUri = uri;
+    const userManual = await this.storage.get('userManual');
+    if (userManual && userManual.lang === this.currentLanguage) {
+      this.userManualUri = userManual.uri;
     } else {
-      const url = 'assets/userManual_ES.pdf';
+      const url = 'assets/userManual_' + this.currentLanguage + '.pdf';
       this.httpClient.get(url, {responseType: 'blob'}).subscribe(async res => {
         const name = url.substring(url.lastIndexOf('/') + 1);
         const base64 = await this.convertBlobToBase64(res) as string;
-        const userManual = await Filesystem.writeFile({
+        const userManualFS = await Filesystem.writeFile({
           path: name,
           data: base64,
           directory: Directory.Data
         });
-        this.userManualUri = userManual.uri;
-        this.storage.set('userManualUri', userManual.uri);
+        this.userManualUri = userManualFS.uri;
+        this.storage.set('userManual', {"uri": userManualFS.uri, "lang": this.currentLanguage});
       });
     }
   }
@@ -130,6 +130,8 @@ export class MenuPage {
   changeLanguage(ev: any) {
     this.translate.use(ev.target.value);
     this.storage.set('language', ev.target.value);
+    this.currentLanguage = ev.target.value;
+    this.getUserManualUri();
   }
 
   changeTheme(ev?: any) {

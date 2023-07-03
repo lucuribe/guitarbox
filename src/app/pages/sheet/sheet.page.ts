@@ -10,6 +10,7 @@ import {KeepAwake} from "@capacitor-community/keep-awake";
 import {Song} from "../../interfaces/song";
 import {TranslateModule} from "@ngx-translate/core";
 import {YouTubePlayerModule} from "@angular/youtube-player";
+import {Network} from "@capacitor/network";
 
 let apiLoaded = false;
 @Component({
@@ -33,6 +34,7 @@ export class SheetPage implements OnInit {
   videoWidth = 0;
   videoHeight = 0;
   isVisible = false;
+  loading = false;
 
   song!: Song;
   sheetChords!: string[];
@@ -43,6 +45,7 @@ export class SheetPage implements OnInit {
   autoScrollInterval: any;
   hasLyrics = false;
   hasVideo = false;
+  connected = true;
 
   constructor(private router: Router, private activeroute: ActivatedRoute, private chordsService: ChordsService, private storage: StorageService) {
     this.activeroute.queryParams.subscribe(params => {
@@ -55,20 +58,13 @@ export class SheetPage implements OnInit {
 
   ngOnInit() {
     this.loadScript('assets/js/html-chords.js');
-    if (!apiLoaded) {
-      // This code loads the IFrame Player API code asynchronously, according to the instructions at
-      // https://developers.google.com/youtube/iframe_api_reference#Getting_Started
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      document.body.appendChild(tag);
-      apiLoaded = true;
-    }
     this.hasLyrics = this.song.lyrics.trim() != "";
     this.hasVideo = this.song.youtubeId.trim() != "";
     this.sheetChords = this.extraerNotas(this.song.lyrics);
   }
 
   ionViewWillEnter() {
+    console.log(apiLoaded);
     this.getCurrentInstrument();
     if (this.hasLyrics) {
       this.storageSub = this.storage.watchStorage().subscribe(res => {
@@ -79,6 +75,7 @@ export class SheetPage implements OnInit {
       });
     }
     if (this.hasVideo) {
+      this.loadYoutubeApi();
       this.getVideoSize();
     }
   }
@@ -100,9 +97,35 @@ export class SheetPage implements OnInit {
     }
   }
 
+  async getNetworkStatus() {
+    const status = await Network.getStatus();
+    this.connected = status.connected;
+  }
+
+  async loadYoutubeApi() {
+    await this.getNetworkStatus();
+    if (this.connected) {
+      this.loading = true;
+      if (!apiLoaded) {
+        // This code loads the IFrame Player API code asynchronously, according to the instructions at
+        // https://developers.google.com/youtube/iframe_api_reference#Getting_Started
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        document.body.appendChild(tag);
+        apiLoaded = true;
+      }
+    } else {
+      this.loading = false;
+    }
+  }
+
   getVideoSize() {
     this.videoWidth = this.youtubePlayer.nativeElement.offsetWidth - 40;
     this.videoHeight = this.videoWidth * 0.6;
+  }
+
+  onPlayerReady() {
+    this.loading = false;
   }
 
   toggleAccordion() {
