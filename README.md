@@ -2,6 +2,8 @@
 
 This repository contains an app for guitar enthusiasts with a metronome, tuner, and song sheet collection.
 
+![GuitarBox Logo.](/src/assets/icon/favicon.png)
+
 ## Project Dependencies
 - p5.js
 - m5.js
