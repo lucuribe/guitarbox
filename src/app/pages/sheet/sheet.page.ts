@@ -64,7 +64,6 @@ export class SheetPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    console.log(apiLoaded);
     this.getCurrentInstrument();
     if (this.hasLyrics) {
       this.storageSub = this.storage.watchStorage().subscribe(res => {
